@@ -14,6 +14,8 @@ function App() {
             {/* auth */}
             <Route path='/signup' element={<SignUp/>}/>
 
+            {/*  */}
+
 
           </Routes>
       </BrowserRouter>
