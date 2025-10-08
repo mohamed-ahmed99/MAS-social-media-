@@ -21,7 +21,7 @@ const AuthNav = () => {
 
     return (
         <div className='fixed w-full top-0 left-0'>
-            <motion.nav initial={{y:-100}} animate={{y:0}}
+            <motion.nav initial={{y:-100}} animate={{y:0}} transition={{duration:.3, type:"spring", stiffness:200}}
                 className='2xl:container flex items-center justify-between py-4 px-4 sm:px-8' >
                 <button onClick={() => navigate(-1)} 
                     className='p-3 shadow-sm bg-slate-200 rounded-full hover:shadow-xl'> <FaArrowLeft/> </button>

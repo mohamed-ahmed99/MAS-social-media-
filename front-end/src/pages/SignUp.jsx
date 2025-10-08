@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Input from '../components/Input'
+import {motion} from 'framer-motion'
 
 const SignUp = () => {
 
@@ -61,7 +62,9 @@ const SignUp = () => {
     return (
         <div className='bg-gray-100 min-h-screen  flex items-center justify-center p-4'>
 
-            <div className='bg-white w-full max-w-[600px] p-6 space-y-6 shadow-xl rounded-2xl'>
+            <motion.div initial={{scale:.1}} animate={{scale:1}} transition={{duration:.3, type:"spring", stiffness:200} }
+                     className='bg-white w-full max-w-[600px] p-6 space-y-6 shadow-xl rounded-2xl'>
+
                 <h2 className='text-center text-[25px] capitalize'>Sign Up</h2>
                 
                 <form onSubmit={submition} className='space-y-4'>
@@ -97,7 +100,7 @@ const SignUp = () => {
 
                 </form>
 
-            </div>
+            </motion.div>
             
         </div>
     );
