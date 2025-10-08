@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import InputWithError from '../components/InputWithError'
+import Input from '../components/Input'
+import NavAuth from '../components/NavAuth';
 
 const SignUp = () => {
 
     const [data, setData] = useState(
         {firstName:"", lastName:"", email:"", phoneNumber:"", password:"", confirmPassword:"", address:"", gender:""})
 
-        console.log(data)
+        
 
 
 
@@ -18,17 +19,17 @@ const SignUp = () => {
                 
                 <form action="" className='space-y-4'>
                     <div className='flex gap-4 justify-between'>
-                        <InputWithError placeholder="First Name" name="firstName" onChange={(e) => setData(prev => ({...prev, [e.target.name]: e.target.value}))}/>
-                        <InputWithError placeholder="Last Name" name="lastName" onChange={(e) => setData(prev => ({...prev, [e.target.name]: e.target.value}))}/>
+                        <Input placeholder="First Name" name="firstName" onChange={(e) => setData(prev => ({...prev, [e.target.name]: e.target.value}))}/>
+                        <Input placeholder="Last Name" name="lastName" onChange={(e) => setData(prev => ({...prev, [e.target.name]: e.target.value}))}/>
                     </div>
-                    <InputWithError placeholder="Email" name="email" onChange={(e) => setData(prev => ({...prev, [e.target.name]: e.target.value}))}/>
-                    <InputWithError placeholder="Phone Number" name="phoneNumber" onChange={(e) => setData(prev => ({...prev, [e.target.name]: e.target.value}))}/>
+                    <Input placeholder="Email" name="email" onChange={(e) => setData(prev => ({...prev, [e.target.name]: e.target.value}))}/>
+                    <Input placeholder="Phone Number" name="phoneNumber" onChange={(e) => setData(prev => ({...prev, [e.target.name]: e.target.value}))}/>
                     <div className='flex gap-4 justify-between'>
-                        <InputWithError placeholder="password" name="password" type='password' onChange={(e) => setData(prev => ({...prev, [e.target.name]: e.target.value}))}/>
-                        <InputWithError placeholder="confirm Password" name="confirmPassword" type='password' onChange={(e) => setData(prev => ({...prev, [e.target.name]: e.target.value}))}/>
+                        <Input placeholder="password" name="password" type='password' onChange={(e) => setData(prev => ({...prev, [e.target.name]: e.target.value}))}/>
+                        <Input placeholder="confirm Password" name="confirmPassword" type='password' onChange={(e) => setData(prev => ({...prev, [e.target.name]: e.target.value}))}/>
                     </div>
                     <div className='flex gap-4 justify-between'>
-                        <InputWithError placeholder="Adress" name="address" onChange={(e) => setData(prev => ({...prev, [e.target.name]: e.target.value}))}/>
+                        <Input placeholder="Adress" name="address" onChange={(e) => setData(prev => ({...prev, [e.target.name]: e.target.value}))}/>
                         <div className='text-gray-400'>
                             <select name="gender" id="" 
                                     onChange={(e) => setData((prev) => ({...prev, [e.target.name]:e.target.value}))}
