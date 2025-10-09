@@ -5,6 +5,9 @@ import cookieParser from 'cookie-parser'
 import mongoose from 'mongoose'
 
 
+// routes
+import authRoutes from './routes/auth.routes.js'
+
 const app = express() 
 dotenv.config()
 
@@ -42,6 +45,9 @@ ConnectDB()
 app.get('/', (req, res) => {
     res.status(200).json({message:"hello user"})
 })
+
+
+app.use('/api/auth', authRoutes)
 
 
 
