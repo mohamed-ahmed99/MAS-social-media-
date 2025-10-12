@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import Input from '../components/Input'
 import {motion} from 'framer-motion'
+import { useNavigate } from 'react-router-dom';
+import { useMyStore } from '../hooks/useMyStore';
 
 const SignUp = () => {
 
@@ -10,7 +12,10 @@ const SignUp = () => {
     const [validation, setValidation] = useState(
         {firstName:"", lastName:"", email:"", phoneNumber:"", password:"", confirmPassword:"", address:"", gender:""})
 
+    const [serverMessage, setServerMessage] = useState("")
+    console.log(serverMessage)
 
+    const navigate = useNavigate()
     
     const submition = async (e) => {
         e.preventDefault();
@@ -55,6 +60,32 @@ const SignUp = () => {
         // check address
         if (!data.address) setValidation(prev => ({ ...prev, address: "Address is required" }));
         else setValidation(prev => ({...prev, address:""}))
+
+
+        const callBack = async () => {
+            try{
+                const res = await fetch("http://localhost:5150/api/auth/signup",{
+                    method:"POST",
+                    headers:{"content-type":"application/json"},
+                    credentials:"include",
+                    body:JSON.stringify(data)
+                })
+
+                const resData = await res.json()
+                if(!res.ok){
+                    setServerMessage(resData.message)
+                }else{
+                    navigate('/verify-email')
+                }
+            }
+            catch(error){
+                console.log(error.message)
+                return {message: error.message}
+            }
+        }
+        await callBack()
+        
+
     }
 
 
@@ -62,7 +93,7 @@ const SignUp = () => {
     return (
         <div className='bg-gray-100 min-h-screen  flex items-center justify-center p-4'>
 
-            <motion.div initial={{scale:.1}} animate={{scale:1}} transition={{duration:.3, type:"spring", stiffness:200} }
+            <motion.div initial={{scale:.1}} animate={{scale:1}} transition={{duration:.3, type:"spring", stiffness:100} }
                      className='bg-white w-full max-w-[600px] p-6 space-y-6 shadow-xl rounded-2xl'>
 
                 <h2 className='text-center text-[25px] capitalize'>Sign Up</h2>

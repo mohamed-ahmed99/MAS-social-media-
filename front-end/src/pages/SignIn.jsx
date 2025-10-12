@@ -27,7 +27,7 @@ const SignIn = () => {
     return (
         <div className='bg-gray-100 min-h-screen  flex items-center justify-center p-4'>
 
-            <motion.div initial={{scale:.1}} animate={{scale:1}} transition={{duration:.3, type:"spring", stiffness:200}}
+            <motion.div initial={{scale:.1}} animate={{scale:1}} transition={{duration:.3, type:"spring", stiffness:100}}
                     className='bg-white w-full max-w-[600px] p-6 space-y-6 shadow-xl rounded-2xl'>
 
                 <h2 className='text-center text-[25px] capitalize'>Sign In</h2>

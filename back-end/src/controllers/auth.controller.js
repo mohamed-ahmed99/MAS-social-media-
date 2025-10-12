@@ -2,6 +2,7 @@ import Users from "../models/user.schema.js"
 import bcrypt from 'bcrypt'
 import transporter from "../utils/sendEmail.js"
 
+
 export const SignUp = async (req, res) => {
     try{
         const user = await Users.findOne({email:req.body.email})

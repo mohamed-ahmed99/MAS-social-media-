@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
     // verify email 
     isVerified: {type:Boolean, default:false},
     verifyCode:String,
-    emailVerificationExpires: {type:Date, default: () => (Date.now() + 1000 * 60 * 1) },
+    emailVerificationExpires: {type:Date, default: () => (Date.now() + 1000 * 60 * 10) },
 
 }, {timestamps:true})
 
