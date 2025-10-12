@@ -2,66 +2,67 @@ import { useEffect, useState } from 'react';
 import Input from '../components/Input'
 import {motion} from 'framer-motion'
 import { useNavigate } from 'react-router-dom';
-import { useMyStore } from '../hooks/useMyStore';
+import MainAlert from '../components/MainAlert';
 
 const SignUp = () => {
 
+    // data I want from user
     const [data, setData] = useState(
         {firstName:"", lastName:"", email:"", phoneNumber:"", password:"", confirmPassword:"", address:"", gender:""})
         
-    const [validation, setValidation] = useState(
-        {firstName:"", lastName:"", email:"", phoneNumber:"", password:"", confirmPassword:"", address:"", gender:""})
+    // some messages under input to make user know that the data he enterd is not what we want
+    const [validation, setValidation] = useState({})
 
+    // messages comes from server
     const [serverMessage, setServerMessage] = useState("")
-    console.log(serverMessage)
 
-    const navigate = useNavigate()
+    const navigate = useNavigate() // to navigate
+
+    // to make alert appear in page just 5 seconds
+    useEffect(() => {
+        if(serverMessage){
+            const timeOut = setTimeout(() => setServerMessage(''), 5000);
+            return () => clearTimeout(timeOut)
+        }
+    },[serverMessage])
     
     const submition = async (e) => {
-        e.preventDefault();
+        e.preventDefault(); // prevent reload 
+        let errors = {} // collect messages 
 
-        // check firstName
-        if(!data.firstName.trim()) setValidation(prev => ({...prev, firstName:"first name is required"}))
-        else if(data.firstName.trim().length < 2) setValidation(prev => ({...prev, firstName:"Invalid name"}))
-        else if(! /^[\p{L} ]+$/u.test(data.firstName.trim())) setValidation(prev => ({...prev, firstName:"Invalid name"}))
-        else setValidation(prev => ({...prev, firstName:""}))
+        // validate data
+        if (!data.firstName.trim()) errors.firstName = "First name is required";
+        else if (data.firstName.trim().length < 2) errors.firstName = "Invalid name";
+        else if (!/^[\p{L} ]+$/u.test(data.firstName.trim())) errors.firstName = "Invalid name";
 
-        // check lastName
-        if(!data.lastName.trim()) setValidation(prev => ({...prev, lastName:"last name is required"}))
-        else if(data.lastName.trim().length < 2) setValidation(prev => ({...prev, lastName:"Invalid name"}))
-        else if(! /^[\p{L} ]+$/u.test(data.lastName.trim())) setValidation(prev => ({...prev, lastName:"Invalid name"}))
-        else setValidation(prev => ({...prev, lastName:""}))
+        if (!data.lastName.trim()) errors.lastName = "Last name is required";
+        else if (data.lastName.trim().length < 2) errors.lastName = "Invalid name";
+        else if (!/^[\p{L} ]+$/u.test(data.lastName.trim())) errors.lastName = "Invalid name";
 
-        // check email
-        if (!data.email) setValidation(prev => ({ ...prev, email: "Email is required" }));
-        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) setValidation(prev => ({ ...prev, email: "Invalid email address" }));
-        else setValidation(prev => ({...prev, email:""}))
+        if (!data.email) errors.email = "Email is required";
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) errors.email = "Invalid email address";
 
-        // check phoneNumber
-        if (!data.phoneNumber) setValidation(prev => ({ ...prev, phoneNumber: "Phone number is required" }));
-        else if (!/^(010|011|012|015)\d{8}$/.test(data.phoneNumber)) setValidation(prev => ({ ...prev, phoneNumber: "Invalid Egyptian phone number" }));
-        else setValidation(prev => ({...prev, phoneNumber:""}))
+        if (!data.phoneNumber) errors.phoneNumber = "Phone number is required";
+        else if (!/^(010|011|012|015)\d{8}$/.test(data.phoneNumber)) errors.phoneNumber = "Invalid Egyptian phone number";
 
-        // check password
-        if (!data.password) setValidation(prev => ({ ...prev, password: "Password is required" }));
-        else if (!/^(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(data.password)) setValidation(prev => ({ ...prev, password: "Password must be at least 8 characters long and include uppercase, lowercase, number, and symbol" }));
-        else setValidation(prev => ({...prev, password:""}))
-    
-        // confirmPassword
-        if (!data.confirmPassword) setValidation(prev => ({ ...prev, confirmPassword: "Please confirm your password" }));
-        else if (data.confirmPassword !== data.password) setValidation(prev => ({ ...prev, confirmPassword: "Passwords do not match" }));
-        else setValidation(prev => ({...prev, confirmPassword:""}))
+        if (!data.password) errors.password = "Password is required";
+        else if (!/^(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(data.password))
+        errors.password = "Password must be at least 8 characters long and include number and symbol";
 
-        // check gender
-        if (!data.gender) setValidation(prev => ({ ...prev, gender: "Gender is required" }));
-        else if (!["male", "female"].includes(data.gender.toLowerCase())) setValidation(prev => ({ ...prev, gender: "Invalid gender" }));
-        else setValidation(prev => ({...prev, gender:""}))
-    
-        // check address
-        if (!data.address) setValidation(prev => ({ ...prev, address: "Address is required" }));
-        else setValidation(prev => ({...prev, address:""}))
+        if (!data.confirmPassword) errors.confirmPassword = "Please confirm your password";
+        else if (data.confirmPassword !== data.password)
+        errors.confirmPassword = "Passwords do not match";
 
+        if (!data.gender) errors.gender = "Gender is required";
+        else if (!["male", "female"].includes(data.gender.toLowerCase()))
+        errors.gender = "Invalid gender";
 
+        if (!data.address.trim()) errors.address = "Address is required";
+
+        // --- apply errors ---
+        setValidation(errors);
+
+        // send data to back and get the response
         const callBack = async () => {
             try{
                 const res = await fetch("http://localhost:5150/api/auth/signup",{
@@ -74,6 +75,7 @@ const SignUp = () => {
                 const resData = await res.json()
                 if(!res.ok){
                     setServerMessage(resData.message)
+                    if(resData.order == "login") navigate('/')
                 }else{
                     navigate('/verify-email')
                 }
@@ -83,8 +85,11 @@ const SignUp = () => {
                 return {message: error.message}
             }
         }
-        await callBack()
-        
+
+        // don't call back when the data is not what we need
+        if(! Object.values(errors).some(v => v != "") ){
+            await callBack()
+        }
 
     }
 
@@ -93,6 +98,10 @@ const SignUp = () => {
     return (
         <div className='bg-gray-100 min-h-screen  flex items-center justify-center p-4'>
 
+            {/* alert */}
+            <MainAlert serverMessage={serverMessage}/>
+
+            {/* card of form */}
             <motion.div initial={{scale:.1}} animate={{scale:1}} transition={{duration:.3, type:"spring", stiffness:100} }
                      className='bg-white w-full max-w-[600px] p-6 space-y-6 shadow-xl rounded-2xl'>
 

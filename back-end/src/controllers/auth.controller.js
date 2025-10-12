@@ -6,7 +6,7 @@ import transporter from "../utils/sendEmail.js"
 export const SignUp = async (req, res) => {
     try{
         const user = await Users.findOne({email:req.body.email})
-        if(user) return res.status(400).json({message:"This email connected with another account"})
+        if(user) return res.status(400).json({message:"This email connected with another account", order:"login"})
 
         req.body.password = await bcrypt.hash(req.body.password, 10)
         const verifyCode = Math.floor(Math.random() * 900000 + 100000).toString()
