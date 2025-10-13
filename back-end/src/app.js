@@ -52,9 +52,12 @@ app.use('/api/auth', authRoutes)
 
 
 
-
-const Port = process.env.PORT
-app.listen(Port, () => console.log("server is runnning..."))
+if (process.env.NODE_ENV !== 'production') {
+  const Port = process.env.PORT || 5000
+  app.listen(Port, () => console.log(`Server running on port ${Port}...`))
+}
 
 // when deploy on vercel ✌️
-// export default app
+export default app
+
+
