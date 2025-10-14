@@ -18,7 +18,7 @@ export default function MainAlert({message}){
 
     return (
         <motion.div initial={{x:"100%"}} animate={{x:show ? -15 : "100%"}} transition={{type:"spring", stiffness:100}}
-            className="fixed top-5 right-1 sm:right-5 text-sm sm:text-[16px] font-normal   bg-black py-4 sm:py-4 px-6 sm:px-8 text-white sm:font-semibold rounded-lg">
+            className="fixed z-[999] top-5 right-1 sm:right-5 text-sm sm:text-[16px] font-normal   bg-black py-4 sm:py-4 px-6 sm:px-8 text-white sm:font-semibold rounded-lg">
             {message}
         </motion.div>
     )
