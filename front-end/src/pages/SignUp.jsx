@@ -3,6 +3,7 @@ import Input from '../components/Input'
 import {motion} from 'framer-motion'
 import { useNavigate } from 'react-router-dom';
 import {useMyStore} from '../hooks/useMyStore'
+import {PuffLoader } from 'react-spinners'
 
 const SignUp = () => {
 
@@ -19,10 +20,13 @@ const SignUp = () => {
     const navigate = useNavigate() // to navigate
     const {store, setStore} = useMyStore()
 
+    const [loading, setLoading] = useState(false)
+
     
     const submition = async (e) => {
         e.preventDefault(); // prevent reload 
         let errors = {} // collect messages 
+        setLoading(false)
 
         // validate data
         if (!data.firstName.trim()) errors.firstName = "First name is required";
@@ -58,6 +62,7 @@ const SignUp = () => {
 
         // send data to back and get the response
         const callBack = async () => {
+            setLoading(true)
             try{
                 const res = await fetch("https://masproback.vercel.app/api/auth/signup",{
                     method:"POST",
@@ -82,6 +87,7 @@ const SignUp = () => {
                 console.log(error.message)
                 return {message: error.message}
             }
+            finally{setLoading(false)}
         }
 
         // don't call back when the data is not what we need
@@ -94,7 +100,16 @@ const SignUp = () => {
 
 
     return (
-        <div className='bg-gray-100 min-h-screen  flex items-center justify-center p-4'>
+        <div className='bg-gray-100 min-h-screen  flex items-center justify-center p-4 relative'>
+
+            {/* loading */}
+            {loading && 
+            <div className='absolute top-0 left-0 w-full h-full flex items-center justify-center'>
+                <PuffLoader  color="#000" loading size={150}/>
+            </div>}
+
+            
+            
 
             {/* card of form */}
             <motion.div initial={{scale:.1}} animate={{scale:1}} transition={{duration:.3, type:"spring", stiffness:100} }
@@ -130,7 +145,7 @@ const SignUp = () => {
                     </div>
 
 
-                    <button type='submit' 
+                    <button type='submit' disabled={loading}
                         className='bg-black text-white w-full p-[10px] rounded-md font-semibold 
                         hover:opacity-80 cursor-pointer'>Sign Up</button>
 
