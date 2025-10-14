@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Input from '../components/Input'
 import {motion} from 'framer-motion'
 import { useNavigate } from 'react-router-dom';
-import MainAlert from '../components/MainAlert';
+import {useMyStore} from '../hooks/useMyStore'
 
 const SignUp = () => {
 
@@ -17,14 +17,8 @@ const SignUp = () => {
     const [serverMessage, setServerMessage] = useState("")
 
     const navigate = useNavigate() // to navigate
+    const {store, setStore} = useMyStore()
 
-    // to make alert appear in page just 5 seconds
-    useEffect(() => {
-        if(serverMessage){
-            const timeOut = setTimeout(() => setServerMessage(''), 5000);
-            return () => clearTimeout(timeOut)
-        }
-    },[serverMessage])
     
     const submition = async (e) => {
         e.preventDefault(); // prevent reload 
@@ -65,7 +59,7 @@ const SignUp = () => {
         // send data to back and get the response
         const callBack = async () => {
             try{
-                const res = await fetch("http://localhost:5150/api/auth/signup",{
+                const res = await fetch("https://masproback.vercel.app/api/auth/signup",{
                     method:"POST",
                     headers:{"content-type":"application/json"},
                     credentials:"include",
@@ -75,8 +69,12 @@ const SignUp = () => {
                 const resData = await res.json()
                 if(!res.ok){
                     setServerMessage(resData.message)
-                    if(resData.order == "login") navigate('/')
+                    if(resData.order == "login"){
+                        setStore("serverMessage", resData.message)
+                        navigate('/signin')
+                    } 
                 }else{
+                    setStore("serverMessage", resData.message)
                     navigate('/verify-email')
                 }
             }
@@ -97,9 +95,6 @@ const SignUp = () => {
 
     return (
         <div className='bg-gray-100 min-h-screen  flex items-center justify-center p-4'>
-
-            {/* alert */}
-            <MainAlert serverMessage={serverMessage}/>
 
             {/* card of form */}
             <motion.div initial={{scale:.1}} animate={{scale:1}} transition={{duration:.3, type:"spring", stiffness:100} }
@@ -133,6 +128,7 @@ const SignUp = () => {
                             {validation.gender && <p className='text-[9px] sm:text-sm text-red-600'>{validation.gender}</p>}
                         </div>
                     </div>
+
 
                     <button type='submit' 
                         className='bg-black text-white w-full p-[10px] rounded-md font-semibold 

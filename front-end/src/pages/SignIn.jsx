@@ -1,15 +1,20 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Input from '../components/Input'
 import {motion} from 'framer-motion'
+import {useMyStore} from '../hooks/useMyStore'
+import Alert from '../components/Alert'
 
 
 const SignIn = () => {
+
+    const {store, setStore} = useMyStore()
 
     const [data, setData] = useState({email:"", password:""})
     const [validation, setValidation] = useState({email:"", password:""})
 
         const submition = async (e) => {
         e.preventDefault();
+        console.log(store)
 
         // check email
         if (!data.email) setValidation(prev => ({ ...prev, email: "Email is required" }));
@@ -26,6 +31,8 @@ const SignIn = () => {
         
     return (
         <div className='bg-gray-100 min-h-screen  flex items-center justify-center p-4'>
+
+            <Alert message={store.serverMessage && store.serverMessage}/>
 
             <motion.div initial={{scale:.1}} animate={{scale:1}} transition={{duration:.3, type:"spring", stiffness:100}}
                     className='bg-white w-full max-w-[600px] p-6 space-y-6 shadow-xl rounded-2xl'>
