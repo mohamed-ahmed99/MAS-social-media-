@@ -32,14 +32,14 @@ const SignUp = () => {
         // validate data
         if (!data.firstName.trim()) errors.firstName = "First name is required";
         else if (data.firstName.trim().length < 2) errors.firstName = "Invalid name";
-        // else if (!/^[\p{L} ]+$/u.test(data.firstName.trim())) errors.firstName = "Invalid name";
+        else if (!/^[\p{L} ]+$/u.test(data.firstName.trim())) errors.firstName = "Invalid name";
 
         if (!data.lastName.trim()) errors.lastName = "Last name is required";
         else if (data.lastName.trim().length < 2) errors.lastName = "Invalid name";
-        // else if (!/^[\p{L} ]+$/u.test(data.lastName.trim())) errors.lastName = "Invalid name";
+        else if (!/^[\p{L} ]+$/u.test(data.lastName.trim())) errors.lastName = "Invalid name";
 
         if (!data.email) errors.email = "Email is required";
-        // else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) errors.email = "Invalid email address";
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) errors.email = "Invalid email address";
 
         if (!data.phoneNumber) errors.phoneNumber = "Phone number is required";
         else if (!/^(010|011|012|015)\d{8}$/.test(data.phoneNumber)) errors.phoneNumber = "Invalid Egyptian phone number";
