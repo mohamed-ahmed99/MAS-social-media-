@@ -4,6 +4,7 @@ import {motion} from 'framer-motion'
 import { useNavigate } from 'react-router-dom';
 import {useMyStore} from '../hooks/useMyStore'
 import {PuffLoader } from 'react-spinners'
+import Alert from '../components/Alert'
 
 const SignUp = () => {
 
@@ -31,14 +32,14 @@ const SignUp = () => {
         // validate data
         if (!data.firstName.trim()) errors.firstName = "First name is required";
         else if (data.firstName.trim().length < 2) errors.firstName = "Invalid name";
-        else if (!/^[\p{L} ]+$/u.test(data.firstName.trim())) errors.firstName = "Invalid name";
+        // else if (!/^[\p{L} ]+$/u.test(data.firstName.trim())) errors.firstName = "Invalid name";
 
         if (!data.lastName.trim()) errors.lastName = "Last name is required";
         else if (data.lastName.trim().length < 2) errors.lastName = "Invalid name";
-        else if (!/^[\p{L} ]+$/u.test(data.lastName.trim())) errors.lastName = "Invalid name";
+        // else if (!/^[\p{L} ]+$/u.test(data.lastName.trim())) errors.lastName = "Invalid name";
 
         if (!data.email) errors.email = "Email is required";
-        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) errors.email = "Invalid email address";
+        // else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) errors.email = "Invalid email address";
 
         if (!data.phoneNumber) errors.phoneNumber = "Phone number is required";
         else if (!/^(010|011|012|015)\d{8}$/.test(data.phoneNumber)) errors.phoneNumber = "Invalid Egyptian phone number";
@@ -63,6 +64,7 @@ const SignUp = () => {
         // send data to back and get the response
         const callBack = async () => {
             setLoading(true)
+            
             try{
                 const res = await fetch("https://masproback.vercel.app/api/auth/signup",{
                     method:"POST",
@@ -72,14 +74,11 @@ const SignUp = () => {
                 })
 
                 const resData = await res.json()
+                setStore("serverMessage", resData.message || resData.validators)
                 if(!res.ok){
-                    setServerMessage(resData.message)
-                    if(resData.order == "login"){
-                        setStore("serverMessage", resData.message)
-                        navigate('/signin')
-                    } 
+                    setServerMessage(resData.message || resData.validators)
+                    if(resData.order == "login") navigate('/signin')
                 }else{
-                    setStore("serverMessage", resData.message)
                     navigate('/verify-email')
                 }
             }
@@ -103,6 +102,7 @@ const SignUp = () => {
         <div className='bg-gray-100 min-h-screen  flex items-center justify-center p-4 relative'>
 
             {/* loading */}
+            <Alert message={serverMessage}/>
             {loading && 
             <div className='absolute top-0 left-0 w-full h-full flex items-center justify-center'>
                 <PuffLoader  color="#000" loading size={150}/>
