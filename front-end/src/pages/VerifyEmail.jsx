@@ -4,7 +4,7 @@
 export default function VerifyEmail () {
     return(
         <div>
-            hello
+             VerifyEmail
         </div>
     )
 }

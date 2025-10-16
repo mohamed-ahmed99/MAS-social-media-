@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
     // verify email 
     isVerified: {type:Boolean, default:false},
     verifyCode:{type:String, select:false},
-    emailVerificationExpires: {type:Date, default: () => (Date.now() + 1000 * 60 * 10), select:false },
+    emailVerificationExpires: {type:Date, default: () => (Date.now() + 1000 * 60 * 1), select:false },
 
     sessions: {
         type:[  
@@ -34,7 +34,8 @@ userSchema.methods.checkPassword = async function (password) {
     return await bcrypt.compare(password, this.password)
 }
 
-userSchema.index({emailVerificationExpires:1},{expireAfterSeconds:0})
+
+userSchema.index({emailVerificationExpires:1}, {expireAfterSeconds:0})
 
 const Users = mongoose.model('users', userSchema)
 export default Users

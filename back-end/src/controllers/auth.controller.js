@@ -32,28 +32,33 @@ export const SignUp = async (req, res) => {
     }
 }
 
-
-
 export const SignIn = async (req, res) => {
     try{
-        const user = await Users.findOne({email: req.body.email}).select("+password")
+        // check if user in dataBase or not
+        const user = await Users.findOne({email: req.body.email}).select("+password +emailVerificationExpires +sessions")
         if(!user) return res.status(404).json({message:"User not found. Please check your email or create a new account."})
 
+        // check password
         if(! await user.checkPassword(req.body.password)){
-             return res.status(401).json({message:"The password you entered is incorrect."})
+            return res.status(401).json({message:"The password you entered is incorrect."})
         }
 
-        if(!user.isVerified) {
-
+        // have user verified his email ?
+        if(user.isVerified == false) {
+            user.emailVerificationExpires = Date.now() + 1000 * 60 * 2
+            await user.save()
             return res.status(401).json(
                 {message:"Account not verified. A verification code has been sent to your email.", order:"verifyEmail"}
             )
         }
+
         // token
         const token = jwt.sign({_id:user._id, email:user.email}, process.env.JWT_SECRET)
-        user.unshift({token})
+        user.sessions.unshift({token:token})
+        user.emailVerificationExpires = null
         await user.save()
 
+        // cookies
         res.cookie("MASproAuth", token, {
             httpOnly:true,
             secure:process.env.NODE_ENV === "production",
@@ -62,12 +67,12 @@ export const SignIn = async (req, res) => {
 
         })
         
-        user.password = null
-        return res.status(200).json({ message: "successful login", user:user});
+        // response
+        const sentUser = await Users.findOne({email: req.body.email})
+        return res.status(200).json({ message: "successful login", user:sentUser});
         
     }
     catch(error) {
-        console.log(error.message)
         res.status(500).json({message:error.message})
     }
 

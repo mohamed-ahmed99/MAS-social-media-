@@ -16,7 +16,7 @@ const SignUp = () => {
     const [validation, setValidation] = useState({})
 
     // messages comes from server
-    const [serverMessage, setServerMessage] = useState("")
+    const [serverMessage, setServerMessage] = useState({})
 
     const navigate = useNavigate() // to navigate
     const {store, setStore} = useMyStore()
@@ -74,10 +74,15 @@ const SignUp = () => {
                 })
 
                 const resData = await res.json()
-                setStore("serverMessage", resData.message || resData.validators)
                 if(!res.ok){
-                    setServerMessage(resData.message || resData.validators)
-                    if(resData.order == "login") navigate('/signin')
+                    setServerMessage(
+                        {message:resData.message || Object.values(resData.validators)[0], key:Math.random()}
+                    )
+                    if(resData.order == "login") {
+                        navigate('/signin')
+                        setStore("serverMessage", resData.message)
+                    }
+                    
                 }else{
                     navigate('/verify-email')
                 }
@@ -102,12 +107,13 @@ const SignUp = () => {
         <div className='bg-gray-100 min-h-screen  flex items-center justify-center p-4 relative'>
 
             {/* loading */}
-            <Alert message={serverMessage}/>
-            {loading && 
+             {loading && 
             <div className='absolute top-0 left-0 w-full h-full flex items-center justify-center'>
                 <PuffLoader  color="#000" loading size={150}/>
             </div>}
 
+            {serverMessage.message && <Alert message={serverMessage.message} alertKey={serverMessage.key}/>}
+            
             
             
 
