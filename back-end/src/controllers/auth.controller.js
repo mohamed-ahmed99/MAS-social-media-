@@ -51,7 +51,7 @@ export const VerifyEmail = async (req, res) => {
         const ip = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress
 
         // update user
-        user.sessions.unshift({ token:token, ip:ip, userAgent: req.headers['user-agent']})
+        user.sessions.unshift({ token:token, ip:ip})
         user.emailVerificationExpires = null
         user.verifyCode = null
         user.isVerified = true
@@ -103,7 +103,7 @@ export const SignIn = async (req, res) => {
         const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.connection.remoteAddress
 
         // update user
-        user.sessions.unshift({ token:token, ip:ip, userAgent: req.headers['user-agent']})
+        user.sessions.unshift({ token:token, ip:ip})
         user.emailVerificationExpires = null
         await user.save()
 

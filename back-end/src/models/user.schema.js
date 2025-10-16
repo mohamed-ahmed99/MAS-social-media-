@@ -22,9 +22,7 @@ const userSchema = new mongoose.Schema({
             {
                 token:{type:String, select:false,},
                 date:{type:Date, default: () => (Date.now())},
-                ip: String,   
-                userAgent: String,
-                location:String
+                ip: String, 
             }
         ],
         default: [] 
