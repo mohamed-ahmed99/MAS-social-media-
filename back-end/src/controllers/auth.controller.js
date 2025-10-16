@@ -46,17 +46,12 @@ export const VerifyEmail = async (req, res) => {
         // check code
         if(code != user.verifyCode) return res.status(401).json({message:"Incorrect verification code"})
         
-        // token 
+        // token and ip
         const token = jwt.sign({_id:user._id, email:user.email}, process.env.JWT_SECRET)
-
-
-        // session
         const ip = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress
-        const geo = geoip.lookup(ip);
-        const location = geo ? `${geo.city || "Unknown"}, ${geo.region || "Unknown"}, ${geo.country || "Unknown"}` : "Unknown";
-        
+
         // update user
-        user.sessions.unshift({ token:token, ip:ip, userAgent: req.headers['user-agent'], location:location})
+        user.sessions.unshift({ token:token, ip:ip, userAgent: req.headers['user-agent']})
         user.emailVerificationExpires = null
         user.verifyCode = null
         user.isVerified = true
@@ -103,16 +98,12 @@ export const SignIn = async (req, res) => {
             )
         }
 
-        // token
+        // token and ip
         const token = jwt.sign({_id:user._id, email:user.email}, process.env.JWT_SECRET)
-
-        // session
         const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.connection.remoteAddress
-        const geo = geoip.lookup(ip);
-        const location = geo ? `${geo.city || "Unknown"}, ${geo.region || "Unknown"}, ${geo.country || "Unknown"}` : "Unknown";
 
         // update user
-        user.sessions.unshift({ token:token, ip:ip, userAgent: req.headers['user-agent'], location:location})
+        user.sessions.unshift({ token:token, ip:ip, userAgent: req.headers['user-agent']})
         user.emailVerificationExpires = null
         await user.save()
 
