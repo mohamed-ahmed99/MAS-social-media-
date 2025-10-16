@@ -4,7 +4,6 @@ import transporter from "../utils/sendEmail.js"
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv';
 import {verifyEmailMSG} from '../utils/emailMessages.js';
-import geoip from 'fast-geoip';
 
 dotenv.config()
 
