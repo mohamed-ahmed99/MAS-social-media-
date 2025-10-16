@@ -107,7 +107,7 @@ export const SignIn = async (req, res) => {
         const token = jwt.sign({_id:user._id, email:user.email}, process.env.JWT_SECRET)
 
         // session
-        const ip = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress
+        const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.connection.remoteAddress
         const geo = geoip.lookup(ip);
         const location = geo ? `${geo.city || "Unknown"}, ${geo.region || "Unknown"}, ${geo.country || "Unknown"}` : "Unknown";
 
