@@ -9,7 +9,7 @@ export default function Home () {
     return(
         <div>
             <Link to={'/signup'}>Go To Sign UP</Link>
-            <p>{JSON.stringify(store.user)}</p>
+            <pre>{JSON.stringify(store.user, null, 2)}</pre>
         </div>
     )
 }
