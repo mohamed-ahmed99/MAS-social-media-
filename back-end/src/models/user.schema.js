@@ -15,16 +15,18 @@ const userSchema = new mongoose.Schema({
     // verify email 
     isVerified: {type:Boolean, default:false},
     verifyCode:{type:String, select:false},
-    emailVerificationExpires: {type:Date, default: () => (Date.now() + 1000 * 60 * 1), select:false },
+    emailVerificationExpires: {type:Date, default: () => (Date.now() + 1000 * 60 * 10), select:false },
 
     sessions: {
         type:[  
             {
-                token:String,
-                date:{type:Date, default: () => (Date.now())}
+                token:{type:String, select:false,},
+                date:{type:Date, default: () => (Date.now())},
+                ip: String,   
+                userAgent: String,
+                location:String
             }
         ],
-        select:false,
         default: [] 
     }
 

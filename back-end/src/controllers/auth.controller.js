@@ -4,6 +4,7 @@ import transporter from "../utils/sendEmail.js"
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv';
 import {verifyEmailMSG} from '../utils/emailMessages.js';
+import geoip from 'fast-geoip';
 
 dotenv.config()
 
@@ -32,6 +33,56 @@ export const SignUp = async (req, res) => {
     }
 }
 
+
+export const VerifyEmail = async (req, res) => {
+    try{
+        const {email, code} = req.body
+        if(!email || !code) return res.status(400).json({message:"email and code are required"})
+
+        // check if user in dataBase or varification time expired or not
+        const user = await Users.findOne({email: req.body.email}).select("+verifyCode +sessions")
+        if(!user) return res.status(404).json({message:"User not found or verification time expired, Create a new account."})
+
+        // check code
+        if(code != user.verifyCode) return res.status(401).json({message:"Incorrect verification code"})
+        
+        // token 
+        const token = jwt.sign({_id:user._id, email:user.email}, process.env.JWT_SECRET)
+
+
+        // session
+        const ip = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress
+        const geo = geoip.lookup(ip);
+        const location = geo ? `${geo.city || "Unknown"}, ${geo.region || "Unknown"}, ${geo.country || "Unknown"}` : "Unknown";
+        
+        // update user
+        user.sessions.unshift({ token:token, ip:ip, userAgent: req.headers['user-agent'], location:location})
+        user.emailVerificationExpires = null
+        user.verifyCode = null
+        user.isVerified = true
+        await user.save()
+
+
+        // cookies
+        res.cookie("MASproAuth", token, {
+            httpOnly:true,
+            secure:process.env.NODE_ENV === "production",
+            sameSite:"None",
+            path:"/"
+
+        })
+        
+        // response
+        const sentUser = await Users.findOne({email: email})
+        return res.status(200).json({ message: "Verified successfully", user:sentUser});
+
+    }
+    catch(error){
+        res.status(500).json({message:error.message})
+    }
+}
+
+
 export const SignIn = async (req, res) => {
     try{
         // check if user in dataBase or not
@@ -54,7 +105,14 @@ export const SignIn = async (req, res) => {
 
         // token
         const token = jwt.sign({_id:user._id, email:user.email}, process.env.JWT_SECRET)
-        user.sessions.unshift({token:token})
+
+        // session
+        const ip = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress
+        const geo = geoip.lookup(ip);
+        const location = geo ? `${geo.city || "Unknown"}, ${geo.region || "Unknown"}, ${geo.country || "Unknown"}` : "Unknown";
+
+        // update user
+        user.sessions.unshift({ token:token, ip:ip, userAgent: req.headers['user-agent'], location:location})
         user.emailVerificationExpires = null
         await user.save()
 
