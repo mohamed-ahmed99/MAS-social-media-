@@ -1,6 +1,12 @@
 import Users from "../models/user.schema.js"
 import bcrypt from 'bcrypt'
 import transporter from "../utils/sendEmail.js"
+import jwt from 'jsonwebtoken'
+import dotenv from 'dotenv';
+import {verifyEmailMSG} from '../utils/emailMessages.js';
+
+dotenv.config()
+
 
 
 export const SignUp = async (req, res) => {
@@ -16,39 +22,53 @@ export const SignUp = async (req, res) => {
             from:process.env.EMAIL_FROM,
             to:req.body.email,
             subject:"Verify Your Account",
-            html:`
-                <div style="font-family:Arial, sans-serif; background-color:#f9f9f9; padding:20px;">
-                    <div style="max-width:600px; margin:auto; background-color:#ffffff; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1); padding:30px;">
-
-                        <h2 style="color:#333;">Hello <span style="color:#007bff;">${newUser.firstName}</span>,</h2>
-                        
-                        <p style="font-size:16px; color:#555;"> Thank you for registering on our website! We’re excited to have you with us.</p>
-                        
-                        <p style="font-size:16px; color:#555;">Here is your verification code: 
-                            <span style="font-size:22px; font-weight:bold; color:#007bff; margin:10px 0;">${verifyCode}</span>
-                        </p>
-                        
-                        <p style="font-size:15px; color:#777;">Please note that this code will expire in <strong>10 minutes</strong>.</p>
-                        <br/>
-                        <p style="font-size:16px; color:#555;">Best regards,
-                            <br/><strong>The Support Team</strong>
-                        </p>
-                        
-                    </div>
-                </div>
-            `
+            html:verifyEmailMSG(newUser.firstName, verifyCode)
         })
         res.status(201).json({message:"successful registration, check your email"})
 
     }
     catch(error){
-        console.log(error.message)
         res.status(500).json({message:error.message})
     }
 }
 
 
 
-export const SinnIn = async (req, res) => {
+export const SignIn = async (req, res) => {
+    try{
+        const user = await Users.findOne({email: req.body.email}).select("+password")
+        if(!user) return res.status(404).json({message:"User not found. Please check your email or create a new account."})
+
+        if(! await user.checkPassword(req.body.password)){
+             return res.status(401).json({message:"The password you entered is incorrect."})
+        }
+
+        if(!user.isVerified) {
+
+            return res.status(401).json(
+                {message:"Account not verified. A verification code has been sent to your email.", order:"verifyEmail"}
+            )
+        }
+        // token
+        const token = jwt.sign({_id:user._id, email:user.email}, process.env.JWT_SECRET)
+        user.unshift({token})
+        await user.save()
+
+        res.cookie("MASproAuth", token, {
+            httpOnly:true,
+            secure:process.env.NODE_ENV === "production",
+            sameSite:"None",
+            path:"/"
+
+        })
+        
+        user.password = null
+        return res.status(200).json({ message: "successful login", user:user});
+        
+    }
+    catch(error) {
+        console.log(error.message)
+        res.status(500).json({message:error.message})
+    }
 
 }

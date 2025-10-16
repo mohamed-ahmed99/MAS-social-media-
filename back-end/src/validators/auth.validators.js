@@ -35,15 +35,14 @@ const registerSchecma = {
         .withMessage("Password must be at least 8 chars, include 1 lowercase, 1 number, 1 symbol"),
 }
 
-const loginSchecma = {
+const signInSchema = {
     email: body("email")
         .notEmpty().withMessage("email is rquired")
         .isEmail().withMessage("Invalid email"),
         
     password: body("password")
         .notEmpty().withMessage("password is rquired")
-        .isString().withMessage("password must be string")
-        .isLength({min:6}).withMessage("Password must be at least 8 chars, include 1 lowercase, 1 number, 1 symbol"),
+        .isLength({min:5}).withMessage("short password"),
 }
 
 
@@ -66,3 +65,4 @@ const validator = (checkSchema) => {
 
 // create middleware
 export const registerValidator = validator(registerSchecma)
+export const signinValidator = validator(signInSchema)
