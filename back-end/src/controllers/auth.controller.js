@@ -87,6 +87,7 @@ export const SignIn = async (req, res) => {
         if(! await user.checkPassword(req.body.password)){
             return res.status(401).json({message:"The password you entered is incorrect."})
         }
+        
 
         // have user verified his email ?
         if(user.isVerified == false) {
