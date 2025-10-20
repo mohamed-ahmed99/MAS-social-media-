@@ -31,5 +31,7 @@ export default function Alert({ message, alertKey }) {
       {message}
     </motion.div>
   )
+
+  // return null
 }
 
