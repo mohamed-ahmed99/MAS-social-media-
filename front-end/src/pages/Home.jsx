@@ -8,7 +8,12 @@ export default function Home () {
 
     return(
         <div>
-            <Link to={'/signup'}>Go To Sign UP</Link>
+            <ul className='space-x-4'>
+                <Link to={'/signup'}>Go To Sign UP</Link>
+                <Link to={'/signin'}>Go To Sign In</Link>
+                <Link to={'/verify-email'}>Go To Verify_Email</Link>
+            </ul>
+
             <pre>{JSON.stringify(store.user, null, 2)}</pre>
         </div>
     )

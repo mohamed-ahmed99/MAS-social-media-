@@ -84,11 +84,12 @@ const SignUp = () => {
                     }
                     
                 }else{
+                    setStore("userEmail", data.email)
                     navigate('/verify-email')
                 }
             }
             catch(error){
-                console.log(error.message)
+                setServerMessage({message: error.message, key:Math.random()})
                 return {message: error.message}
             }
             finally{setLoading(false)}
@@ -107,9 +108,8 @@ const SignUp = () => {
         <div className='bg-gray-100 min-h-screen  flex items-center justify-center p-4 relative'>
 
             {/* loading */}
-             {loading && 
-            <div className='absolute top-0 left-0 w-full h-full flex items-center justify-center'>
-                <PuffLoader  color="#000" loading size={150}/>
+             {loading &&  <div className='absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center z-10'>
+                <PuffLoader color="#000" size={100}/>
             </div>}
 
             {serverMessage.message && <Alert message={serverMessage.message} alertKey={serverMessage.key}/>}

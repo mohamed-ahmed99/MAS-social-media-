@@ -40,7 +40,7 @@ export const VerifyEmail = async (req, res) => {
 
         // check if user in dataBase or varification time expired or not
         const user = await Users.findOne({email: req.body.email}).select("+verifyCode +sessions")
-        if(!user) return res.status(404).json({message:"User not found or verification time expired, Create a new account."})
+        if(!user) return res.status(404).json({message:"User not found. Please check your email or create a new account."})
 
         // check code
         if(code != user.verifyCode) return res.status(401).json({message:"Incorrect verification code"})
