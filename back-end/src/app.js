@@ -46,12 +46,11 @@ app.get('/', (req, res) => {
     res.status(200).json({message:"hello user"})
 })
 
+app.use('/api/auth', authRoutes)
+
 app.use((req, res) => {
     res.status(404).json({message:`Route ${req.originalUrl} not found.`})
 })
-
-app.use('/api/auth', authRoutes)
-
 
 
 
