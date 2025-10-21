@@ -41,7 +41,8 @@ const SignIn = () => {
             setLoading(true)
             try{
                 // http://localhost:5150/api/auth/signin
-                const res = await fetch("https://masproback.vercel.app/api/auth/signin", {
+                // https://masproback.vercel.app/api/auth/signin
+                const res = await fetch("http://localhost:5150/api/auth/signin", {
                     method:"POST",
                     headers:{"content-type":"application/json"},
                     credentials:"include",
