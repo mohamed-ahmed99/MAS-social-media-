@@ -118,7 +118,7 @@ export const SignIn = async (req, res) => {
         // cookies
         res.cookie("MASproAuth", token, {
             httpOnly:true,
-            secure:process.env.NODE_ENV === "production",
+            secure:true,
             sameSite:"None",
             path:"/",
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
