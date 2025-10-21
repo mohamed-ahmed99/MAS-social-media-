@@ -50,11 +50,16 @@ export const VerifyEmail = async (req, res) => {
         const ip = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress
 
         // update user
-        user.sessions.unshift({ token:token, ip:ip})
-        user.emailVerificationExpires = null
-        user.verifyCode = null
-        user.isVerified = true
-        await user.save()
+        await Users.updateOne(  { email },
+            {
+                $set: {
+                isVerified: true,
+                verifyCode: null,
+                emailVerificationExpires: null,
+                },
+                $push: { sessions: { token, ip } },
+            }
+        );
 
 
         // cookies
@@ -103,9 +108,12 @@ export const SignIn = async (req, res) => {
         const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.connection.remoteAddress
 
         // update user
-        user.sessions.unshift({ token:token, ip:ip})
-        user.emailVerificationExpires = null
-        await user.save()
+        await Users.updateOne(  { email: req.body.email },
+            {
+                $set: { emailVerificationExpires: null },
+                $push: { sessions: { token, ip } },
+            }
+        );
 
         // cookies
         res.cookie("MASproAuth", token, {
