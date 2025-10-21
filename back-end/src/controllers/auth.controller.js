@@ -68,7 +68,6 @@ export const VerifyEmail = async (req, res) => {
             secure:process.env.NODE_ENV === "production",
             sameSite:"None",
             path:"/",
-            domain: ".vercel.app",
         })
         
         // response
@@ -121,7 +120,6 @@ export const SignIn = async (req, res) => {
             secure:process.env.NODE_ENV === "production",
             sameSite:"None",
             path:"/",
-            domain: ".vercel.app",
 
         })
         
