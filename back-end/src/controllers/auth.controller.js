@@ -117,12 +117,13 @@ export const SignIn = async (req, res) => {
 
         // cookies
         res.cookie("MASproAuth", token, {
-            httpOnly:true,
-            secure:true,
-            sameSite:"None",
-            path:"/",
-            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-        })
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "None",
+        domain: process.env.NODE_ENV === "production" ? ".vercel.app" : "localhost",
+        path: "/",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        });
         
         // response
         const sentUser = await Users.findOne({email: req.body.email})
