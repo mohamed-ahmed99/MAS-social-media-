@@ -68,6 +68,7 @@ export const VerifyEmail = async (req, res) => {
             secure:process.env.NODE_ENV === "production",
             sameSite:"None",
             path:"/",
+            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         })
         
         // response
@@ -120,6 +121,7 @@ export const SignIn = async (req, res) => {
             secure:process.env.NODE_ENV === "production",
             sameSite:"None",
             path:"/",
+            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
 
         })
         
