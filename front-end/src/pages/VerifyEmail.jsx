@@ -81,6 +81,8 @@ export default function VerifyEmail() {
           setServerMessage({message: data.message, key:Math.random()})
           return { message: data.message || "Verification failed." }
         }else{
+          localStorage.setItem("MASproAuth", data.user.token)
+          data.user.token = ""
           setStore("user", data.user)
           navigate("/profile/")
         }

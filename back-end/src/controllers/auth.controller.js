@@ -62,17 +62,18 @@ export const VerifyEmail = async (req, res) => {
         );
 
 
-        // cookies
-        res.cookie("MASproAuth", token, {
-            httpOnly:true,
-            secure:process.env.NODE_ENV === "production",
-            sameSite:"None",
-            path:"/",
-            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-        })
+        // cookies doesn't work on Vercel deployment
+        // res.cookie("MASproAuth", token, {
+        //     httpOnly:true,
+        //     secure:process.env.NODE_ENV === "production",
+        //     sameSite:"None",
+        //     path:"/",
+        //     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        // })
         
         // response
-        const sentUser = await Users.findOne({email: email})
+        const getUser = await Users.findOne({email: email})
+        const sentUser = {...getUser, token: token}
         return res.status(200).json({ message: "Verified successfully", user:sentUser});
 
     }
@@ -96,7 +97,7 @@ export const SignIn = async (req, res) => {
 
         // have user verified his email ?
         if(user.isVerified == false) {
-            user.emailVerificationExpires = Date.now() + 1000 * 60 * 2
+            user.emailVerificationExpires = Date.now() + 1000 * 60 * 10 // 10 minutes
             await user.save()
             return res.status(401).json(
                 {message:"Account not verified. A verification code has been sent to your email.", order:"verifyEmail"}
@@ -115,19 +116,20 @@ export const SignIn = async (req, res) => {
             }
         );
 
-        // cookies
-        res.cookie("MASproAuth", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "None",
-        domain: process.env.NODE_ENV === "production" ? ".vercel.app" : "localhost",
-        path: "/",
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-        });
+        // cookies doesn't work on Vercel deployment
+        // res.cookie("MASproAuth", token, {
+        //     httpOnly: true,
+        //     secure: process.env.NODE_ENV === "production",
+        //     sameSite: "None",
+        //     domain: process.env.NODE_ENV === "production" ? ".vercel.app" : "localhost",
+        //     path: "/",
+        //     maxAge: 7 * 24 * 60 * 60 * 1000,
+        // });
+        
         
         // response
-        const sentUser = await Users.findOne({email: req.body.email})
-        return res.status(200).json({ message: "successful login", user:sentUser});
+        const getUser = await Users.findOne({email: req.body.email})
+        return res.status(200).json({ message: "successful login", user:getUser});
         
     }
     catch(error) {

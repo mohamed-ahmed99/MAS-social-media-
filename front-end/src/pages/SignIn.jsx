@@ -42,7 +42,7 @@ const SignIn = () => {
             try{
                 // http://localhost:5150/api/auth/signin
                 // https://masproback.vercel.app/api/auth/signin
-                const res = await fetch("https://masproback.vercel.app/api/auth/signin", {
+                const res = await fetch("http://localhost:5150/api/auth/signin", {
                     method:"POST",
                     headers:{"content-type":"application/json"},
                     credentials:"include",
@@ -59,6 +59,8 @@ const SignIn = () => {
                     return
                 }
                 
+                localStorage.setItem("MASproAuth", serverRes.user.token)
+                serverRes.user.token = ""
                 setStore("user", serverRes.user)
                 navigate('/')
 
