@@ -1,4 +1,4 @@
-import { Children, createContext, useContext, useState } from "react"
+import { createContext, useContext, useState } from "react"
 
 
 const StoreContext = createContext()
@@ -30,11 +30,10 @@ export const AppProvider = ({children}) => {
 export const useMyStore = () => {
   const context = useContext(StoreContext)
   if (!context) {
-    throw new Error("useAppContext must be used inside an AppProvider")
+    throw new Error("useAppContext must be used inside an ")
   };
 
   return context
-
 }
 
 

@@ -3,14 +3,21 @@ import Input from '../components/Input'
 import {motion} from 'framer-motion'
 import {useMyStore} from '../hooks/useMyStore'
 import Alert from '../components/Alert'
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {PuffLoader } from 'react-spinners'
+import { useUserContext } from '../hooks/useUserContext';
 
 
 const SignIn = () => {
 
     // hooks
     const {store, setStore} = useMyStore()
+    const {userData, setUserData} = useUserContext() 
+    
+    useEffect(() => {
+        console.log(userData)
+    },[userData])
+
     const navigate = useNavigate()
 
     // states
@@ -102,7 +109,7 @@ const SignIn = () => {
                     <Input placeholder="Email" name="email" validation={validation} onChange={(e) => setData(prev => ({...prev, [e.target.name]: e.target.value}))}/>
                     <Input placeholder="password" name="password" validation={validation} type='password' onChange={(e) => setData(prev => ({...prev, [e.target.name]: e.target.value}))}/>
                     
-                    <button type='submit' disabled={loading}
+                    <button type='submit' disabled={loading} 
                         className='bg-black text-white w-full p-3 rounded-md font-semibold 
                         hover:opacity-80 cursor-pointer'>Sign Up</button>
 
