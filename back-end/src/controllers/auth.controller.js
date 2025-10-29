@@ -129,7 +129,7 @@ export const SignIn = async (req, res) => {
         
         // response
         const getUser = await Users.findOne({email: req.body.email})
-        return res.status(200).json({ message: "successful login", user:getUser});
+        return res.status(200).json({ message: "successful login", user:getUser, token});
         
     }
     catch(error) {
