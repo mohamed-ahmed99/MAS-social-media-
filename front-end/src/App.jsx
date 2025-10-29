@@ -15,7 +15,37 @@ function App() {
 }
 
 const AppRoutes = () => {
+    const navigate = useNavigate()
 
+    const [serveMSG, setServerMSG] = useState({})
+
+    const CheckToken = async () => {
+      const token = localStorage.getItem("MASproAuth")
+      if(!token) return navigate('/signin')
+
+        // call back
+        try{
+          // http://localhost:5150/api/auth/verify-me
+          const response = await fetch("https://masproback.vercel.app/api/auth/verify-me", {
+            method:"GET",
+            headers:{
+              "Authorization": `Bearer ${token}`,
+              "Content-Type": "application/json"
+            }
+          })
+
+          const data = await response.json()
+          if(data.status == 401 || data.status == 404) {
+              return navigate('/signin')
+          }
+          console.log(data)
+        }
+        catch(error){
+          setServerMSG({message: error.message, key:Math.random()})
+          return error
+        }
+    }
+    useEffect(() => { CheckToken() } ,[])
 
     return (
     <>
