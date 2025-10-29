@@ -137,3 +137,21 @@ export const SignIn = async (req, res) => {
     }
 
 }
+
+
+
+// verify-me 
+export const VerifyMe = async (req, res) =>{
+    try{
+        
+        if (!req.user?.decoded?._id) return res.status(401).json({ message: "Unauthorized" });
+
+        const userData = await Users.findById(req.user.decoded._id)
+        if (!userData) return res.status(404).json({ message: "User not found" });
+
+        res.status(200).json({ message: "User verified successfully", user: userData });        
+    }
+    catch(error){
+        res.status(500).json({message:error.message})
+    }
+}
