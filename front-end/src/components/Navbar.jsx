@@ -4,7 +4,6 @@ import { Link, NavLink } from 'react-router-dom';
 import { FaFacebookMessenger } from "react-icons/fa";
 import { IoNotifications } from "react-icons/io5";
 import { IoHomeOutline } from "react-icons/io5";
-import { BsPeople } from "react-icons/bs";
 import { MdOutlinePeopleAlt } from "react-icons/md";
 import { BsImages } from "react-icons/bs";
 import { IoSettingsSharp } from "react-icons/io5";
