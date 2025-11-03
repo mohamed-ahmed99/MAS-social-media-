@@ -10,9 +10,7 @@ import { IoSettingsSharp } from "react-icons/io5";
 import { FaRegUserCircle } from "react-icons/fa";
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { FaPlusCircle } from "react-icons/fa";
-import { IoSearchOutline } from "react-icons/io5";
-import { FaPlus } from "react-icons/fa6";
+
 
 
 
@@ -30,10 +28,12 @@ export default function Navbar() {
 
 
 
+
+
 if(screenWidth >= 900)
     return (
-        <div className=''>
-            <nav className='flex py-1 md:px-2 lg:px-4 items-center justify-between 2xl:container'>
+        <div className='sticky top-0 z-[888]' >
+            <nav className=' bg-white w-full flex py-1 md:px-2 lg:px-4 items-center justify-between 2xl:container'>
                 {/* logo & input */}
                 <div className='flex items-center gap-1'>
                     {/* logo */}
@@ -112,27 +112,11 @@ if(screenWidth >= 900)
 
 else{
     return(
-        <div className='lmd:none'>
-            <nav className='space-y-4 p-2'>
-                {/* topbar */}
-                <div className='flex items-center justify-between '>
-                    <div className='font-bold text-[26px]'>MAS</div>
-
-                    <div className='flex'>
-                        <button className='p-2 '>
-                            <div className='border-2 rounded-lg border-black'><FaPlus fontSize={25}/></div>
-                        </button>
-                        <button className='p-2 rounded-full border-2 border-transparent'>
-                            <IoSearchOutline fontSize={25}/>
-                        </button>
-                        <Link className='p-2 rounded-full border-2 border-transparent'>
-                            <FaFacebookMessenger fontSize={25}/>
-                        </Link>
-                    </div>
-                </div>
+        <>
+            <nav className='sticky top-0 space-y-4 p-2 z-[888] bg-white'>
 
                 {/* navbar */}
-                <div  className='flex '>
+                <div  className='sticky top-0 w-full flex z-[888]'>
                     <NavLink to={'/'}
                          className={({isActive}) => `transition-colors  rounded-full text-black/85
                                                     ${isActive && "bg-gray-200/65"}`}> 
@@ -158,7 +142,7 @@ else{
                     </NavLink>
                 </div>
             </nav>
-        </div>
+        </>
     )
 }
 }

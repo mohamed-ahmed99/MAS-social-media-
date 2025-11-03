@@ -12,7 +12,7 @@ export default function Profile() {
 
 
   return (
-    <div className="bg-gray-100 "> 
+    <div className="bg-gray-100 h-[1000px]"> 
 
       <div className="max-w-[800px] m-auto min-h-screen bg-gray-50">
             {/* profile photo &&  background photo*/}

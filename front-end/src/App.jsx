@@ -61,9 +61,6 @@ const AppRoutes = () => {
     <>
       <Routes>
 
-        {/* home page */}
-        <Route path='/' element={<Home/>}/>
-
         {/* auth */}
         <Route element={<AuthLayout/>}>
             <Route path='/signup' element={<SignUp/>}/>
@@ -73,6 +70,7 @@ const AppRoutes = () => {
 
         {/* pages */}
         <Route element={<PagesLayout/>}>
+          <Route path='/' element={<Home/>}/>
           <Route path='/profile' element={<Profile/>}/>
            
         </Route>

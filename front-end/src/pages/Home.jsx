@@ -10,7 +10,7 @@ export default function Home () {
     console.log(userData)
 
     return(
-        <div>
+        <div className='h-[300vh]'>
             <ul className='space-x-4'>
                 <Link to={'/signup'}>Go To Sign UP</Link>
                 <Link to={'/signin'}>Go To Sign In</Link>
