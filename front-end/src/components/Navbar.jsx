@@ -114,12 +114,12 @@ if(screenWidth >= 900)
                 <div className='flex items-center justify-between md:gap-3 lg:gap-5'>
 
                     <button onClick={() => setOpenChat(prev => !prev)} ref={chatRef}
-                        className={`p-2 rounded-full bg-gray-200 hover:bg-opacity-80 ${openChat && "bg-blue-200"}`}> 
+                        className={`p-2 rounded-full hover:bg-opacity-80 ${openChat ? "bg-blue-200" : "bg-gray-200"}`}> 
                         <FaFacebookMessenger fontSize={20}/> 
                     </button>
 
                     <button onClick={() => setOpenNot(prev => !prev)} ref={notRef}
-                        className={`p-2 rounded-full bg-gray-200 hover:bg-opacity-80 ${openNot && "bg-blue-200"}`}> 
+                        className={`p-2 rounded-full hover:bg-opacity-80 ${openNot ? "bg-blue-200" : "bg-gray-200"}`}> 
                         <IoNotifications fontSize={20}/> 
                     </button>
 

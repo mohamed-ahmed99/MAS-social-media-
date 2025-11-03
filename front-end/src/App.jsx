@@ -1,5 +1,5 @@
 import {BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom'
-import Home from './pages/Home'
+import Home from './pages/home/Page'
 import SignUp from './pages/SignUp'
 import SignIn from './pages/SignIn'
 import AuthLayout from './components/layouts/authLayout'

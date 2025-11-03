@@ -16,10 +16,10 @@ import { FaPlus } from "react-icons/fa6";
 export default function PagesLayout() {
   const location = useLocation()
 
-  const Topbar = () => {
+const Topbar = () => {
 
 
-if(location.pathname == "/") return (
+    if(location.pathname == "/") return (
        <div className='lmd:hidden flex px-1 items-center justify-between '>
           <div className='font-bold text-[26px]'>MAS</div>
 
@@ -37,9 +37,6 @@ if(location.pathname == "/") return (
       </div>
     )
   }
-
-
-
 
 
 
