@@ -1,12 +1,11 @@
 import React from 'react'
 import { IoMdSearch } from "react-icons/io";
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { FaFacebookMessenger } from "react-icons/fa";
 import { IoNotifications } from "react-icons/io5";
 import { IoHomeOutline } from "react-icons/io5";
 import { MdOutlinePeopleAlt } from "react-icons/md";
 import { BsImages } from "react-icons/bs";
-import { IoSettingsSharp } from "react-icons/io5";
 import { FaRegUserCircle } from "react-icons/fa";
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -17,6 +16,7 @@ import { useState } from 'react';
 export default function Navbar() {
     
     const [screenWidth, setScreenWidth] = useState()
+    const location = useLocation()
 
     useEffect(() => {setScreenWidth(window.innerWidth)},[])
     useEffect(() => {
@@ -32,7 +32,7 @@ export default function Navbar() {
 
 if(screenWidth >= 900)
     return (
-        <div className='sticky top-0 z-[888]' >
+        <div className='sticky top-0 z-[888] shadow-md' >
             <nav className=' bg-white w-full flex py-1 md:px-2 lg:px-4 items-center justify-between 2xl:container'>
                 {/* logo & input */}
                 <div className='flex items-center gap-1'>
@@ -85,7 +85,7 @@ if(screenWidth >= 900)
 
 
                 {/* some linkes like notifications, massenges, settings */}
-                <div className='flex items-center justify-between md:gap-3 lg:gap-4'>
+                <div className='flex items-center justify-between md:gap-3 lg:gap-5'>
                     <Link
                         className='p-2 rounded-full bg-gray-200 hover:bg-opacity-80'> 
                         <FaFacebookMessenger fontSize={20}/> 
@@ -96,13 +96,9 @@ if(screenWidth >= 900)
                         <IoNotifications fontSize={20}/> 
                     </Link>
 
-                    <Link 
-                        className='p-2 rounded-full bg-gray-200 hover:bg-opacity-80'> 
-                        <IoSettingsSharp fontSize={20}/> 
-                    </Link>
                     {/* user */}
-                    <div className='w-[50px] h-[50px] rounded-full overflow-hidden -ml-2 cursor-pointer'>
-                        <img className='w-full h-full' src="/logo.png" alt="" />
+                    <div className='w-[35px] h-[35px] rounded-full overflow-hidden -ml-2 cursor-pointer'>
+                        <img className='w-full h-full' src="/user.jpg" alt="" />
                     </div>
                 </div>
             </nav>
@@ -113,32 +109,40 @@ if(screenWidth >= 900)
 else{
     return(
         <>
-            <nav className='sticky top-0 space-y-4 p-2 z-[888] bg-white'>
+            <nav className='sticky top-0 z-[888] bg-white border-b-[1.5px] h-[50px]'>
 
                 {/* navbar */}
-                <div  className='sticky top-0 w-full flex z-[888]'>
+                <div  className='sticky top-0 w-full flex z-[888] bg-white  items-center justify-between h-full px-2'>
                     <NavLink to={'/'}
-                         className={({isActive}) => `transition-colors  rounded-full text-black/85
-                                                    ${isActive && "bg-gray-200/65"}`}> 
+                         className={({isActive}) => `text-black/85 border-b-2  px-2  py-3  ${isActive ? "border-blue-600 text-blue-600" : "border-transparen text-black/85t"}`}> 
                         <IoHomeOutline fontSize={25} /> 
                     </NavLink>
 
-                    <NavLink to={'/'}
-                        className={({isActive}) => `transition-colors  rounded-full text-black/85
-                                                    ${isActive && "bg-gray-200/65"}`}> 
+                    <NavLink to={'/friends'}
+                        className={({isActive}) => `text-black/85 border-b-2  px-2  py-3 ${isActive ? "border-blue-600 text-blue-600" : "border-transparent text-black/85"}`}> 
                         <MdOutlinePeopleAlt fontSize={25} /> 
                     </NavLink>
 
-                    <NavLink to={'/'}
-                        className={({isActive}) => `transition-colors  rounded-full text-black/85
-                                                    ${isActive && "bg-gray-200/65"}`}> 
+                    <NavLink to={'/photos'}
+                        className={({isActive}) => `text-black/85 border-b-2  px-2  py-3 ${isActive ? "border-blue-600 text-blue-600" : "border-transparent text-black/85"}`}> 
                         <BsImages fontSize={25} /> 
                     </NavLink>
 
                     <NavLink to={'/profile'}
-                        className={({isActive}) => `transition-colors  rounded-full text-black/85
-                                                    ${isActive && "bg-gray-200/65"}`}> 
+                        className={({isActive}) => `text-black/85 border-b-2  px-2  py-3 ${isActive ? "border-blue-600 text-blue-600" : "border-transparent text-black/85"}`}> 
                         <FaRegUserCircle fontSize={25} /> 
+                    </NavLink>
+
+                    <NavLink to={'/notifications'}
+                        className={({isActive}) => `text-black/85 border-b-2  px-2  py-3 ${isActive ? "border-blue-600 text-blue-600" : "border-transparent text-black/85"}`}> 
+                        <IoNotifications fontSize={25} /> 
+                    </NavLink>
+  
+                    <NavLink to={'/settings'} className={({isActive}) => `border-b-2  px-2  pb-2 translate-y-[3px]
+                                                                ${isActive ? "border-blue-600" : "border-transparent"}` }>
+                        <div className={`w-[35px] h-[35px] overflow-hidden border-[1.5px] rounded-full ${location.pathname == "/settings" ? "border-blue-600":"border-black/85"}`}>
+                            <img className='w-full h-full' src="./user.jpg" alt="" />
+                        </div>
                     </NavLink>
                 </div>
             </nav>

@@ -72,6 +72,10 @@ const AppRoutes = () => {
         <Route element={<PagesLayout/>}>
           <Route path='/' element={<Home/>}/>
           <Route path='/profile' element={<Profile/>}/>
+          <Route path='/friends' element={<Profile/>}/>
+          <Route path='/photos' element={<Profile/>}/>
+          <Route path='/notifications' element={<Profile/>}/>
+          <Route path='/settings' element={<Profile/>}/>
            
         </Route>
 

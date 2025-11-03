@@ -7,7 +7,6 @@ export default function Home () {
 
     const {store, setStore} = useMyStore()
     const {userData, setUserData} = useUserContext() 
-    console.log(userData)
 
     return(
         <div className='h-[300vh]'>

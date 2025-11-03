@@ -20,7 +20,7 @@ export default function PagesLayout() {
 
 
 if(location.pathname == "/") return (
-       <div className='lmd:hidden flex items-center justify-between '>
+       <div className='lmd:hidden flex px-1 items-center justify-between '>
           <div className='font-bold text-[26px]'>MAS</div>
 
           <div className='flex'>
