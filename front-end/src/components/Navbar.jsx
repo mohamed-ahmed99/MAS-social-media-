@@ -10,6 +10,9 @@ import { IoSettingsSharp } from "react-icons/io5";
 import { FaRegUserCircle } from "react-icons/fa";
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { FaPlusCircle } from "react-icons/fa";
+import { IoSearchOutline } from "react-icons/io5";
+import { FaPlus } from "react-icons/fa6";
 
 
 
@@ -23,6 +26,7 @@ export default function Navbar() {
         window.addEventListener("resize", onResize)
         return () => window.removeEventListener("resize", onResize)
     })
+
 
 
 
@@ -52,10 +56,8 @@ if(screenWidth >= 900)
                 </div>
 
                 
-
                 {/* links */}
                 <div className='navResLG flex items-center justify-between  gap-3  -translate-x-16'>
-
                     <NavLink to={'/'}
                         className={({isActive}) => `hover:bg-gray-200 transition-colors py-2 md:px-6 lg:px-8 xl:px-10 rounded-full text-black/85
                                                     ${isActive && "bg-gray-200/65"}`}> 
@@ -79,8 +81,7 @@ if(screenWidth >= 900)
                                                     ${isActive && "bg-gray-200/65"}`}> 
                         <FaRegUserCircle fontSize={25} /> 
                     </NavLink>
-                </div>
-
+             </div>
 
 
                 {/* some linkes like notifications, massenges, settings */}
@@ -110,6 +111,54 @@ if(screenWidth >= 900)
 
 
 else{
+    return(
+        <div className='lmd:none'>
+            <nav className='space-y-4 p-2'>
+                {/* topbar */}
+                <div className='flex items-center justify-between '>
+                    <div className='font-bold text-[26px]'>MAS</div>
 
+                    <div className='flex'>
+                        <button className='p-2 '>
+                            <div className='border-2 rounded-lg border-black'><FaPlus fontSize={25}/></div>
+                        </button>
+                        <button className='p-2 rounded-full border-2 border-transparent'>
+                            <IoSearchOutline fontSize={25}/>
+                        </button>
+                        <Link className='p-2 rounded-full border-2 border-transparent'>
+                            <FaFacebookMessenger fontSize={25}/>
+                        </Link>
+                    </div>
+                </div>
+
+                {/* navbar */}
+                <div  className='flex '>
+                    <NavLink to={'/'}
+                         className={({isActive}) => `transition-colors  rounded-full text-black/85
+                                                    ${isActive && "bg-gray-200/65"}`}> 
+                        <IoHomeOutline fontSize={25} /> 
+                    </NavLink>
+
+                    <NavLink to={'/'}
+                        className={({isActive}) => `transition-colors  rounded-full text-black/85
+                                                    ${isActive && "bg-gray-200/65"}`}> 
+                        <MdOutlinePeopleAlt fontSize={25} /> 
+                    </NavLink>
+
+                    <NavLink to={'/'}
+                        className={({isActive}) => `transition-colors  rounded-full text-black/85
+                                                    ${isActive && "bg-gray-200/65"}`}> 
+                        <BsImages fontSize={25} /> 
+                    </NavLink>
+
+                    <NavLink to={'/profile'}
+                        className={({isActive}) => `transition-colors  rounded-full text-black/85
+                                                    ${isActive && "bg-gray-200/65"}`}> 
+                        <FaRegUserCircle fontSize={25} /> 
+                    </NavLink>
+                </div>
+            </nav>
+        </div>
+    )
 }
 }
