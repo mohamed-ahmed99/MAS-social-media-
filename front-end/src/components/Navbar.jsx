@@ -7,7 +7,6 @@ import { IoHomeOutline } from "react-icons/io5";
 import { MdOutlinePeopleAlt } from "react-icons/md";
 import { BsImages } from "react-icons/bs";
 import { IoSettingsSharp } from "react-icons/io5";
-import { FaRegUser } from "react-icons/fa";
 import { FaRegUserCircle } from "react-icons/fa";
 
 
@@ -85,7 +84,10 @@ export default function Navbar() {
                     className='p-2 rounded-full bg-gray-200 hover:bg-opacity-80'> 
                     <IoSettingsSharp fontSize={20}/> 
                 </Link>
-                <div></div>
+                {/* user */}
+                <div className='w-[50px] h-[50px] rounded-full overflow-hidden -ml-2 cursor-pointer'>
+                    <img className='w-full h-full' src="/logo.png" alt="" />
+                </div>
             </div>
         </nav>
     </div>
