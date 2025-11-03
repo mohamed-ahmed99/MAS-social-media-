@@ -76,6 +76,7 @@ const AppRoutes = () => {
           <Route path='/photos' element={<Profile/>}/>
           <Route path='/notifications' element={<Profile/>}/>
           <Route path='/settings' element={<Profile/>}/>
+          <Route path='/chat' element={<Profile/>}/>
            
         </Route>
 
