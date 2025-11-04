@@ -58,7 +58,7 @@ export default function Navbar() {
 
 if(screenWidth >= 900)
     return (
-        <div className='sticky top-0 z-[888] shadow shadow-gray-300' >
+        <div className='sticky top-0 z-[888] shadow shadow-gray-300/40' >
             <nav className=' bg-white w-full h-[60px] flex  md:px-2 lg:px-4 items-center justify-between 2xl:container'>
                 {/* logo & input */}
                 <div className='flex items-center gap-1'>

@@ -26,7 +26,7 @@ export default function RightSide() {
   ];
 
   return (
-    <div className='hidden md:block bg-white w-[300px] h-screen fixed right-0 py-4 px-3 overflow-y-scroll border-l'>
+    <div className='hidden lmd:block bg-white w-[300px] h-[calc(100vh-60px)] fixed right-0 py-4 px-3 overflow-y-scroll border-l'>
 
       <p className="font-semibold text-gray-600 text-lg px-1 mb-2">Friends</p>
 

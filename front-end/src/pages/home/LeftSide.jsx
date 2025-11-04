@@ -21,7 +21,7 @@ export default function LeftSide() {
 
 
   return (
-    <div className='bg-white px-3 py-4 w-[300px] h-screen fixed left-0 space-y-2'>
+    <div className='hidden lmd:block bg-white px-3 py-4 w-[300px] h-screen fixed left-0 space-y-2'>
         {linkComponents.map((link, index) => {
             return(
               <motion.div
