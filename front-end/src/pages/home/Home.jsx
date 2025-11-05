@@ -12,7 +12,7 @@ export default memo( function Home () {
 
     return(
         <div className='flex justify-center w-full h-[1000px] '>
-            <div className='w-[600px] '>
+            <div className='w-[600px] py-4'>
 
                 <CreatePostBox/>
                 
