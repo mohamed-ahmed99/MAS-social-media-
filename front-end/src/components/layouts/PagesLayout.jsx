@@ -20,8 +20,8 @@ const Topbar = () => {
 
 
     if(location.pathname == "/") return (
-       <div className='lmd:hidden flex px-1 items-center justify-between '>
-          <div className='font-bold text-[26px]'>MAS</div>
+       <div className='lmd:hidden flex px-2 items-center justify-between bg-white'>
+          <div className='font-bold text-[26px] z-[999] '>MAS</div>
 
           <div className='flex'>
               <button className='p-2 '>

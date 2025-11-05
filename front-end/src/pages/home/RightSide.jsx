@@ -26,7 +26,7 @@ export default function RightSide() {
   ];
 
   return (
-    <div className='hidden lmd:block bg-white w-[300px] h-[calc(100vh-60px)] fixed right-0 py-4 px-3 overflow-y-scroll border-l'>
+    <div className='hidden xl:block bg-white w-[300px] h-[calc(100vh-60px)] fixed right-0 py-4 px-3 overflow-y-scroll border-l'>
 
       <p className="font-semibold text-gray-600 text-lg px-1 mb-2">Friends</p>
 
@@ -38,7 +38,7 @@ export default function RightSide() {
         >
           <Link 
             to={`/friends/${friend.name.replaceAll(" ", "_")}`} 
-            className='flex items-center gap-3 px-2 py-2 rounded-xl hover:bg-blue-50 transition-all duration-200 group cursor-pointer'
+            className='flex items-center gap-3 px-2 py-2 rounded-xl hover:bg-blue-100 transition-all duration-200 group cursor-pointer'
           >
 
             <div className='relative'>

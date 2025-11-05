@@ -3,11 +3,26 @@ import { FaUserFriends } from "react-icons/fa";
 import { FaBookmark } from "react-icons/fa6";
 import { MdAccessTimeFilled } from "react-icons/md";
 import {motion} from 'framer-motion'
+import { useEffect, useState } from 'react';
 
 export default function LeftSide() {
+  const [scroll, setScroll] = useState(false)
+
+useEffect(() => {
+  const handleScroll = () => {
+    // console.log(window.scrollY);
+    if(window.scrollY > 10) setScroll(true)
+    else setScroll(false)
+  };
+
+  window.addEventListener("scroll", handleScroll);
+  return () => window.removeEventListener("scroll", handleScroll);
+}, []);
+
+
 
   const UserPhoto = () => {
-    return <div className='w-[30px] h-[30px] rounded-full overflow-hidden flex items-center justify-center'>
+    return <div className='w-[36px] h-[36px] rounded-full overflow-hidden flex items-center justify-center'>
                 <img className='w-full h-full object-cover' src="./user.jpg" alt="" />
             </div>
   }
@@ -21,7 +36,8 @@ export default function LeftSide() {
 
 
   return (
-    <div className='hidden lmd:block bg-white px-3 py-4 w-[300px] h-screen fixed left-0 space-y-2'>
+    <div className={`hidden md:block bg-white px-3 py-4 md:w-[250px] lg:w-[300px] h-screen fixed top-0 md:
+          ${scroll ? "md:pt-[60px]" :"md:pt-[100px]"} lmd:pt-[75px] left-0 space-y-1 `}>
         {linkComponents.map((link, index) => {
             return(
               <motion.div
@@ -34,7 +50,7 @@ export default function LeftSide() {
                   className='flex items-center gap-4 capitalize px-2 py-2 rounded-xl hover:bg-blue-100 transition-all duration-200 group'
                 >
 
-                  <div className='flex items-center justify-center w-7 h-7 text-gray-600 group-hover:text-blue-600'>
+                  <div className='flex items-center justify-center w-9 h-9 text-gray-600 group-hover:text-blue-600'>
                     {link.icon}
                   </div>
 

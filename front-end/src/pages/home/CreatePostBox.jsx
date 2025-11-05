@@ -13,7 +13,7 @@ export default function CreatePostBox() {
 
         {/* input */}
         <button className="flex-grow bg-gray-200 py-2 rounded-xl text-gray-700">
-            <p className="w-full">what's on your mind?</p>
+            <p className="w-full">What's on your mind?</p>
         </button>
 
         {/* photo post icon */}
