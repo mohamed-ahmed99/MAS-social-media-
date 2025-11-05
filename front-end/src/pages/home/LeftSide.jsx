@@ -33,12 +33,11 @@ export default function LeftSide() {
                   to={link.href}
                   className='flex items-center gap-4 capitalize px-2 py-2 rounded-xl hover:bg-blue-100 transition-all duration-200 group'
                 >
-                  {/* الأيقونة أو الصورة داخل نفس حاوية موحدة */}
+
                   <div className='flex items-center justify-center w-7 h-7 text-gray-600 group-hover:text-blue-600'>
                     {link.icon}
                   </div>
 
-                  {/* النص */}
                   <p className='font-medium text-gray-700 group-hover:text-blue-600'>
                     {link.text}
                   </p>

@@ -27,7 +27,10 @@ const AppRoutes = () => {
     const CheckToken = async () => {
       setIsLoading(true)
       const token = localStorage.getItem("MASproAuth")
-      if(!token) return navigate('/signin')
+      if(!token) {
+        setIsLoading(false)
+        return navigate('/signin')
+      }
 
         // call back
         try{
