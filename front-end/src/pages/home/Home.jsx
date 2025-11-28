@@ -17,7 +17,7 @@ export default memo( function Home () {
 
                 <CreatePostBox/>
 
-                <div className='flex flex-col gap-4 bg-gray-200'>
+                <div className='flex flex-col gap-2 bg-gray-200'>
                     <Post/>
                     <Post/>
                     <Post/>

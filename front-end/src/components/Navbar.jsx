@@ -10,6 +10,8 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useRef } from 'react';
+import { HiBars3BottomRight } from "react-icons/hi2";
+import { HiMiniBars3BottomRight } from "react-icons/hi2";
 
 
 
@@ -165,12 +167,9 @@ else{
                         className={({isActive}) => `text-black/85 border-b-2  px-2  py-3 ${isActive ? "border-blue-600 text-blue-600" : "border-transparent text-black/85"}`}> 
                         <IoNotifications fontSize={25} /> 
                     </NavLink>
-  
-                    <NavLink to={'/settings'} className={({isActive}) => `border-b-2  px-2  pb-2 translate-y-[3px]
-                                                                ${isActive ? "border-blue-600" : "border-transparent"}` }>
-                        <div className={`w-[35px] h-[35px] overflow-hidden border-[1.5px] rounded-full ${location.pathname == "/settings" ? "border-blue-600":"border-black/85"}`}>
-                            <img className='w-full h-full' src="./user.jpg" alt="" />
-                        </div>
+                    <NavLink to={'/settings'}
+                        className={({isActive}) => `text-black/85 border-b-2  px-2  py-3 ${isActive ? "border-blue-600 text-blue-600" : "border-transparent text-black/85"}`}> 
+                        <HiMiniBars3BottomRight fontSize={25} /> 
                     </NavLink>
                 </div>
             </nav>

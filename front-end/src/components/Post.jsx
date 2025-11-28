@@ -17,6 +17,7 @@ import { BsEmojiSurpriseFill } from "react-icons/bs"; // wow
 import { AiFillLike } from "react-icons/ai";
 import { AiOutlineLike } from "react-icons/ai";
 
+
 export default function Post({img="./user.jpg"}) {
 
     // data about the reactions
@@ -47,7 +48,7 @@ export default function Post({img="./user.jpg"}) {
 
 
   return (
-    <div className="bg-white rounded-lg py-3">
+    <div className="bg-white rounded-lg pt-3 pb-1">
         {/* top "information about who has post this post" */}
         <div className="flex items-center justify-between px-4">
             {/* name. img, date */}
@@ -93,8 +94,8 @@ export default function Post({img="./user.jpg"}) {
         </div>)}
 
         {/* reactions data */}
-        <div className="flex items-center justify-between px-3"> 
-            <div className="flex items-center justify-between gap-2 cursor-pointer hover:bg-gray-200 p-3">
+        <div className="hidden xl:flex items-center justify-between px-3"> 
+            <div className="flex items-center justify-between gap-2 cursor-pointer hover:bg-gray-200 px-3 py-2">
                 {/* most used reactions*/}
                 {reactionsData.mostUsedReactions && 
                 <div className="flex items-center justify-between">
@@ -111,7 +112,7 @@ export default function Post({img="./user.jpg"}) {
 
             <div className="flex items-center justify-between gap-3 text-gray-600 px-3 ">
                 {/* comment */}
-                <div className="flex items-center justify-between gap-1 cursor-pointer py-3">
+                <div className="flex items-center justify-between gap-1 cursor-pointer px-3 py-2">
                     <div>{reactionsData.comments}</div>
                     <div className=""><FaComment/></div>
                 </div>
@@ -124,7 +125,42 @@ export default function Post({img="./user.jpg"}) {
         </div>  
 
         {/* reactions buttons */}
-        <div></div>
+        <div className="hidden xl:flex items-center justify-between px-10 ">
+            <button className="hover:bg-gray-200 px-10 py-1 rounded-md"> <AiOutlineLike fontSize={22}/> </button>
+            <button className="hover:bg-gray-200 px-10 py-1 rounded-md"> <FaRegComment fontSize={19}/> </button>
+            <button className="hover:bg-gray-200 px-10 py-1 rounded-md"> <PiShareFat fontSize={22}/> </button>
+        </div>
+
+
+        {/* mobile reactions */}
+        <div className="flex xl:hidden justify-between pt-1 px-1 sm:px-4"> 
+            <div className="flex items-center gap-3">
+                <div className="flex items-center"> 
+                    <button className="hover:bg-gray-200 px-2 py-1 rounded-md"> <AiOutlineLike fontSize={22}/> </button>
+                    <p>{reactionsData.reactions}</p>
+                </div>
+                <div className="flex items-center"> 
+                    <button className="hover:bg-gray-200 px-2 py-1 rounded-md"> <FaRegComment fontSize={19}/> </button>
+                    <p>{reactionsData.comments}</p>
+                </div>
+                <div className="flex items-center">
+                    <button className="hover:bg-gray-200 px-2 py-1 rounded-md"> <PiShareFat fontSize={22}/> </button>
+                    <p>{reactionsData.shares}</p>
+                </div>
+            </div>
+
+            <div className="flex items-center justify-between gap-2 cursor-pointer hover:bg-gray-200 px-3 py-2">
+                {/* most used reactions*/}
+                {reactionsData.mostUsedReactions && 
+                <div className="flex items-center justify-between">
+                    {reactionsData.mostUsedReactions.map((icon, index) => {
+                        return(
+                            <div>{TextToIcon[icon]}</div>
+                        )
+                    })}
+                </div> }
+            </div>
+        </div>
 
 
     </div>
