@@ -1,24 +1,40 @@
 import { Link } from "react-router-dom"
+import {motion, AnimatePresence} from 'framer-motion'
+import { useEffect } from "react";
 
 import { FiMoreHorizontal } from "react-icons/fi";
 import { MdOutlineClose } from "react-icons/md";
-import { BiLike } from "react-icons/bi";
-import { BiSolidLike } from "react-icons/bi";
 import { FaHeart } from "react-icons/fa";
 import { FaRegComment } from "react-icons/fa";
 import { FaComment } from "react-icons/fa6";
 import { PiShareFatFill } from "react-icons/pi";
 import { PiShareFat } from "react-icons/pi";
-import { FaLaughSquint } from "react-icons/fa"; //laugh
-import { RiEmotionSadFill } from "react-icons/ri"; // sad
-import { FaAngry } from "react-icons/fa"; // angry
-import { BsEmojiSurpriseFill } from "react-icons/bs"; // wow
+// import { FaLaughSquint } from "react-icons/fa"; //laugh
+// import { RiEmotionSadFill } from "react-icons/ri"; // sad
+// import { FaAngry } from "react-icons/fa"; // angry
+// import { BsEmojiSurpriseFill } from "react-icons/bs"; // wow
 
 import { AiFillLike } from "react-icons/ai";
 import { AiOutlineLike } from "react-icons/ai";
+import { useState } from "react";
+import { IoClose } from "react-icons/io5";
 
 
 export default function Post({img="./user.jpg"}) {
+    const [showPostImage, setShowPostImage] = useState(false)
+
+    useEffect(() => {
+        if (showPostImage) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "auto";
+        }
+
+        return () => {
+            document.body.style.overflow = "auto";
+        };
+        }, [showPostImage]
+    );
 
     // data about the reactions
     const reactionsData = {
@@ -48,6 +64,34 @@ export default function Post({img="./user.jpg"}) {
 
 
   return (
+    <>
+        {showPostImage && (
+            <AnimatePresence>
+                <motion.div
+                className="fixed inset-0 bg-black/80 z-[999] flex items-center justify-center p-4 backdrop-blur-md"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setShowPostImage(false)}
+                >
+                    <div className="relative">
+                        <button className="absolute -top-5 right-5 text-white"><IoClose fontSize={25}/></button>
+                        <motion.img
+                        src={img}
+                        alt=""
+                        onClick={(e) => e.stopPropagation()} 
+                        className="max-w-[90%] max-h-[90%] rounded-lg shadow-xl object-contain"
+                        initial={{ opacity: 0, scale: 0.85 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.85 }}
+                        transition={{ duration: 0.25, ease: "easeOut" }}
+                        />
+                    </div>
+                </motion.div>
+            </AnimatePresence>
+            )
+        }
+
     <div className="bg-white rounded-lg pt-3 pb-1">
         {/* top "information about who has post this post" */}
         <div className="flex items-center justify-between px-4">
@@ -89,6 +133,7 @@ export default function Post({img="./user.jpg"}) {
             <img 
             src={img} 
             alt="post" 
+            onClick={() => setShowPostImage(true)}
             className="w-full max-h-[400px] 500:max-h-[500px]  lg:max-h-[600px] xl:max-h-[450px] 2xl:max-h-[600px] object-cover"
             />
         </div>)}
@@ -164,6 +209,7 @@ export default function Post({img="./user.jpg"}) {
 
 
     </div>
+    </>
   )
 }
 
