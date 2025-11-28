@@ -37,12 +37,12 @@ export default function Post({img="./user.jpg"}) {
     }
 
     const TextToIcon = {
-        like:<AiFillLike color="blue" fontSize={23}/>,
-        love:<FaHeart color="red" fontSize={20}/>,
-        haha: <img src="https://twemoji.maxcdn.com/v/latest/72x72/1f602.png" width="20" />,
-        wow:<img src="https://twemoji.maxcdn.com/v/latest/72x72/1f62e.png" width="20" />,
-        sad:<img src="https://twemoji.maxcdn.com/v/latest/72x72/1f622.png" width="20" />,
-        angry:<img src="https://twemoji.maxcdn.com/v/latest/72x72/1f621.png" width="20" />,
+        like:<AiFillLike color="blue" fontSize={20}/>,
+        love:<FaHeart color="red" fontSize={18}/>,
+        haha: <img src="https://twemoji.maxcdn.com/v/latest/72x72/1f602.png" width="18" />,
+        wow:<img src="https://twemoji.maxcdn.com/v/latest/72x72/1f62e.png" width="18" />,
+        sad:<img src="https://twemoji.maxcdn.com/v/latest/72x72/1f622.png" width="18" />,
+        angry:<img src="https://twemoji.maxcdn.com/v/latest/72x72/1f621.png" width="18" />,
     }
 
 
