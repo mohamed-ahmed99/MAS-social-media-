@@ -33,16 +33,16 @@ export default function Post({img="./user.jpg"}) {
             sad:2,
             angry:2
         },
-        mostUsedReactions:["like","love","haha"]
+        mostUsedReactions:["like","love","wow"]
     }
 
     const TextToIcon = {
-        like:<AiFillLike color="blue"/>,
-        love:<FaHeart color="red"/>,
-        haha:<FaLaughSquint color="#ffd500"/>,
-        wow:<BsEmojiSurpriseFill color="ffd000"/>,
-        sad:<RiEmotionSadFill color="#ffa600"/>,
-        angry:<FaAngry color="#ffb300"/>,
+        like:<AiFillLike color="blue" fontSize={23}/>,
+        love:<FaHeart color="red" fontSize={20}/>,
+        haha: <img src="https://twemoji.maxcdn.com/v/latest/72x72/1f602.png" width="20" />,
+        wow:<img src="https://twemoji.maxcdn.com/v/latest/72x72/1f62e.png" width="20" />,
+        sad:<img src="https://twemoji.maxcdn.com/v/latest/72x72/1f622.png" width="20" />,
+        angry:<img src="https://twemoji.maxcdn.com/v/latest/72x72/1f621.png" width="20" />,
     }
 
 
@@ -166,3 +166,5 @@ export default function Post({img="./user.jpg"}) {
     </div>
   )
 }
+
+

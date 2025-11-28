@@ -28,6 +28,7 @@ export default memo( function Home () {
                     <Post/>
                     <Post/>
                     <Post/>
+
                 </div>
 
                 
