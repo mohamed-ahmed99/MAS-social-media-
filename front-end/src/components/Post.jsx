@@ -1,8 +1,51 @@
 import { Link } from "react-router-dom"
+
 import { FiMoreHorizontal } from "react-icons/fi";
 import { MdOutlineClose } from "react-icons/md";
+import { BiLike } from "react-icons/bi";
+import { BiSolidLike } from "react-icons/bi";
+import { FaHeart } from "react-icons/fa";
+import { FaRegComment } from "react-icons/fa";
+import { FaComment } from "react-icons/fa6";
+import { PiShareFatFill } from "react-icons/pi";
+import { PiShareFat } from "react-icons/pi";
+import { FaLaughSquint } from "react-icons/fa"; //laugh
+import { RiEmotionSadFill } from "react-icons/ri"; // sad
+import { FaAngry } from "react-icons/fa"; // angry
+import { BsEmojiSurpriseFill } from "react-icons/bs"; // wow
+
+import { AiFillLike } from "react-icons/ai";
+import { AiOutlineLike } from "react-icons/ai";
 
 export default function Post({img="./user.jpg"}) {
+
+    // data about the reactions
+    const reactionsData = {
+        reactions:99,
+        comments:20,
+        shares:10,
+        reactionsTypes:{
+            like:50,
+            love:30,
+            haha:10,
+            wow:5,
+            sad:2,
+            angry:2
+        },
+        mostUsedReactions:["like","love","haha"]
+    }
+
+    const TextToIcon = {
+        like:<AiFillLike color="blue"/>,
+        love:<FaHeart color="red"/>,
+        haha:<FaLaughSquint color="#ffd500"/>,
+        wow:<BsEmojiSurpriseFill color="ffd000"/>,
+        sad:<RiEmotionSadFill color="#ffa600"/>,
+        angry:<FaAngry color="#ffb300"/>,
+    }
+
+
+
   return (
     <div className="bg-white rounded-lg py-3">
         {/* top "information about who has post this post" */}
@@ -50,7 +93,35 @@ export default function Post({img="./user.jpg"}) {
         </div>)}
 
         {/* reactions data */}
-        <div></div>
+        <div className="flex items-center justify-between px-3"> 
+            <div className="flex items-center justify-between gap-2 cursor-pointer hover:bg-gray-200 p-3">
+                {/* most used reactions*/}
+                {reactionsData.mostUsedReactions && 
+                <div className="flex items-center justify-between">
+                    {reactionsData.mostUsedReactions.map((icon, index) => {
+                        return(
+                            <div>{TextToIcon[icon]}</div>
+                        )
+                    })}
+                </div> }
+
+                {/* count of reactions */}
+                <p className="text-gray-600 font-semibold ">{reactionsData.reactions}</p>
+            </div>
+
+            <div className="flex items-center justify-between gap-3 text-gray-600 px-3 ">
+                {/* comment */}
+                <div className="flex items-center justify-between gap-1 cursor-pointer py-3">
+                    <div>{reactionsData.comments}</div>
+                    <div className=""><FaComment/></div>
+                </div>
+                {/* share */}
+                <div className="flex items-center justify-between gap-1 cursor-pointer">
+                    <div>{reactionsData.shares}</div>
+                    <div><PiShareFatFill/></div>
+                </div>
+            </div>
+        </div>  
 
         {/* reactions buttons */}
         <div></div>
