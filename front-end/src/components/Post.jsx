@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
-import {motion, AnimatePresence} from 'framer-motion'
 import { useEffect } from "react";
+import { FullScreenImage } from "./FullScreenImage";
 
 import { FiMoreHorizontal } from "react-icons/fi";
 import { MdOutlineClose } from "react-icons/md";
@@ -17,7 +17,7 @@ import { PiShareFat } from "react-icons/pi";
 import { AiFillLike } from "react-icons/ai";
 import { AiOutlineLike } from "react-icons/ai";
 import { useState } from "react";
-import { IoClose } from "react-icons/io5";
+
 
 
 export default function Post({img="./user.jpg"}) {
@@ -65,34 +65,16 @@ export default function Post({img="./user.jpg"}) {
 
   return (
     <>
-        {showPostImage && (
-            <AnimatePresence>
-                <motion.div
-                className="fixed inset-0 bg-black/80 z-[999] flex items-center justify-center p-4 backdrop-blur-md"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={() => setShowPostImage(false)}
-                >
-                    <div className="relative">
-                        <button className="absolute -top-5 right-5 text-white"><IoClose fontSize={25}/></button>
-                        <motion.img
-                        src={img}
-                        alt=""
-                        onClick={(e) => e.stopPropagation()} 
-                        className="max-w-[90%] max-h-[90%] rounded-lg shadow-xl object-contain"
-                        initial={{ opacity: 0, scale: 0.85 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.85 }}
-                        transition={{ duration: 0.25, ease: "easeOut" }}
-                        />
-                    </div>
-                </motion.div>
-            </AnimatePresence>
-            )
-        }
+        <FullScreenImage 
+            img={img}
+            showPostImage={showPostImage} 
+            userName={`Mohamed Ahmed`}
+            text={'uasi inventore te veritatis. Nemo natus autem rem molestias accusamus aperiam libero dolorum, numquam consequuntur, explicabo esse quas hic, reiciendis veritatis!'}
+            setShowPostImage={setShowPostImage}
+        />
 
     <div className="bg-white rounded-lg pt-3 pb-1">
+
         {/* top "information about who has post this post" */}
         <div className="flex items-center justify-between px-4">
             {/* name. img, date */}
