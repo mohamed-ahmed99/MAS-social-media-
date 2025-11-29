@@ -8,7 +8,7 @@ export default function CoverPhoto({img}) {
 
         <img 
             src={img} alt="Cover"
-            className="w-full h-72 object-cover  lg:rounded-b-xl "
+            className="w-full h-64 object-cover  lg:rounded-b-xl "
         />
 
         <motion.button 
