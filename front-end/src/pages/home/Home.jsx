@@ -18,15 +18,14 @@ export default memo( function Home () {
                 <CreatePostBox/>
 
                 <div className='flex flex-col gap-2 bg-gray-200'>
-                    <Post/>
-                    <Post/>
-                    <Post/>
-                    <Post/>
-                    <Post/>
-                    <Post/>
-                    <Post/>
-                    <Post/>
-                    <Post/>
+                     <Post/>
+                    <Post img={"./user.jpg"}/>
+                    <Post img={"./user.jpg"}/>
+                    <Post img={"./user.jpg"}/>
+                     <Post/>
+                     <Post/>
+                    <Post img={"./user.jpg"}/>
+                     <Post/>
                     <Post/>
 
                 </div>

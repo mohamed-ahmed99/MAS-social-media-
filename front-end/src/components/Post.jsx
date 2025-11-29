@@ -20,7 +20,7 @@ import { useState } from "react";
 
 
 
-export default function Post({img="./user.jpg"}) {
+export default function Post({img}) {
     const [showPostImage, setShowPostImage] = useState(false)
 
     useEffect(() => {
@@ -128,7 +128,7 @@ export default function Post({img="./user.jpg"}) {
                 <div className="flex items-center justify-between">
                     {reactionsData.mostUsedReactions.map((icon, index) => {
                         return(
-                            <div>{TextToIcon[icon]}</div>
+                            <div key={index}>{TextToIcon[icon]}</div>
                         )
                     })}
                 </div> }
@@ -182,7 +182,7 @@ export default function Post({img="./user.jpg"}) {
                 <div className="flex items-center justify-between">
                     {reactionsData.mostUsedReactions.map((icon, index) => {
                         return(
-                            <div>{TextToIcon[icon]}</div>
+                            <div key={index}>{TextToIcon[icon]}</div>
                         )
                     })}
                 </div> }
