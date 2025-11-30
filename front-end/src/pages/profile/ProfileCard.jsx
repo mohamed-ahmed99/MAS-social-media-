@@ -26,8 +26,8 @@ export default function ProfileCard() {
 
         {/* photo */}
         <div  
-          className="w-[130px] lg:w-[150px] h-[130px] lg:h-[150px] overflow-hidden rounded-full border-2 border-gray-300
-                    absolute -top-20 left-2  lg:static "
+          className="w-[130px] lg:w-[150px] h-[130px] lg:h-[150px] overflow-hidden rounded-full border-2 border-white
+                    absolute -top-24 left-1/2 -translate-x-1/2 lg:static "
         >
             <img 
               src="./user.jpg" alt="User Profile"
@@ -56,20 +56,18 @@ export default function ProfileCard() {
 
 
 
-            <div className="absolute flex items-center flex-col justify-start  -top-5 left-0 w-full lg:hidden">
-                <h2 className="text-2xl font-semibold flex-grow">User Name</h2>
+            <div className="absolute flex items-center justify-between px-3  top-4 left-0 w-full lg:hidden">
+                <h2 className="text-3xl font-semibold flex-grow ">User Name</h2>
 
                 <div className="flex gap-4 ">
                   <p className=""><span>0</span> Posts</p>
                   <p><span>0</span> Friens</p>
                 </div>
 
-                <button className="absolute right-4 bg-gray-300/70 p-2 rounded-full top-2  ">
-                  <IoIosArrowDown/>
-                </button>
+                
             </div>
 
-            <div className="text-xs sm:text-sm sm:text-center lg:text-left w-full">
+            <div className="text-sm sm:text-center lg:text-left w-full">
                 <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nesciunt distinctio eius aperiam provident, fugit tempora.</p>
             </div>
 
@@ -78,3 +76,8 @@ export default function ProfileCard() {
   )
 }
 
+
+
+// <button className="absolute right-4 bg-gray-300/70 p-2 rounded-full top-2  ">
+//                   <IoIosArrowDown/>
+//                 </button>
