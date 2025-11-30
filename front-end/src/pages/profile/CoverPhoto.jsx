@@ -8,16 +8,16 @@ export default function CoverPhoto({img}) {
 
         <img 
             src={img} alt="Cover"
-            className="w-full h-64 object-cover  lg:rounded-b-xl "
+            className="w-full h-52 sm:h-64 object-cover  lg:rounded-b-xl "
         />
 
         <motion.button 
             whileHover={{scale: 1.05}}
-            className='absolute right-4 bottom-4 bg-white px-4 py-2 rounded-lg flex items-center gap-2 '
+            className='absolute right-4 bottom-4 bg-white p-2 sm:px-4 py-2 rounded-lg flex items-center gap-2 '
         >
 
             <IoIosCamera fontSize={25}/>
-            <p className='-translate-y-[1px] capitalize'>Edit cover photo</p>
+            <p className='hidden sm:block -translate-y-[1px] capitalize'>Edit cover photo</p>
         </motion.button>
     </div>
   )
