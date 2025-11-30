@@ -22,17 +22,20 @@ export default function ProfileCard() {
 
 
   return (
-    <div className="flex relative gap-8 px-4 pt-16 lg:py-2 ">
+    <div className="flex flex-col lg:flex-row relative gap-2 lg:gap-8 px-4 pt-16 lg:py-2 ">
+      
 
         {/* photo */}
-        <div  
-          className="w-[130px] lg:w-[150px] h-[130px] lg:h-[150px] overflow-hidden rounded-full border-2 border-white
-                    absolute -top-24 left-1/2 -translate-x-1/2 lg:static "
-        >
-            <img 
-              src="./user.jpg" alt="User Profile"
-              className="w-full h-full object-cover"
-            />
+        <div>
+          <div  
+            className=" w-[130px] lg:w-[150px] h-[130px] lg:h-[150px] overflow-hidden rounded-full border-2 border-white
+                      absolute -top-28 vsm:-top-24 left-1/2 -translate-x-1/2 lg:translate-x-0 lg:static "
+          >
+              <img 
+                src="./user.jpg" alt="User Profile"
+                className="w-full h-full object-cover "
+              />
+          </div>
         </div>
 
 
@@ -67,8 +70,8 @@ export default function ProfileCard() {
                 
             </div>
 
-            <div className="text-sm sm:text-center lg:text-left w-full">
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nesciunt distinctio eius aperiam provident, fugit tempora.</p>
+            <div className="text-sm ">
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto, architecto!</p>
             </div>
 
         </div>
