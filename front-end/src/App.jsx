@@ -60,6 +60,7 @@ const AppRoutes = () => {
     }
     useEffect(() => { CheckToken() } ,[])
 
+
     return (
     <>
       <Routes>
@@ -88,7 +89,7 @@ const AppRoutes = () => {
 
       {/* loading when server check the token */}
       {loading && <div className='fixed inset-0 flex items-center justify-center z-[9999]'>
-                <AppLoading/> </div>}
+                <AppLoading loading={loading}/> </div>}
     </>
   )
   

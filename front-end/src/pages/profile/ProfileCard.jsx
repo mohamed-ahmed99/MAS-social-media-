@@ -78,9 +78,3 @@ export default function ProfileCard() {
     </div>
   )
 }
-
-
-
-// <button className="absolute right-4 bg-gray-300/70 p-2 rounded-full top-2  ">
-//                   <IoIosArrowDown/>
-//                 </button>
