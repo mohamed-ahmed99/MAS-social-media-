@@ -12,7 +12,7 @@ export default function CoverPhoto({img}) {
         />
 
         <motion.button 
-            whileHover={{scale: 1.05}}
+            whileHover={{scale: .95}}
             className='absolute right-4 bottom-4 bg-white p-2 sm:px-4 py-2 rounded-lg flex items-center gap-2 '
         >
 

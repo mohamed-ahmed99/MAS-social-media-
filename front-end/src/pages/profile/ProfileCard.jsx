@@ -66,7 +66,8 @@ export default function ProfileCard() {
                   <p className=""><span>0</span> Posts</p>
                   <p><span>0</span> Friens</p>
                 </div>
-
+                
+                
                 
             </div>
 
@@ -74,7 +75,12 @@ export default function ProfileCard() {
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto, architecto!</p>
             </div>
 
+            <div className="grid lg:hidden grid-cols-2 gap-4">
+                <Buttons/>
+            </div>
+
         </div>
+
     </div>
   )
 }
