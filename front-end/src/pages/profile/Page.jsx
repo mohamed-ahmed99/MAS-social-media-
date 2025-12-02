@@ -18,7 +18,7 @@ export default function Page() {
 
 
   return (
-    <div className="min-h-[2000px] space-y-4 bg-gray-100">
+    <div className="min-h-[2000px] space-y-0 lg:space-y-4 bg-gray-100">
         
         <div className="bg-gradient-to-b from-[#999]/40 from-3% to-white shadow space-y-5">
 
@@ -32,8 +32,11 @@ export default function Page() {
 
         </div>
 
-        <div className="w-full lg:max-w-[900px] m-auto">
+        <div className="w-full lg:max-w-[900px] m-auto grid grid-cols-10 gap-4">
           <PersonalDetails/>
+          <div className="col-span-6 bg-white rounded-xl">2</div>
+          <div>3</div>
+          <div>4</div>
         </div>
 
     </div>
