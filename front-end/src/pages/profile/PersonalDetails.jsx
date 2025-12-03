@@ -23,7 +23,7 @@ export default function PersonalDetails() {
 
 
   return (
-    <div className='py-2 px-4 bg-white rounded-md lg:rounded-xl col-span-10 lg:col-span-4'>
+    <div className='py-2 px-3 bg-white rounded-md lg:rounded-xl lg:shadow col-span-10 lg:col-span-4'>
         
         <div className='flex items-stretch justify-between h-[40px] mb-2 '>
             <h2 className='text-xl font-semibold mb-4 h-full flex items-center'>Personal Details</h2>
@@ -34,8 +34,8 @@ export default function PersonalDetails() {
     
         <ul className='space-y-2 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1'>
             {ListComponets.map((item, index) => (
-                <li key={index} className="flex items-center gap-4 cursor-pointer">
-                    <span className='text-[25px]'>{item.icon}</span>
+                <li key={index} className="flex items-center gap-4 cursor-pointer text-gray-800">
+                    <span className='text-[25px] '>{item.icon}</span>
                     <span className='font-semibold'>{item.value}</span>
                 </li>
             ))}

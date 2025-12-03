@@ -3,9 +3,13 @@ import {useUserContext} from '../../hooks/useUserContext'
 import CoverPhoto from "./CoverPhoto";
 import ProfileCard from "./ProfileCard";
 import NavOfAcountComponents from "./NavOfAcountComponents";
+import PersonalDetails from "./PersonalDetails";
+import PostEditor from "./PostEditor";
+import PostView from "./PostView";
+
+
 
 import { IoMdSettings } from "react-icons/io";
-import PersonalDetails from "./PersonalDetails";
 
 
 
@@ -32,9 +36,17 @@ export default function Page() {
 
         </div>
 
-        <div className="w-full lg:max-w-[900px] m-auto grid grid-cols-10 gap-4">
+        <div className="w-full lg:max-w-[900px] m-auto grid grid-cols-10 lg:gap-4">
+          {/* personal details */}
           <PersonalDetails/>
-          <div className="col-span-6 bg-white rounded-xl">2</div>
+
+          {/* post manager */}
+          <div className="col-span-10 lg:col-span-6 lg:rounded-xl space-y-4">
+              <PostEditor/>
+              <PostView/>
+          </div>
+
+
           <div>3</div>
           <div>4</div>
         </div>
