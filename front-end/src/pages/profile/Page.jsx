@@ -6,6 +6,7 @@ import NavOfAcountComponents from "./NavOfAcountComponents";
 import PersonalDetails from "./PersonalDetails";
 import PostEditor from "./PostEditor";
 import PostView from "./PostView";
+import Friends from "./Friends";
 
 
 
@@ -47,7 +48,7 @@ export default function Page() {
           </div>
 
 
-          <div>3</div>
+          <Friends/>
           <div>4</div>
         </div>
 

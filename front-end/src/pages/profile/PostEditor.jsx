@@ -29,7 +29,7 @@ export default function PostEditor() {
         <div className='flex items-center  pt-2 gap-4 sm:gap-8 lg:mt-2 lg:border-t'>
             {LinksComponents.map((link, index) => {
               return (
-                <Link to={link.href} key={index} className="flex  bg-black items-center gap-2 sm:gap-3 w-full rounded-lg  px-2 py-2 lg:hover:bg-gray-100">
+                <Link to={link.href} key={index} className="flex items-center gap-2 sm:gap-3 w-full rounded-lg  px-2 py-2 lg:hover:bg-gray-100">
                     <div className="text-xl sm:text-2xl text-gray-800">{link.icon}</div>
                     <div className="font-semibold text-gray-600 capitalize">{link.text}</div>
                 </Link>
