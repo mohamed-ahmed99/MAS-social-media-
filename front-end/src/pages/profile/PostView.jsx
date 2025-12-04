@@ -5,6 +5,6 @@
 
 export default function PostView() {
   return (
-    <div className="bg-white">PostView</div>
+    <div className="hidden">PostView</div>
   )
 }
