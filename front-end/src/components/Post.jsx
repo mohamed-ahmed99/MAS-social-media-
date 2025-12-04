@@ -20,7 +20,7 @@ import { useState } from "react";
 
 
 
-export default function Post({img}) {
+export default function Post({img, profile=false}) {
     const [showPostImage, setShowPostImage] = useState(false)
 
     useEffect(() => {
@@ -73,7 +73,7 @@ export default function Post({img}) {
             setShowPostImage={setShowPostImage}
         />
 
-    <div className="bg-white rounded-lg pt-3 pb-1">
+    <div className="bg-white lg:rounded-lg pt-3 pb-1">
 
         {/* top "information about who has post this post" */}
         <div className="flex items-center justify-between px-4">
@@ -94,10 +94,11 @@ export default function Post({img}) {
                 <button className="p-2 rounded-full hover:bg-gray-100 transition">
                     <FiMoreHorizontal size={20}/>
                 </button>
-
+                
+                {profile ? null :
                 <button className="p-2 rounded-full hover:bg-gray-100 transition">
                     <MdOutlineClose size={22}/>
-                </button>
+                </button>}
             </div>
         </div>
 
