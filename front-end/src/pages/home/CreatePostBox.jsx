@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export default function CreatePostBox() {
   return (
     <div 
-      className="bg-white rounded-xl py-2 px-5 flex items-center justify-center gap-4">
+      className="bg-white rounded-lg py-2 px-5 mx-1 flex items-center justify-center gap-4">
         {/* user photo */}
         <Link to={'/profile'}
            className="h-[40px] w-[40px] rounded-full overflow-hidden">
