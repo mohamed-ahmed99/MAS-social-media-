@@ -1,36 +1,25 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import {useUserContext} from '../../hooks/useUserContext'
 import CoverPhoto from "./CoverPhoto";
 import ProfileCard from "./ProfileCard";
 import NavOfAcountComponents from "./NavOfAcountComponents";
-import PersonalDetails from "./PersonalDetails";
-import PostEditor from "./PostEditor";
-import PostView from "./PostView";
-import Friends from "./Friends";
-import Posts from "./Posts";
+import { Outlet } from "react-router-dom";
 
+import { useState } from "react";
 
-
-import { IoMdSettings } from "react-icons/io";
-
-
-
-export default function Page() {
+export default function ProfilePage() {
 
   const {userData, setUserData} = useUserContext()
   useEffect(() => console.log(userData), [userData])
 
-
   
-
-
   return (
-    <div className="min-h-screen space-y-0 lg:space-y-4 bg-gray-100">
+    <div className="min-h-screen space-y-0 lg:space-y-4 bg-gray-100 pb-4">
         
         <div className="bg-gradient-to-b from-[#999]/40 from-3% to-white shadow space-y-5">
 
           <div className=" w-full lg:max-w-[900px] m-auto space-y-6" >
-            <CoverPhoto img={'./cover.jpg'}/>
+            <CoverPhoto img={'/cover.jpg'}/>
             <div>
               <ProfileCard />
               <NavOfAcountComponents />
@@ -40,46 +29,21 @@ export default function Page() {
         </div>
 
 
-          <div className="hidden lg:block w-full lg:max-w-[900px] m-auto gap-4">
-              <div className="grid grid-cols-10 gap-4">
 
-                <div className="col-span-6 flex flex-col justify-between">
-                      <PersonalDetails/>
-                      <div className="col-span-10 lg:col-span-6 lg:rounded-xl space-y-4">
-                        <PostEditor/>
-                        <PostView/>
-                      </div>
-                  </div>
+          <Outlet/>
+           
 
-                  <div className="col-span-4">
-                    <Friends/>
-                  </div>
-
-              </div>
-
-              <div className="mt-4">
-                  <Posts/>
-              </div>
-              
-
-          </div>
-
-
-        <div className="lg:hidden w-full lg:max-w-[900px] m-auto grid grid-cols-10 lg:gap-4">
-          {/* personal details */}
-          <PersonalDetails/>
-
-          {/* post manager */}
-          <div className="col-span-10 lg:col-span-6 lg:rounded-xl space-y-4">
-              <PostEditor/>
-              <PostView/>
-          </div>
-
-
-          <Friends/>
-          <Posts/>
-        </div>
 
     </div>
   )
 }
+
+
+
+
+// {show === 'friends' && 
+//           <div className="lg:max-w-[900px] bg-white m-auto rounded-xl p-4 lg:shadow ">
+//             <AllFriends/>
+//           </div>
+        
+//         } 

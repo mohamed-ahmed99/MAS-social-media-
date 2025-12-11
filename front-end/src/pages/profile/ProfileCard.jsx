@@ -33,7 +33,7 @@ export default function ProfileCard() {
                       absolute -top-28 vsm:-top-24 left-1/2 -translate-x-1/2 lg:translate-x-0 lg:static "
           >
               <img 
-                src="./user.jpg" alt="User Profile"
+                src="/user.jpg" alt="User Profile"
                 className="w-full h-full object-cover "
               />
           </div>

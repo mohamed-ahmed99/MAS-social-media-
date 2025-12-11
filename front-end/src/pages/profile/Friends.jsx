@@ -3,12 +3,12 @@ export default function Friends() {
 
     // array of friends data
     const FriendsData = [
-        {name: 'Mohamed Ahmed', img: './user.jpg'},
-        {name: 'Abdelwahab Ali', img: './user.jpg'},
-        {name: 'Mohamed Waleed', img: './user.jpg'},
-        {name: 'Reda Mohamed', img: './user.jpg'},
-        {name: 'Jane Smith', img: './user.jpg'},
-        {name: 'Alice Johnson', img: './user.jpg'},
+        {name: 'Mohamed Ahmed', img: '/user.jpg'},
+        {name: 'Abdelwahab Ali', img: '/user.jpg'},
+        {name: 'Mohamed Waleed', img: '/user.jpg'},
+        {name: 'Reda Mohamed', img: '/user.jpg'},
+        {name: 'Jane Smith', img: '/user.jpg'},
+        {name: 'Alice Johnson', img: '/user.jpg'},
     ]
 
   return (

@@ -67,7 +67,7 @@ if(screenWidth >= 900)
                     {/* logo */}
                     <div className='w-14 h-14 overflow-hidden'>
                     <img  className='w-full h-full'
-                        src="./logo.png" alt="" />
+                        src="/logo.png" alt="" />
                     </div>
                     
                     {/* input */}

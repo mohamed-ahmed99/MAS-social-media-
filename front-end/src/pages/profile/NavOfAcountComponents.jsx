@@ -1,11 +1,21 @@
 import { useState } from "react";
-import { BiDotsHorizontalRounded } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
 
 export default function NavOfAcountComponents() {
 
-    const categories = [ 'All', 'About', 'Friends', 'Posts', 'Photos',]
+    const navigator = useNavigate()
 
+    const categories = [ 'All', 'About', 'Friends', 'Posts', 'Photos',]
     const [activeCategory, setActiveCategory] = useState('All')
+
+    const handleNavigation = (pathname) => {
+        if(pathname.toLowerCase() != 'all'){
+            navigator(`/profile/${pathname.toLowerCase()}`)
+        }else{
+            navigator(`/profile`)
+        }
+            
+    }
 
 
 
@@ -15,7 +25,7 @@ export default function NavOfAcountComponents() {
             return (
             <li 
                 key={index} 
-                onClick={() => setActiveCategory(category)}
+                onClick={() => {setActiveCategory(category); handleNavigation(category)}}
                 className={`lg:mr-6 cursor-pointer border-b-2 py-4  hover:opacity-80 px-2 sm:px-4 transition 
                     ${activeCategory === category ? 'border-blue-600 font-semibold text-blue-600' : 'text-gray-600 border-transparent' }`}
             >
