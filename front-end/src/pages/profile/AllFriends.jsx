@@ -28,13 +28,13 @@ export default function AllFriends() {
 
 
   return (
-    <div className="bg-white w-full max-w-[900px] m-auto py-2 px-4 space-y-4 rounded-xl">
+    <div className="bg-white w-full max-w-[900px] m-auto py-2 px-2 sm:px-4 space-y-2 lg:space-y-4 rounded-xl">
         
         {/* nav bar */}
         <div className="flex items-center justify-between">
-            <h3>Friends</h3>
+            <h3 className="">My Friends</h3>
 
-            <div className="flex items-center justify-between gap-4">
+            <div className="hidden lg:flex items-center justify-between gap-4">
                 <div 
                     className='flex bg-gray-100 rounded-full px-2  items-center gap-2 border h-fit hover:opacity-70 '
                 >
@@ -56,6 +56,7 @@ export default function AllFriends() {
                     <PiDotsThreeOutlineFill fontSize={16}/>
                 </button>
             </div>
+
         </div>
 
         {/* friends */}
@@ -64,18 +65,28 @@ export default function AllFriends() {
                 <Link 
                   to="/profile"
                   key={index} 
-                  className="mb-2 col-span-5 shadow-sm border py-2 px-4 rounded-xl"
+                  className="flex items-center justify-between mb-2 col-span-10 sm:col-span-5 shadow-sm border py-2 px-2 rounded-xl"
                 >
-                  <div className="w-20 overflow-hidden rounded-xl"> 
+                  <div className="flex items-center gap-4">
+                    <div className="w-20 overflow-hidden rounded-xl"> 
                     <img 
                         src={friend.img} 
                         alt={friend.name}
                         className="rounded-xl w-full object-cover"
-                    />
+                      />
+                    </div>
+                    
+                    <div>
+                        <h3 className="font-medium text-lg text-stone-800">{friend.name}</h3>
+                        <p className="text-sm text-gray-600">{`0 mutual friends`}</p>
+                    </div>
                   </div>
-                  <div>
-                      <h3>{friend.name}</h3>
-                  </div>
+
+                  <button
+                    onClick={(e) => {e.preventDefault(); e.stopPropagation()}}
+                    className="px-4 py-2  rounded-xl text-gray-700 hover:bg-slate-100">
+                      <PiDotsThreeOutlineFill fontSize={18}/>
+                  </button>
                 </Link>
             ))}
             
