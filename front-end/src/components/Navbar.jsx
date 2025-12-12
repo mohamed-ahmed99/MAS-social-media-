@@ -72,12 +72,13 @@ if(screenWidth >= 900)
                     
                     {/* input */}
                     <div 
-                    className='flex bg-gray-200 rounded-full px-2 py-[6px]  items-center gap-2 border h-fit hover:opacity-70 '>
+                        className='flex bg-gray-200 rounded-full px-2 py-[6px]  items-center gap-2 border h-fit hover:opacity-70 '>
 
                         <IoMdSearch
                         fontSize={20} className='cursor-pointer'
                         />
                         <input type="text" 
+                            placeholder='Search'
                             className='outline-none bg-transparent'
                         />
                     </div>

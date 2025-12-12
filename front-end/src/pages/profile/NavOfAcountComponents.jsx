@@ -6,7 +6,15 @@ export default function NavOfAcountComponents() {
     const navigator = useNavigate()
 
     const categories = [ 'All', 'About', 'Friends', 'Posts', 'Photos',]
-    const [activeCategory, setActiveCategory] = useState('All')
+    const [activeCategory, setActiveCategory] = useState(() => {
+        const segments = location.pathname.split('/').filter(Boolean)
+        const last = segments.slice(-1)[0]
+        if(last == 'profile')  {
+            return 'All'
+        }
+        return last.replace(last[0], last[0].toUpperCase())
+    })
+    console.log(activeCategory)
 
     const handleNavigation = (pathname) => {
         if(pathname.toLowerCase() != 'all'){
@@ -21,7 +29,8 @@ export default function NavOfAcountComponents() {
 
   return (
     <div className="border-t border-gray-300  mt-4">
-        <ul className="flex items-center gap-1 sm:gap-2 justify-between px-1 lg:justify-start w-full overflow-hidden">{categories.map((category, index) => {
+        <ul className="flex items-center gap-1 sm:gap-2 justify-between px-1 lg:justify-start w-full overflow-hidden">
+            {categories.map((category, index) => {
             return (
             <li 
                 key={index} 
