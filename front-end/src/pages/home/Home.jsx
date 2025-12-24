@@ -19,12 +19,12 @@ export default memo( function Home () {
 
                 <div className='flex flex-col gap-1 lg:gap-2 bg-gray-200'>
                      <Post/>
-                    <Post img={"./user.jpg"}/>
-                    <Post img={"./user.jpg"}/>
-                    <Post img={"./user.jpg"}/>
+                    <Post img={"./cover.jpg"}/>
+                    <Post img={"./cover.jpg"}/>
+                    <Post img={"./cover.jpg"}/>
                      <Post/>
                      <Post/>
-                    <Post img={"./user.jpg"}/>
+                    <Post img={"./cover.jpg"}/>
                      <Post/>
                     <Post/>
 

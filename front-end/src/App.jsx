@@ -12,6 +12,7 @@ import AppLoading from './components/AppLoading'
 import All from './pages/profile/All'
 import NotFound from './pages/NotFound'
 import AllFriends from './pages/profile/AllFriends'
+import FriendsPage from './pages/friends/Page'
 
 function App() {
   return (
@@ -92,7 +93,7 @@ const AppRoutes = () => {
 
 
 
-          <Route path='/friends' element={<NotFound/>}/>
+          <Route path='/friends' element={<FriendsPage/>}/>
           <Route path='/photos' element={<NotFound/>}/>
           <Route path='/notifications' element={<NotFound/>}/>
           <Route path='/settings' element={<NotFound/>}/>
@@ -100,6 +101,7 @@ const AppRoutes = () => {
            
         </Route>
 
+        <Route path='*' element={<NotFound/>}/>
       </Routes>
 
 
