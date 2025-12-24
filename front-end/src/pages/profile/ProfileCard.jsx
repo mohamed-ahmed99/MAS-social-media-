@@ -3,7 +3,7 @@ import { FaPen } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa";
 
 
-export default function ProfileCard() {
+export default function ProfileCard({userData}) {
 
 
   const Buttons = () => {
@@ -44,7 +44,7 @@ export default function ProfileCard() {
 
             {/*  */}
             <div className="hidden lg:flex items-center justify-center lg:justify-between">
-                <h2 className="text-2xl font-semibold">User Name</h2>
+                <h2 className="text-2xl font-semibold">{userData?.firstName} {userData?.lastName}</h2>
 
                 <div className="flex gap-4">
                     <Buttons/>
@@ -60,8 +60,8 @@ export default function ProfileCard() {
 
 
 
-            <div className="absolute flex items-center justify-between px-3  top-4 left-0 w-full lg:hidden">
-                <h2 className="text-3xl font-semibold flex-grow ">User Name</h2>
+            <div className="absolute flex items-center justify-between px-3  top-7 sm:top-4 left-0 w-full lg:hidden">
+                <h2 className="text-xl sm:text-2xl font-semibold flex-grow ">{userData?.firstName} {userData?.lastName}</h2>
 
                 <div className="flex gap-4 ">
                   <p className=""><span>0</span> Posts</p>

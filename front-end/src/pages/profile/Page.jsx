@@ -21,7 +21,7 @@ export default function ProfilePage() {
           <div className=" w-full lg:max-w-[900px] m-auto space-y-6" >
             <CoverPhoto img={'/cover.jpg'}/>
             <div>
-              <ProfileCard />
+              <ProfileCard userData={userData}/>
               <NavOfAcountComponents />
             </div>
           </div>

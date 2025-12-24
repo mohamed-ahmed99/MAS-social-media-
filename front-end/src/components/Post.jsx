@@ -22,6 +22,7 @@ import { useState } from "react";
 
 export default function Post({img, profile=false}) {
     const [showPostImage, setShowPostImage] = useState(false)
+    const [hiddenPost, setHiddenPost] = useState(false)
 
     useEffect(() => {
         if (showPostImage) {
@@ -73,7 +74,7 @@ export default function Post({img, profile=false}) {
             setShowPostImage={setShowPostImage}
         />
 
-    <div className="bg-white lg:rounded-lg pt-3 pb-1">
+    <div className="bg-white lg:rounded-lg pt-3 pb-1" style={hiddenPost ? {display: "none"} : {}}>
 
         {/* top "information about who has post this post" */}
         <div className="flex items-center justify-between px-4">
@@ -95,8 +96,12 @@ export default function Post({img, profile=false}) {
                     <FiMoreHorizontal size={20}/>
                 </button>
                 
+                {/* x btn */}
+                
                 {profile ? null :
-                <button className="p-2 rounded-full hover:bg-gray-100 transition">
+                <button 
+                    onClick={() => setHiddenPost(true)}
+                    className="p-2 rounded-full hover:bg-gray-100 transition">
                     <MdOutlineClose size={22}/>
                 </button>}
             </div>

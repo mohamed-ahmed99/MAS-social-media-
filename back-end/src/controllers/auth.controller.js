@@ -115,16 +115,6 @@ export const SignIn = async (req, res) => {
                 $push: { sessions: { token, ip } },
             }
         );
-
-        // cookies doesn't work on Vercel deployment
-        // res.cookie("MASproAuth", token, {
-        //     httpOnly: true,
-        //     secure: process.env.NODE_ENV === "production",
-        //     sameSite: "None",
-        //     domain: process.env.NODE_ENV === "production" ? ".vercel.app" : "localhost",
-        //     path: "/",
-        //     maxAge: 7 * 24 * 60 * 60 * 1000,
-        // });
         
         
         // response
