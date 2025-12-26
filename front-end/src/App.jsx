@@ -89,11 +89,15 @@ const AppRoutes = () => {
 
 
 
+          {/* friends */}
+          <Route path='/friends' element={<FriendsPage/>}>
+            <Route index element={<NotFound/>}/>
+            <Route path='friends_requests' element={<NotFound/>}/>
+            <Route path='friends_suggestions' element={<NotFound/>}/>
+          
+          </Route>
 
-
-
-
-          <Route path='/friends' element={<FriendsPage/>}/>
+          {/* other pages - not implemented yet */}
           <Route path='/photos' element={<NotFound/>}/>
           <Route path='/notifications' element={<NotFound/>}/>
           <Route path='/settings' element={<NotFound/>}/>

@@ -15,7 +15,7 @@ export default function SideBare() {
 
 
   return (
-    <div className='bg-white py-2 px-4 w-full max-w-[350px]'>
+    <div className='hidden lg:block bg-white py-2 px-4 w-full max-w-[350px]'>
 
         {/* Settings button */}
         <div className='flex items-center justify-between '>
