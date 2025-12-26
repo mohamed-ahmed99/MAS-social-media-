@@ -1,8 +1,13 @@
 import React from 'react'
 import { Link, NavLink } from "react-router-dom"
-import { IoMdSettings } from "react-icons/io";
 import { motion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
+
+// icons
+import { IoMdSettings } from "react-icons/io";
+import { FaUserFriends } from "react-icons/fa";
+import { AiOutlineUserAdd } from "react-icons/ai";
+import { TbWorldSearch } from "react-icons/tb";
 
 export default function SideBare() {
 
@@ -11,15 +16,15 @@ export default function SideBare() {
 
     // Links components
     const links = [
-        {text:"friends", to:"/friends"},
-        {text:"Friends requests", to:"friends_requests"},
-        {text:"Suggestions", to:"friends_suggestions"},
+        {text:"Friends", to:"/friends", icon:<FaUserFriends size={25}/>},
+        {text:"Friends requests", to:"friends_requests", icon:<AiOutlineUserAdd size={25}/>},
+        {text:"Suggestions", to:"friends_suggestions", icon:<TbWorldSearch size={25}/>},
     ]
 
 
 
   return (
-    <div className='hidden md:block bg-white py-2 px-4 w-full max-w-[260px] lg:max-w-[350px]'>
+    <div className='hidden md:block sticky top-[50px] lmd:top-[60px] h-[calc(100vh-50px)] lmd:h-[calc(100vh-60px)] self-start bg-white py-2 px-4 w-full max-w-[260px] lg:max-w-[260px] xl:max-w-[350px]'>
 
         {/* Settings button */}
         <div className='flex items-center justify-between '>
@@ -39,15 +44,19 @@ export default function SideBare() {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                 >
+
                     <NavLink
                         to={link.to}
                         className={({ isActive }) =>
-                            `block px-3 py-2 rounded-lg font-medium 
+                            `block px-2 py-2 rounded-lg font-medium 
                             ${isActive && lastPathSegment == link.to.split('/').pop() ? 
                                 'bg-blue-100 text-blue-700' : 'hover:bg-gray-100 text-gray-700'}`
                         }
                     >
-                        {link.text}
+                        <div className="flex items-center gap-2 ">
+                            {link.icon}
+                            {link.text}
+                        </div>
                     </NavLink>
                 </motion.div>
             ))}

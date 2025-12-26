@@ -1,4 +1,5 @@
 import React from 'react'
+import FriendCards from './FriendCard.jsx'
 
 export default function Friends() {
 
@@ -22,7 +23,17 @@ export default function Friends() {
 
 
 
+
+
+
+
+
   return (
-    <div>Friends</div>
+    <div className='grid grid-cols-3 lmd:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-4 px-3 lmd:pr-5 lmd:pl-1 '>
+        {data.map((friend, index) => {
+          return <FriendCards key={index} friendData={friend} blueBtn="confirm"/>
+        })}
+      
+    </div>
   )
 }

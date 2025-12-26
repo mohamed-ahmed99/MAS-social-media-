@@ -16,15 +16,15 @@ export default function FriendsPage() {
 
 
   return (
-    <div className="bg-gray-100 min-h-screen flex gap-4 flex-col md:flex-row ">
+    <div className="bg-gray-100 min-h-screen flex lmd:gap-4 flex-col md:flex-row ">
       <SideBare/>
       <TopBar/>
 
 
 
-      <div>
-        <div>
-          <p>{title}</p>
+      <div className="w-full">
+        <div className="mb-4 lmd:mt-3 px-2">
+          <p className="hidden lmd:block text-xl font-semibold text-stone-700 ">{title}</p>
           {/* edit friends  */}
           <div></div>
         </div>
