@@ -23,7 +23,7 @@ export default function FriendsPage() {
 
 
       <div className="w-full">
-        <div className="mb-4 lmd:mt-3 px-2">
+        <div className="mb-2 lmd:mb-4 lmd:mt-3 px-2">
           <p className="hidden lmd:block text-xl font-semibold text-stone-700 ">{title}</p>
           {/* edit friends  */}
           <div></div>
