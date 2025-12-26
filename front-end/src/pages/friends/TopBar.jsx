@@ -12,15 +12,15 @@ export default function TopBar() {
     // Links components
     const links = [
         {text:"friends", to:"/friends"},
-        {text:"Friends requests", to:"friends_requests"},
+        {text:"requests", to:"friends_requests"},
         {text:"Suggestions", to:"friends_suggestions"},
     ]
 
 
 
   return (
-    <div className='flex items-stretch justify-between bg-white px-2 py-1'>
-        <div className='flex lg:hidden items-center gap-2   w-full'>
+    <div className='flex lg:hidden items-stretch justify-between bg-white px-2 py-1 gap-3'>
+        <div className='flex items-center gap-2   w-full'>
             {/* Top bar content goes here */}
 
             {links.map((link, index) => (
