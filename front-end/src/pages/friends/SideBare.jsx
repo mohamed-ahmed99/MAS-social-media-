@@ -2,26 +2,30 @@ import React from 'react'
 import { Link, NavLink } from "react-router-dom"
 import { IoMdSettings } from "react-icons/io";
 import { motion } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
 
 export default function SideBare() {
+
+    const location = useLocation();
+    const lastPathSegment = location.pathname.split('/').slice(-1)[0];
 
     // Links components
     const links = [
         {text:"friends", to:"/friends"},
-        {text:"Friends requests", to:"/friends_requests"},
-        {text:"Suggestions", to:"/friends_suggestions"},
+        {text:"Friends requests", to:"friends_requests"},
+        {text:"Suggestions", to:"friends_suggestions"},
     ]
 
 
 
   return (
-    <div className='hidden lg:block bg-white py-2 px-4 w-full max-w-[350px]'>
+    <div className='hidden md:block bg-white py-2 px-4 w-full max-w-[260px] lg:max-w-[350px]'>
 
         {/* Settings button */}
         <div className='flex items-center justify-between '>
             <h3 className='text-2xl font-semibold'>Friends</h3>
 
-            <Link className='p-2 rounded-full bg-gray-100 hover:bg-gray-200'>
+            <Link className='p-2 rounded-full hover:bg-gray-200'>
                 <IoMdSettings fontSize={23}/>
             </Link>
         </div>
@@ -38,7 +42,9 @@ export default function SideBare() {
                     <NavLink
                         to={link.to}
                         className={({ isActive }) =>
-                            `block px-3 py-2 rounded-lg font-medium ${isActive ? 'bg-blue-100 text-blue-700' : 'hover:bg-gray-100 text-gray-700'}`
+                            `block px-3 py-2 rounded-lg font-medium 
+                            ${isActive && lastPathSegment == link.to.split('/').pop() ? 
+                                'bg-blue-100 text-blue-700' : 'hover:bg-gray-100 text-gray-700'}`
                         }
                     >
                         {link.text}

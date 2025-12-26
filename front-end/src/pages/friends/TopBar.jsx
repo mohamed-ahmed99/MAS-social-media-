@@ -7,7 +7,6 @@ export default function TopBar() {
 
     const location = useLocation();
     const lastPathSegment = location.pathname.split('/').slice(-1)[0];
-    console.log("Last path segment:", lastPathSegment);
 
     // Links components
     const links = [
@@ -19,7 +18,7 @@ export default function TopBar() {
 
 
   return (
-    <div className='flex lg:hidden items-stretch justify-between bg-white px-2 py-1 gap-3'>
+    <div className='flex md:hidden items-stretch justify-between bg-white px-2 py-1 gap-3'>
         <div className='flex items-center gap-2   w-full'>
             {/* Top bar content goes here */}
 
