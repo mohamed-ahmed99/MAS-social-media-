@@ -16,8 +16,19 @@ export default function FriendCards({friendData,  blueBtn}) {
 
 
 
-    // handele confirm button
+    // handle comessage button
+    const handleMessage = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    // handle confirm button
     const handleConfirm = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    // handle add friend button
+    const handleAddFriend = (e) => {
       e.preventDefault();
       e.stopPropagation();
     }
@@ -34,11 +45,20 @@ export default function FriendCards({friendData,  blueBtn}) {
 
     // handle blue button
     const HandleBlueBtn = ({width="100%"}) => {
-      if(blueBtn === "confirm") {
-        const style = `bg-blue-500 w-${width} text-white px-4 py-[6px] rounded-md hover:bg-blue-600`
+      const style = `bg-blue-500 w-${width} text-white px-4 py-[6px] rounded-md hover:bg-blue-600 capitalize`
+      // message
+      if(blueBtn === "message") {
         return (
-          <button onClick={(e) => handleConfirm(e)} className={style}>Confirm</button>
+          <button onClick={(e) => handleMessage(e)} className={style}>{blueBtn}</button>
         )
+      }
+      // confirm
+      else if (blueBtn === "confirm"){
+        return <button onClick={(e) => handleConfirm(e)} className={style}>{blueBtn}</button>
+      }
+      // add
+      else if (blueBtn === "add friend"){
+        return <button onClick={(e) => handleAddFriend(e)} className={style}>{blueBtn}</button>
       }
     }
     
@@ -48,7 +68,14 @@ export default function FriendCards({friendData,  blueBtn}) {
         className='max-w-[250px] grow overflow-hidden flex flex-col gap-2 bg-white rounded-md' >
         
           {/* img */}
-          <img src={friendData.img} alt="friend-img" />
+          <div className='w-full h-[200px]'>
+            <img 
+              src={friendData.img} 
+              alt="friend-img" 
+              className='w-full h-[200px] object-cover'
+            />
+
+          </div>
 
 
           {/* name and mutual friends */}

@@ -14,6 +14,8 @@ import NotFound from './pages/NotFound'
 import AllFriends from './pages/profile/AllFriends'
 import FriendsPage from './pages/friends/Page'
 import Friends from './pages/friends/Friends'
+import Requestes from './pages/friends/Requestes'
+import Suggestions from './pages/friends/Suggestions'
 
 function App() {
   return (
@@ -93,8 +95,8 @@ const AppRoutes = () => {
           {/* friends */}
           <Route path='/friends' element={<FriendsPage/>}>
             <Route index element={<Friends/>}/>
-            <Route path='friends_requests' element={<NotFound/>}/>
-            <Route path='friends_suggestions' element={<NotFound/>}/>
+            <Route path='friends_requests' element={<Requestes/>}/>
+            <Route path='friends_suggestions' element={<Suggestions/>}/>
           
           </Route>
 

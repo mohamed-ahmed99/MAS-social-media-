@@ -1,11 +1,9 @@
 import React from 'react'
-import FriendCards from './FriendCard.jsx'
+import FriendCards from './FriendCard'
 
-export default function Friends() {
+export default function Suggestions() {
 
     const data = [
-            {name:"Mohamed Ahmed Salah", mutualFriends:0, img:'/user.jpg'},
-            {name:"Mohamed Ahmed Salah", mutualFriends:0, img:'/user.jpg'},
             {name:"Mohamed Ahmed Salah", mutualFriends:0, img:'/user.jpg'},
             {name:"Mohamed Ahmed Salah", mutualFriends:0, img:'/user.jpg'},
             {name:"Mohamed Ahmed Salah", mutualFriends:0, img:'/user.jpg'},
@@ -22,16 +20,10 @@ export default function Friends() {
 
 
 
-
-
-
-
-
-
   return (
     <div className='grid grid-cols-3 lmd:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-2 lmd:gap-4 px-3 lmd:pr-5 lmd:pl-1 '>
         {data.map((friend, index) => {
-          return <FriendCards key={index} friendData={friend} blueBtn="message"/>
+          return <FriendCards key={index} friendData={friend} blueBtn="add friend"/>
         })} 
     </div>
   )
