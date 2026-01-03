@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import { useEffect } from "react";
 import { FullScreenImage } from "./FullScreenImage";
+import {motion, AnimatePresence} from "framer-motion"
 
 import { FiMoreHorizontal } from "react-icons/fi";
 import { MdOutlineClose } from "react-icons/md";
@@ -20,9 +21,12 @@ import { useState } from "react";
 
 
 
+
 export default function Post({img, profile=false}) {
     const [showPostImage, setShowPostImage] = useState(false)
     const [hiddenPost, setHiddenPost] = useState(false)
+
+    const [openComments, setOpenComments] = useState(false)
 
     useEffect(() => {
         if (showPostImage) {
@@ -60,6 +64,14 @@ export default function Post({img, profile=false}) {
         wow:<img src="https://twemoji.maxcdn.com/v/latest/72x72/1f62e.png" width="18" />,
         sad:<img src="https://twemoji.maxcdn.com/v/latest/72x72/1f622.png" width="18" />,
         angry:<img src="https://twemoji.maxcdn.com/v/latest/72x72/1f621.png" width="18" />,
+    }
+
+
+    const [liked, setLiked] = useState(false)
+
+    const handleLikeBTN = (e) => {
+        e.preventDefault()
+        setLiked(!liked)
     }
 
 
@@ -159,20 +171,40 @@ export default function Post({img, profile=false}) {
 
         {/* reactions buttons */}
         <div className="hidden xl:flex items-center justify-between px-10 ">
-            <button className="hover:bg-gray-200 px-10 py-1 rounded-md"> <AiOutlineLike fontSize={22}/> </button>
-            <button className="hover:bg-gray-200 px-10 py-1 rounded-md"> <FaRegComment fontSize={19}/> </button>
+            <button 
+                onClick={(e) => handleLikeBTN(e)}
+                className="hover:bg-gray-200 px-10 py-1 rounded-md">
+                {liked ? <AiFillLike color="blue" fontSize={22}/> : <AiOutlineLike fontSize={22}/>} 
+            </button>
+            
+            <button 
+                onClick={() => setOpenComments(!openComments)}
+                className="hover:bg-gray-200 px-10 py-1 rounded-md"> <FaRegComment fontSize={19}/> 
+            </button>
             <button className="hover:bg-gray-200 px-10 py-1 rounded-md"> <PiShareFat fontSize={22}/> </button>
         </div>
+
 
 
         {/* mobile reactions */}
         <div className="flex xl:hidden justify-between pt-1 px-1 sm:px-4"> 
             <div className="flex items-center gap-3">
+                
+                {/* like */}
                 <div className="flex items-center"> 
-                    <button className="hover:bg-gray-200 px-2 py-1 rounded-md"> <AiOutlineLike fontSize={22}/> </button>
+                    <button 
+                        onClick={(e) => handleLikeBTN(e)}
+                        className="hover:bg-gray-200 px-2 py-1 rounded-md"> 
+                        {liked ? <AiFillLike color="blue" fontSize={22}/> : <AiOutlineLike fontSize={22}/>} 
+                    </button>
                     <p>{reactionsData.reactions}</p>
                 </div>
-                <div className="flex items-center"> 
+
+                {/* comment */}
+                <div 
+                    onClick={() => setOpenComments(!openComments)}
+                    className="flex items-center"
+                > 
                     <button className="hover:bg-gray-200 px-2 py-1 rounded-md"> <FaRegComment fontSize={19}/> </button>
                     <p>{reactionsData.comments}</p>
                 </div>
@@ -194,6 +226,24 @@ export default function Post({img, profile=false}) {
                 </div> }
             </div>
         </div>
+
+
+        {/* comments section */}
+        <AnimatePresence>
+            {openComments && (
+                <motion.div
+                    initial={{ opacity: 0, x: -20, height:0 }}
+                    animate={{ opacity: 1, x: 0 , height:"auto"}}
+                    exit={{ opacity: 0, x: 20 , height:0}}
+                    transition={{ duration: 0.3 }}
+                    className="mt-2 px-4"
+                >
+                    <p className="text-gray-600">
+                        Comments section is under development.
+                    </p>
+                </motion.div>
+            )}
+        </AnimatePresence>
 
 
     </div>
