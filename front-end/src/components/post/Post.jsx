@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import { useEffect } from "react";
-import { FullScreenImage } from "./FullScreenImage";
+import { FullScreenImage } from "../FullScreenImage";
 import {motion, AnimatePresence} from "framer-motion"
 
 import { FiMoreHorizontal } from "react-icons/fi";
@@ -18,6 +18,7 @@ import { PiShareFat } from "react-icons/pi";
 import { AiFillLike } from "react-icons/ai";
 import { AiOutlineLike } from "react-icons/ai";
 import { useState } from "react";
+import PostComments from "./PostComments";
 
 
 
@@ -229,21 +230,7 @@ export default function Post({img, profile=false}) {
 
 
         {/* comments section */}
-        <AnimatePresence>
-            {openComments && (
-                <motion.div
-                    initial={{ opacity: 0, x: -20, height:0 }}
-                    animate={{ opacity: 1, x: 0 , height:"auto"}}
-                    exit={{ opacity: 0, x: 20 , height:0}}
-                    transition={{ duration: 0.3 }}
-                    className="mt-2 px-4"
-                >
-                    <p className="text-gray-600">
-                        Comments section is under development.
-                    </p>
-                </motion.div>
-            )}
-        </AnimatePresence>
+        <PostComments openComments={openComments} setOpenComments={setOpenComments} data={''} />
 
 
     </div>

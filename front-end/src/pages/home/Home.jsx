@@ -4,7 +4,7 @@ import { useMyStore } from '../../hooks/useMyStore';
 import { useUserContext } from '../../hooks/useUserContext';
 import { memo } from 'react';
 import CreatePostBox from './CreatePostBox';
-import Post from '../../components/Post';
+import Post from '../../components/post/Post.jsx';
 
 export default memo( function Home () {
 
