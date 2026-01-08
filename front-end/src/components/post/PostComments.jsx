@@ -2,6 +2,8 @@ import React from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { MdOutlineClose } from "react-icons/md";
 import CircularImage from '../CircularImage'
+import { Link } from 'react-router-dom';
+
 
 export default function PostComments({ openComments, setOpenComments, data="" }) {
     data = {
@@ -19,11 +21,17 @@ export default function PostComments({ openComments, setOpenComments, data="" })
     const CreateComments = () => {
         return data.comments.map((comment, index) => (
             <div key={index} className="flex items-start gap-2">
-                <div className="bg-gray-200 rounded-full w-8 h-8 flex items-center justify-center">
+                <Link 
+                    to={'/profile'}
+                    className="bg-gray-200 rounded-full w-8 h-8 flex items-center justify-center"
+                >
                     <CircularImage src={comment.img} firstName='Mohamed' lastName='Ahmed'/>
-                </div>
+                </Link>
                 <div className="flex-1">
-                    <p className="font-semibold text-sm">{comment.author}</p>
+                    <Link 
+                        to={'/profile'} 
+                        className="font-semibold text-sm">{comment.author}
+                    </Link>
                     <p className="text-gray-700 text-sm">{comment.content}</p>
                 </div>
             </div>
@@ -54,7 +62,7 @@ export default function PostComments({ openComments, setOpenComments, data="" })
                 </div>
 
                 {/* comments list */}
-                <div className="py-4 h-[300px] overflow-y-auto flex flex-col gap-4">
+                <div className="py-4 overflow-y-auto flex flex-col gap-4">
                     <CreateComments />
                 </div>
             </motion.div>

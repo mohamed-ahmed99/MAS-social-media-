@@ -1,10 +1,9 @@
 import { BsImages } from "react-icons/bs";
 import { Link } from "react-router-dom";
 
-export default function CreatePostBox() {
+export default function CreatePostBox({setCreatePost}) {
   return (
-    <div 
-      className="bg-white rounded-lg py-2 px-5 mx-1 flex items-center justify-center gap-4">
+    <div className="bg-white rounded-lg py-2 px-5 mx-1 flex items-center justify-center gap-4">
         {/* user photo */}
         <Link to={'/profile'}
            className="h-[40px] w-[40px] rounded-full overflow-hidden">
@@ -12,8 +11,11 @@ export default function CreatePostBox() {
         </Link>
 
         {/* input */}
-        <button className="flex-grow bg-gray-200 py-2 rounded-xl text-gray-700">
-            <p className="w-full">What's on your mind?</p>
+        <button 
+          onClick={() => setCreatePost(true)}
+          className="flex-grow bg-gray-200 py-2 rounded-xl text-gray-700"
+        >
+          <p className="w-full">What's on your mind?</p>
         </button>
 
         {/* photo post icon */}

@@ -9,8 +9,14 @@ import { useState } from "react";
 
 export default function ProfilePage() {
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    document.title = "Profile - MAS Social Media"
+  }, [])
+
   const {userData, setUserData} = useUserContext()
   useEffect(() => console.log(userData), [userData])
+
 
   
   return (
