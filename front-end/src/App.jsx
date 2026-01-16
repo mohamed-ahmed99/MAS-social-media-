@@ -16,6 +16,7 @@ import FriendsPage from './pages/friends/Page'
 import Friends from './pages/friends/Friends'
 import Requestes from './pages/friends/Requestes'
 import Suggestions from './pages/friends/Suggestions'
+import UserPage from './pages/users/page'
 
 function App() {
   return (
@@ -97,7 +98,11 @@ const AppRoutes = () => {
             <Route index element={<Friends/>}/>
             <Route path='friends_requests' element={<Requestes/>}/>
             <Route path='friends_suggestions' element={<Suggestions/>}/>
-          
+          </Route>
+
+          {/* userPage */}
+          <Route path='/user/:username' element={<UserPage/>}>
+
           </Route>
 
           {/* other pages - not implemented yet */}

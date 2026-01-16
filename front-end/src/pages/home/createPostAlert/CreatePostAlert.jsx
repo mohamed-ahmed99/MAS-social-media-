@@ -1,13 +1,20 @@
 import React, { useRef, useState } from 'react'
 import { useEffect } from 'react'
-import { IoClose } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import CircularImage from '../../../components/CircularImage.jsx';
 import {motion, AnimatePresence} from 'framer-motion'
 import ButtonList from './ButtonList.jsx';
 
+// icons
+import { IoMdPhotos } from "react-icons/io";
+import { IoClose } from "react-icons/io5";
+import { FaUserTag } from "react-icons/fa";
+import { MdEmojiEmotions } from "react-icons/md";
+import { FaTrash } from "react-icons/fa";
+
 export default function CreatePostAlert({setCreatePost}) {
   const getImage = useRef(null);
+  const textRef = useRef(null);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -22,23 +29,45 @@ export default function CreatePostAlert({setCreatePost}) {
 
   // get type of post "public" , "freinds" or "only me"
   const [selectionBtn, setSelectionBtn] = useState("public")
-  useEffect(() => console.log(selectionBtn), [selectionBtn])
 
   const handleAddImage = () => {
     getImage.current.click();
   };
 
+  const [validation, setValidation] = useState("")
+  const handlePost = () => {
+    if(!textRef.current?.value) setValidation("no text to post")
+    else setValidation("")
+  }
+
+
+  // 
+  const handeDeleteImage = () => {
+    setData(prev => ({...prev, img: ''}))
+    getImage.current.value = null
+  }
+
+  // message of validation
+  useEffect(() => {
+    if(validation){
+      setTimeout(() => setValidation(""), 5000);
+    }
+
+  },[validation])
 
   return (
     <AnimatePresence>
-      <div className="absolute top-0 left-0 -translate-y-[100px] lg:-translate-y-[80px] h-[calc(100vh+200px)] lg:h-[calc(100vh+80px)] w-full bg-white/70 flex items-center justify-center z-[9999]">
+      <div 
+        onClick={() => setCreatePost(false)}
+        className="absolute top-0 left-0 -translate-y-[100px] lg:-translate-y-[80px] h-[calc(100vh+200px)] lg:h-[calc(100vh+80px)] w-full bg-white/70 flex items-center justify-center z-[9999]">
           
           <motion.div 
-            initial={{scale:0.8, opacity:0, y:200}}
+            onClick={(e) => e.stopPropagation() }
+            initial={{scale:window.innerWidth > 900? 0.5 : 1, opacity:0, y: window.innerWidth > 900? 0: 300}}
             animate={{scale:1, opacity:1, y:0}}
             exit={{scale:0.8, opacity:0, y:200}}
-            transition={{duration:0.3}}
-            className='lg:-translate-y-10 shadow-xl h-screen lg:h-auto shadow-black/50 bg-white rounded-lg p-4 border-[1.5px] border-gray-300 max-w-full lg:max-w-[600px] w-full lg:mx-2'
+            transition={{duration:0.4}}
+            className='lg:-translate-y-10 shadow-xl h-screen lg:h-[400px] overflow-y-scroll shadow-black/50 bg-white rounded-lg p-4 border-[1.5px] border-gray-300 max-w-full lg:max-w-[600px] w-full lg:mx-2'
           >
               
               {/* top */}
@@ -64,9 +93,27 @@ export default function CreatePostAlert({setCreatePost}) {
               {/* post content */}
               <div className='mt-4'>
                   <textarea 
+                    ref={textRef}
                     placeholder="What's on your mind, Mohamed?"
                     className='w-full min-h-[130px] resize-none outline-none border-none text-lg ' 
                   ></textarea>
+
+                  <div 
+                    className={`${!data.img && 'hidden'} relative flex justify-center bg-black h-auto`}
+                  >
+                    <button 
+                      onClick={() => handeDeleteImage()}
+                      className='absolute top-3 right-4 hover:bg-white p-2 hover:shadow-lg group'
+                    >
+                      <FaTrash className='text-white group-hover:text-black'/>
+                    </button>
+                    {/* img */}
+                    <img 
+                      src={data.img ? URL.createObjectURL(data.img) : ""} 
+                      alt="" 
+                      className=''
+                    />
+                  </div>
               </div>
 
               {/* add to your post */}
@@ -78,7 +125,8 @@ export default function CreatePostAlert({setCreatePost}) {
                         onClick={() => handleAddImage()}
                         className='bg-blue-100 text-blue-600 px-3 py-2 rounded-lg hover:bg-blue-200 transition-colors'
                       >
-                          Photo/Video
+                          <IoMdPhotos className='block sm:hidden'/>
+                          <span className='hidden sm:block'>Photo/Video</span>
                           <input
                             type="file"
                             accept="image/*"
@@ -89,18 +137,37 @@ export default function CreatePostAlert({setCreatePost}) {
                           
                       </button>
                       <button className='bg-green-100 text-green-600 px-3 py-2 rounded-lg hover:bg-green-200 transition-colors'>
-                          Tag Friends
+                          <FaUserTag className='block sm:hidden'/>
+                          <span className='hidden sm:block'>Tag Friends</span>
+                          
                       </button>
                       <button className='bg-yellow-100 text-yellow-600 px-3 py-2 rounded-lg hover:bg-yellow-200 transition-colors'>
-                          Feeling/Activity
+                          <MdEmojiEmotions className='block sm:hidden'/>
+                          <span className='hidden sm:block'>Feeling/Activity</span>
+                          
                       </button>
                   </div>
               </div>
 
+              {/* data handling message*/}
+              <AnimatePresence>
+                {validation && 
+                <motion.p
+                  initial={{scale:0}}
+                  animate={{scale:1}}
+                  exit={{scale:0}}
+                  transition={{duration:.3}}
+                  className='text-center text-red-600 mt-2'
+                > {validation}
+                </motion.p>
+                } 
+              </AnimatePresence>
+
 
               {/* post button */}
               <button 
-                className='mt-6 w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors'>
+                onClick={() => handlePost()}
+                className='mt-2 w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors'>
                   Post
               </button>
           </motion.div>
