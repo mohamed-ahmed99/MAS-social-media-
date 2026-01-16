@@ -67,7 +67,7 @@ export default function CreatePostAlert({setCreatePost}) {
             animate={{scale:1, opacity:1, y:0}}
             exit={{scale:0.8, opacity:0, y:200}}
             transition={{duration:0.4}}
-            className='lg:-translate-y-10 shadow-xl h-screen lg:h-[400px] overflow-y-scroll shadow-black/50 bg-white rounded-lg p-4 border-[1.5px] border-gray-300 max-w-full lg:max-w-[600px] w-full lg:mx-2'
+            className='lg:-translate-y-10 shadow-xl h-screen lg:h-[400px] overflow-y-scroll shadow-black/50 bg-white rounded-lg p-4 border-[1.5px] border-gray-300 max-w-full lg:max-w-[800px] w-full lg:mx-2'
           >
               
               {/* top */}
@@ -99,19 +99,19 @@ export default function CreatePostAlert({setCreatePost}) {
                   ></textarea>
 
                   <div 
-                    className={`${!data.img && 'hidden'} relative flex justify-center bg-black h-auto`}
+                    className={`${!data.img && 'hidden'} relative mt-3 max-h-96 sm:max-h-[500px] overflow-hidden rounded`}
                   >
                     <button 
                       onClick={() => handeDeleteImage()}
-                      className='absolute top-3 right-4 hover:bg-white p-2 hover:shadow-lg group'
+                      className='absolute top-3 right-4 hover:bg-white p-2 hover:shadow-lg group z-10'
                     >
                       <FaTrash className='text-white group-hover:text-black'/>
                     </button>
                     {/* img */}
                     <img 
                       src={data.img ? URL.createObjectURL(data.img) : ""} 
-                      alt="" 
-                      className=''
+                      alt="Post preview" 
+                      className='w-full h-auto object-cover'
                     />
                   </div>
               </div>
