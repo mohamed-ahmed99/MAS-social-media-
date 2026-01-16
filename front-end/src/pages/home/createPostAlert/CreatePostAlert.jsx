@@ -67,7 +67,7 @@ export default function CreatePostAlert({setCreatePost}) {
             animate={{scale:1, opacity:1, y:0}}
             exit={{scale:0.8, opacity:0, y:200}}
             transition={{duration:0.4}}
-            className='lg:-translate-y-10 shadow-xl h-screen lg:h-[400px] overflow-y-scroll shadow-black/50 bg-white rounded-lg p-4 border-[1.5px] border-gray-300 max-w-full lg:max-w-[800px] w-full lg:mx-2'
+            className='lg:-translate-y-10 shadow-xl h-screen lg:h-[400px] overflow-y-scroll shadow-black/50 bg-white rounded-lg p-2 sm:p-4 border-[1.5px] border-gray-300 max-w-full lg:max-w-[800px] w-full lg:mx-2'
           >
               
               {/* top */}
@@ -95,11 +95,11 @@ export default function CreatePostAlert({setCreatePost}) {
                   <textarea 
                     ref={textRef}
                     placeholder="What's on your mind, Mohamed?"
-                    className='w-full min-h-[130px] resize-none outline-none border-none text-lg ' 
+                    className='w-full min-h-[80px] sm:min-h-[130px] resize-none outline-none border-none text-sm sm:text-lg ' 
                   ></textarea>
 
                   <div 
-                    className={`${!data.img && 'hidden'} relative mt-3 max-h-96 sm:max-h-[500px] overflow-hidden rounded`}
+                    className={`${!data.img && 'hidden'} relative mt-2 max-h-56 sm:max-h-96 lg:max-h-[500px] overflow-hidden rounded`}
                   >
                     <button 
                       onClick={() => handeDeleteImage()}
