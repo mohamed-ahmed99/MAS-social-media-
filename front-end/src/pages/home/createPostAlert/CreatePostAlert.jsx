@@ -99,7 +99,7 @@ export default function CreatePostAlert({setCreatePost}) {
                   ></textarea>
 
                   <div 
-                    className={`${!data.img && 'hidden'} relative mt-2 max-h-56 sm:max-h-96 lg:max-h-[500px] overflow-hidden rounded`}
+                    className={`${!data.img && 'hidden'} relative mt-2 max-h-72 sm:max-h-[50vh] lg:max-h-[550px] overflow-hidden rounded`}
                   >
                     <button 
                       onClick={() => handeDeleteImage()}
