@@ -139,7 +139,7 @@ export const VerifyMe = async (req, res) =>{
         const userData = await Users.findById(req.user.decoded._id)
         if (!userData) return res.status(404).json({ message: "User not found" });
 
-        res.status(200).json({ message: "User verified successfully", user: userData });        
+        res.status(200).json({ message: "User verified successfully", data:{user: userData} });        
     }
     catch(error){
         res.status(500).json({message:error.message})

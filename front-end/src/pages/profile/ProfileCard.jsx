@@ -1,23 +1,45 @@
+
+// icons
 import { IoIosArrowDown } from "react-icons/io";
 import { FaPen } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa";
+import { FaUserCheck } from "react-icons/fa";
+import { FaFacebookMessenger } from "react-icons/fa";
 
 
-export default function ProfileCard({userData}) {
+export default function ProfileCard({userData, edit=false}) {
+    console.log("user",userData)
 
 
   const Buttons = () => {
-    return (
+    if(edit == false) return (
       <>
-          <button className="flex flex-grow items-center justify-center gap-2 px-3 py-1 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">
-              <FaPlus fontSize={14}/>
-              <span>Post</span>
+          <button className="flex flex-grow items-center justify-center gap-2 px-3 py-1 bg-gray-600 text-white rounded-lg shadow hover:bg-gray-700 transition">
+              <FaUserCheck fontSize={14}/>
+              <span>friend</span>
           </button>
-          <button className="flex flex-grow items-center justify-center gap-2 px-3 py-1 border border-gray-400 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition">
-              <FaPen fontSize={14}/>
-              <span>Edit Profile</span>
+          <button className="flex flex-grow items-center justify-center gap-2 px-3 py-1 bg-blue-600 rounded-lg hover:bg-blue-700 text-white transition">
+              <FaFacebookMessenger fontSize={14}/>
+              <span>message</span>
           </button>
       </>)
+
+      else{
+        return(
+        <>
+            <button 
+                className="flex flex-grow items-center justify-center gap-2 px-3 py-1 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">
+                <FaPlus fontSize={14}/>
+                <span>Post</span>
+            </button>
+            <button 
+                className="flex flex-grow items-center justify-center gap-2 px-3 py-1 border border-gray-400 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition">
+                <FaPen fontSize={14}/>
+                <span>Edit Profile</span>
+            </button>
+        </>
+        )
+      }
   }
 
 
@@ -44,13 +66,16 @@ export default function ProfileCard({userData}) {
 
             {/*  */}
             <div className="hidden lg:flex items-center justify-center lg:justify-between">
-                <h2 className="text-2xl font-semibold">{userData?.firstName} {userData?.lastName}</h2>
+                <h2 className="text-2xl font-semibold">
+                    {userData? userData.firstName + ' ' + userData.lastName :"user"}
+                </h2>
 
+                
                 <div className="flex gap-4">
                     <Buttons/>
                 </div>
+                
             </div>
-
 
 
             <div className="hidden lg:flex gap-4">
@@ -61,13 +86,14 @@ export default function ProfileCard({userData}) {
 
 
             <div className="absolute flex items-center justify-between px-3  top-7 sm:top-4 left-0 w-full lg:hidden">
-                <h2 className="text-xl sm:text-2xl font-semibold flex-grow ">{userData?.firstName} {userData?.lastName}</h2>
+                <h2 className="text-xl sm:text-2xl font-semibold flex-grow ">
+                    {userData? userData.firstName + ' ' + userData.lastName :"user"}
+                </h2>
 
-                <div className="flex gap-4 ">
-                  <p className=""><span>0</span> Posts</p>
-                  <p><span>0</span> Friens</p>
-                </div>
-                
+                    <div className="flex gap-4 ">
+                    <p className=""><span>0</span> Posts</p>
+                    <p><span>0</span> Friens</p>
+                    </div>
                 
                 
             </div>

@@ -1,22 +1,28 @@
 import React from 'react'
 
-import PersonalDetails from "./PersonalDetails";
-import PostEditor from "./PostEditor";
-import PostView from "./PostView";
-import Friends from "./Friends";
-import Posts from "./Posts";
+import PersonalDetails from "../profile/PersonalDetails";
+import PostEditor from "../profile/PostEditor";
+import PostView from "../profile/PostView";
+import Friends from "../profile/Friends";
+import Posts from "../profile/Posts";
 
-export default function All() {
+// my hooks 
+import {useUserContext} from '../../hooks/useUserContext'
+import {pageTop} from '../../hooks/someFunctions'
+
+export default function AllUserPage() {
+
+  pageTop('user - MAS Social Media ')
+
   return (
     <>
      <div className="hidden lg:block w-full lg:max-w-[900px] m-auto gap-4">
               <div className="grid grid-cols-10 gap-4">
 
                 <div className="col-span-6 flex flex-col justify-between">
-                      <PersonalDetails me={true}/>
+                      <PersonalDetails me={false}/>
                       <div className="col-span-10 lg:col-span-6 lg:rounded-xl space-y-4">
-                        <PostEditor/>
-                        <PostView/>
+                        <PostEditor placeholder={`write a post to user `} me={false} />
                       </div>
                   </div>
 
@@ -27,7 +33,7 @@ export default function All() {
               </div>
 
               <div className="mt-4">
-                  <Posts/>
+                  <Posts />
               </div>
 
           </div>

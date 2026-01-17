@@ -16,7 +16,11 @@ import FriendsPage from './pages/friends/Page'
 import Friends from './pages/friends/Friends'
 import Requestes from './pages/friends/Requestes'
 import Suggestions from './pages/friends/Suggestions'
+
+// User Page 
 import UserPage from './pages/users/page'
+import AllUserPage from './pages/users/All'
+
 
 function App() {
   return (
@@ -44,7 +48,7 @@ const AppRoutes = () => {
         try{
           // http://localhost:5150/api/auth/verify-me
           //https://masproback.vercel.app/api/auth/verify-me
-          const response = await fetch("https://masproback.vercel.app/api/auth/verify-me", {
+          const response = await fetch("http://localhost:5150/api/auth/verify-me", {
             method:"GET",
             headers:{
               "Authorization": `Bearer ${token}`,
@@ -53,10 +57,12 @@ const AppRoutes = () => {
           })
 
           const data = await response.json()
+          
           if(!response.ok) {
               return navigate('/signin')
           }else{
-            setUserData(data.user)
+            console.log(data.data)
+            setUserData(data.data)
           }
         }
         catch(error){
@@ -102,8 +108,9 @@ const AppRoutes = () => {
 
           {/* userPage */}
           <Route path='/user/:username' element={<UserPage/>}>
-
+              <Route index element={<AllUserPage/>}/>
           </Route>
+          
 
           {/* other pages - not implemented yet */}
           <Route path='/photos' element={<NotFound/>}/>

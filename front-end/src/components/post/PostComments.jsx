@@ -10,9 +10,9 @@ export default function PostComments({ openComments, setOpenComments, data="" })
         commentCount: 10,
         comments: [
             { id: 1, author: "User1", content: "This is a comment.", img:"" },
-            { id: 2, author: "User2", content: "hello.", img:"user.jpg" },
-            { id: 2, author: "User2", content: "hello.", img:"user.jpg" },
-            { id: 2, author: "User2", content: "hello.", img:"user.jpg" },
+            { id: 2, author: "User2", content: "hello.", img:"/user.jpg" },
+            { id: 2, author: "User2", content: "hello.", img:"/user.jpg" },
+            { id: 2, author: "User2", content: "hello.", img:"" },
             // Add more mock comments as needed
         ]
     }

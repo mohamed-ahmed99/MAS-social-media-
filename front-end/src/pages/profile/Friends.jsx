@@ -30,7 +30,7 @@ export default function Friends() {
         <div className="grid grid-cols-3 gap-2">
             {FriendsData.map((friend, index) => (
                 <Link 
-                    to="/profile"
+                    to={`/user/${friend.name.replaceAll(" ", "_")}`}
                     key={index} className="mb-2 flex flex-col "
                 >
                     <img 

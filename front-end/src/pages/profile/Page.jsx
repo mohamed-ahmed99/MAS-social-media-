@@ -25,9 +25,9 @@ export default function ProfilePage() {
         <div className="bg-gradient-to-b from-[#999]/40 from-3% to-white shadow space-y-5">
 
           <div className=" w-full lg:max-w-[900px] m-auto space-y-6" >
-            <CoverPhoto img={'/cover.jpg'}/>
+            <CoverPhoto img={'/cover.jpg'} edit={true}/>
             <div>
-              <ProfileCard userData={userData}/>
+              <ProfileCard userData={userData.user} edit={true}/>
               <NavOfAcountComponents />
             </div>
           </div>

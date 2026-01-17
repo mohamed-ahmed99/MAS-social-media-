@@ -7,7 +7,7 @@ import { BsImages } from "react-icons/bs";
 
 
 
-export default function PostEditor() {
+export default function PostEditor({placeholder="What's on your mind?", me=true}) {
 
     
     const LinksComponents =[
@@ -22,14 +22,17 @@ export default function PostEditor() {
     <div className="bg-white p-3  sm:px-4 lg:shadow lg:rounded-xl sm:flex sm:gap-3 items-center overflow-hidden lg:block">
 
         <button className="flex items-center gap-3 w-full rounded-full py-2">
-            <CircularImage src="./user.jpg" alt="Profile" size={45} />
-            <div className="flex-grow text-left px-5 text-gray-600 text-lg bg-gray-100 p-2 rounded-full ">What's on your mind?</div>
+            <CircularImage src="/user.jpg" alt="Profile" size={45} />
+            <div className="flex-grow text-left px-5 text-gray-600 text-lg bg-gray-100 p-2 rounded-full ">{placeholder}</div>
         </button>
 
         <div className='flex items-center  pt-2 gap-4 sm:gap-8 lg:mt-2 lg:border-t'>
             {LinksComponents.map((link, index) => {
+              if(me && index == 1) {
+                return null
+              }
               return (
-                <Link to={link.href} key={index} className="flex items-center gap-2 sm:gap-3 w-full rounded-lg  px-2 py-2 lg:hover:bg-gray-100">
+                <Link to={link.href} key={index} className="flex justify-center items-center gap-2 sm:gap-3 w-full rounded-lg  px-2 py-2 lg:hover:bg-gray-100">
                     <div className="text-xl sm:text-2xl text-gray-800">{link.icon}</div>
                     <div className="font-semibold text-gray-600 capitalize">{link.text}</div>
                 </Link>

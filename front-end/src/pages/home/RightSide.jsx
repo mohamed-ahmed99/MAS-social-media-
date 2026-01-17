@@ -22,7 +22,6 @@ export default function RightSide() {
     {img:"./user.jpg", name:"Mohamed waleed", lastSeen:"Today at 1:00am", online:true},
     {img:"./user.jpg", name:"Mohamed waleed", lastSeen:"Today at 1:00am", online:true},
     {img:"./user.jpg", name:"Mohamed waleed", lastSeen:"Today at 1:00am", online:true},
-    // ... باقي الناس
   ];
 
   return (
@@ -37,7 +36,7 @@ export default function RightSide() {
           whileTap={{ scale: 0.98 }}
         >
           <Link 
-            to={`/friends/${friend.name.replaceAll(" ", "_")}`} 
+            to={`/user/${friend.name.replaceAll(" ", "_")}`} 
             className='flex items-center gap-3 px-2 py-2 rounded-xl hover:bg-blue-100 transition-all duration-200 group cursor-pointer'
           >
 

@@ -10,7 +10,7 @@ import { GoPencil } from "react-icons/go";
 import { GrLocation } from "react-icons/gr";
 
 
-export default function PersonalDetails() {
+export default function PersonalDetails({me=false}) {
 
     const ListComponets = [
         {icon:<GrLocation/>, value:"lives in minya, Egypt"},
@@ -27,9 +27,14 @@ export default function PersonalDetails() {
         
         <div className='flex items-stretch justify-between h-[40px] mb-2 '>
             <h2 className='text-xl font-semibold mb-4 h-full flex items-center'>Personal Details</h2>
+            
+            {me &&
             <div className='h-full flex items-center translate-y-[1px]'>
-                <button className='text-gray-800 hover:bg-slate-100 p-2 rounded-full'> <FaPen fontSize={17} className=''/> </button>
+                <button className='text-gray-800 hover:bg-slate-100 p-2 rounded-full'> 
+                    <FaPen fontSize={17} className=''/> 
+                </button>
             </div>
+            }
         </div>
     
         <ul className='space-y-2 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1'>

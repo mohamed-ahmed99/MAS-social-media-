@@ -23,7 +23,7 @@ import PostComments from "./PostComments";
 
 
 
-export default function Post({img, profile=false}) {
+export default function Post({img, profile=false, userData}) {
     const [showPostImage, setShowPostImage] = useState(false)
     const [hiddenPost, setHiddenPost] = useState(false)
 
@@ -100,13 +100,13 @@ export default function Post({img, profile=false}) {
                 <div className="flex items-center gap-4">
                     <Link to={'/profile'}
                         className="h-[40px] w-[40px] rounded-full overflow-hidden block">
-                        <img className="h-full w-full object-cover" src="./user.jpg" alt="user" />
+                        <img className="h-full w-full object-cover" src="/user.jpg" alt="user" />
                     </Link>
 
                     <div className="leading-tight">
                         <Link 
                             to={'/profile'}
-                            className="font-semibold text-[15px]">Mohamed Ahmed
+                            className="font-semibold text-[15px]"> Mohamed Ahmed
                         </Link>
                         <p className="text-xs text-gray-500">November 11 at 3:33 PM</p>
                     </div>
