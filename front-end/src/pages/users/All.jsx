@@ -41,11 +41,11 @@ export default function AllUserPage() {
 
         <div className="lg:hidden w-full lg:max-w-[900px] m-auto grid grid-cols-10 lg:gap-4">
           {/* personal details */}
-          <PersonalDetails/>
+          <PersonalDetails me={false}/>
 
           {/* post manager */}
           <div className="col-span-10 lg:col-span-6 lg:rounded-xl space-y-4">
-              <PostEditor/>
+              <PostEditor me={false}/>
               <PostView/>
           </div>
 

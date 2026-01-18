@@ -11,6 +11,7 @@ import { GrLocation } from "react-icons/gr";
 
 
 export default function PersonalDetails({me=false}) {
+    console.log('h', me)
 
     const ListComponets = [
         {icon:<GrLocation/>, value:"lives in minya, Egypt"},

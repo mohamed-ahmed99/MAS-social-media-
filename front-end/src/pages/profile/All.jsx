@@ -15,7 +15,7 @@ export default function All() {
                 <div className="col-span-6 flex flex-col justify-between">
                       <PersonalDetails me={true}/>
                       <div className="col-span-10 lg:col-span-6 lg:rounded-xl space-y-4">
-                        <PostEditor/>
+                        <PostEditor me={true}/>
                         <PostView/>
                       </div>
                   </div>
@@ -35,11 +35,11 @@ export default function All() {
 
         <div className="lg:hidden w-full lg:max-w-[900px] m-auto grid grid-cols-10 lg:gap-4">
           {/* personal details */}
-          <PersonalDetails/>
+          <PersonalDetails me={true}/>
 
           {/* post manager */}
           <div className="col-span-10 lg:col-span-6 lg:rounded-xl space-y-4">
-              <PostEditor/>
+              <PostEditor me={true}/>
               <PostView/>
           </div>
 

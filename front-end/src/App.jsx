@@ -48,7 +48,7 @@ const AppRoutes = () => {
         try{
           // http://localhost:5150/api/auth/verify-me
           //https://masproback.vercel.app/api/auth/verify-me
-          const response = await fetch("http://localhost:5150/api/auth/verify-me", {
+          const response = await fetch("https://masproback.vercel.app/api/auth/verify-me", {
             method:"GET",
             headers:{
               "Authorization": `Bearer ${token}`,

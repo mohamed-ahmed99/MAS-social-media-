@@ -7,7 +7,7 @@ import { BsImages } from "react-icons/bs";
 
 
 
-export default function PostEditor({placeholder="What's on your mind?", me=true}) {
+export default function PostEditor({placeholder="What's on your mind?", me=false}) {
 
     
     const LinksComponents =[
@@ -28,7 +28,7 @@ export default function PostEditor({placeholder="What's on your mind?", me=true}
 
         <div className='flex items-center  pt-2 gap-4 sm:gap-8 lg:mt-2 lg:border-t'>
             {LinksComponents.map((link, index) => {
-              if(me && index == 1) {
+              if(!me && index == 1) {
                 return null
               }
               return (
