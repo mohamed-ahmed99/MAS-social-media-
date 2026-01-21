@@ -52,14 +52,18 @@ app.use((req, res) => {
     res.status(404).json({message:`Route ${req.originalUrl} not found.`})
 })
 
+// error middleWare
+app.use((err, req, res, next) => {
+    return res.status(500).send({message:"fail", error:err.message})
+})
 
 
-if (process.env.NODE_ENV !== 'production') {
+// if (process.env.NODE_ENV !== 'production') {
   const Port = process.env.PORT || 5000
   app.listen(Port, () => console.log(`Server running on port ${Port}...`))
-}
+// }
 
 // when deploy on vercel ✌️
-export default app
+// export default app
 
 

@@ -4,146 +4,126 @@ import transporter from "../utils/sendEmail.js"
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv';
 import {verifyEmailMSG} from '../utils/emailMessages.js';
+import wrapperMD from "../models/wrapperMD.js";
 
 dotenv.config()
 
 
 
-export const SignUp = async (req, res) => {
-    try{
-        const user = await Users.findOne({email:req.body.email})
-        if(user) return res.status(400).json({message:"This email connected with another account", order:"login"})
+export const SignUp = wrapperMD(async (req, res) => {
+    // 
+    const user = await Users.findOne({email:req.body.email})
+    if(user) return res.status(400).json({message:"This email connected with another account", order:"login"})
 
-        req.body.password = await bcrypt.hash(req.body.password, 10)
-        const verifyCode = Math.floor(Math.random() * 900000 + 100000).toString()
-        const newUser = await Users.create({...req.body, verifyCode:verifyCode})
+    req.body.password = await bcrypt.hash(req.body.password, 10)
+    const verifyCode = Math.floor(Math.random() * 900000 + 100000).toString()
+    const newUser = await Users.create({...req.body, verifyCode:verifyCode})
 
-        await transporter.sendMail({
-            from:process.env.EMAIL_FROM,
-            to:req.body.email,
-            subject:"Verify Your Account",
-            html:verifyEmailMSG(newUser.firstName, verifyCode)
-        })
-        res.status(201).json({message:"successful registration, check your email"})
+    await transporter.sendMail({
+        from:process.env.EMAIL_FROM,
+        to:req.body.email,
+        subject:"Verify Your Account",
+        html:verifyEmailMSG(newUser.firstName, verifyCode)
+    })
+    res.status(201).json({message:"successful registration, check your email"})
 
-    }
-    catch(error){
-        res.status(500).json({message:error.message})
-    }
-}
+    
+})
 
 
 export const VerifyEmail = async (req, res) => {
-    try{
-        const {email, code} = req.body
-        if(!email || !code) return res.status(400).json({message:"email and code are required"})
+    const {email, code} = req.body
+     if(!email || !code) return res.status(400).json({message:"email and code are required"})
 
-        // check if user in dataBase or varification time expired or not
-        const user = await Users.findOne({email: req.body.email}).select("+verifyCode +sessions")
-        if(!user) return res.status(404).json({message:"User not found. Please check your email or create a new account."})
+    // check if user in dataBase or varification time expired or not
+    const user = await Users.findOne({email: req.body.email}).select("+verifyCode +sessions")
+    if(!user) return res.status(404).json({message:"User not found. Please check your email or create a new account."})
 
-        // check code
-        if(code != user.verifyCode) return res.status(401).json({message:"Incorrect verification code"})
+    // check code
+    if(code != user.verifyCode) return res.status(401).json({message:"Incorrect verification code"})
         
-        // token and ip
-        const token = jwt.sign({_id:user._id, email:user.email}, process.env.JWT_SECRET)
-        const ip = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress
+    // token and ip
+    const token = jwt.sign({_id:user._id, email:user.email}, process.env.JWT_SECRET)
+    const ip = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress
 
-        // update user
-        await Users.updateOne(  { email },
-            {
-                $set: {
-                isVerified: true,
-                verifyCode: null,
-                emailVerificationExpires: null,
-                },
-                $push: { sessions: { token, ip } },
-            }
-        );
+    // update user
+    await Users.updateOne(  { email },
+        {
+            $set: {
+            isVerified: true,
+            verifyCode: null,
+            emailVerificationExpires: null,
+            },
+            $push: { sessions: { token, ip } },
+        }
+    );
 
 
-        // cookies doesn't work on Vercel deployment
-        // res.cookie("MASproAuth", token, {
-        //     httpOnly:true,
-        //     secure:process.env.NODE_ENV === "production",
-        //     sameSite:"None",
-        //     path:"/",
-        //     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-        // })
-        
-        // response
-        const getUser = await Users.findOne({email: email})
-        const sentUser = {...getUser, token: token}
-        return res.status(200).json({ message: "Verified successfully", user:sentUser});
-
-    }
-    catch(error){
-        res.status(500).json({message:error.message})
-    }
+       // cookies doesn't work on Vercel deployment
+    // res.cookie("MASproAuth", token, {
+    //     httpOnly:true,
+    //     secure:process.env.NODE_ENV === "production",
+    //     sameSite:"None",
+    //     path:"/",
+    //     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    // })
+    
+    // response
+    const getUser = await Users.findOne({email: email})
+    const sentUser = {...getUser, token: token}
+    return res.status(200).json({ message: "Verified successfully", user:sentUser});
 }
 
 
-export const SignIn = async (req, res) => {
-    try{
-        // check if user in dataBase or not
-        const user = await Users.findOne({email: req.body.email}).select("+password +emailVerificationExpires +sessions")
-        if(!user) return res.status(404).json({message:"User not found. Please check your email or create a new account."})
+export const SignIn = wrapperMD(async (req, res) => {
+    // check if user in dataBase or not
+    const user = await Users.findOne({email: req.body.email}).select("+password +emailVerificationExpires +sessions")
+    if(!user) return res.status(404).json({message:"User not found. Please check your email or create a new account."})
 
-        // check password
-        if(! await user.checkPassword(req.body.password)){
-            return res.status(401).json({message:"The password you entered is incorrect."})
-        }
-        
-
-        // have user verified his email ?
-        if(user.isVerified == false) {
-            user.emailVerificationExpires = Date.now() + 1000 * 60 * 10 // 10 minutes
-            await user.save()
-            return res.status(401).json(
-                {message:"Account not verified. A verification code has been sent to your email.", order:"verifyEmail"}
-            )
-        }
-
-        // token and ip
-        const token = jwt.sign({_id:user._id, email:user.email}, process.env.JWT_SECRET)
-        const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.connection.remoteAddress
-
-        // update user
-        await Users.updateOne(  { email: req.body.email },
-            {
-                $set: { emailVerificationExpires: null },
-                $push: { sessions: { token, ip } },
-            }
-        );
-        
-        
-        // response
-        const getUser = await Users.findOne({email: req.body.email})
-        return res.status(200).json({ message: "successful login", user:getUser, token});
-        
+    // check password
+    if(! await user.checkPassword(req.body.password)){
+        return res.status(401).json({message:"The password you entered is incorrect."})
     }
-    catch(error) {
-        res.status(500).json({message:error.message})
+        
+
+    // have user verified his email ?
+    if(user.isVerified == false) {
+        user.emailVerificationExpires = Date.now() + 1000 * 60 * 10 // 10 minutes
+        await user.save()
+        return res.status(401).json(
+            {message:"Account not verified. A verification code has been sent to your email.", order:"verifyEmail"}
+        )
     }
 
-}
+    // token and ip
+    const token = jwt.sign({_id:user._id, email:user.email}, process.env.JWT_SECRET)
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.connection.remoteAddress
+
+    // update user
+    await Users.updateOne(  { email: req.body.email },
+        {
+            $set: { emailVerificationExpires: null },
+            $push: { sessions: { token, ip } },
+        }
+    );
+        
+    // response
+    const getUser = await Users.findOne({email: req.body.email})
+    return res.status(200).json({ message: "successful login", user:getUser, token});
+        
+})
 
 
 
 // verify-me 
 export const VerifyMe = async (req, res) =>{
-    try{
-        
-        if (!req.user?.decoded?._id) return res.status(401).json({ message: "Unauthorized" });
+    // 
+    if (!req.user?.decoded?._id) return res.status(401).json({ message: "Unauthorized" });
 
-        const userData = await Users.findById(req.user.decoded._id)
-        if (!userData) return res.status(404).json({ message: "User not found" });
+    const userData = await Users.findById(req.user.decoded._id)
+    if (!userData) return res.status(404).json({ message: "User not found" });
 
-        res.status(200).json({ message: "User verified successfully", data:{user: userData} });        
-    }
-    catch(error){
-        res.status(500).json({message:error.message})
-    }
+    res.status(200).json({ message: "User verified successfully", data:{user: userData} });        
 }
 
 
