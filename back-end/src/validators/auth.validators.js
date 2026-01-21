@@ -2,33 +2,33 @@ import { body, validationResult } from "express-validator"
 
 
 const registerSchecma = {
-    firstName: body("firstName")
+    firstName: body("personalInfo.firstName")
         .notEmpty().withMessage("username is rquired")
         .isString().withMessage("username must be string")
         .isLength({min:2}).withMessage("username mustn't be at least 2 characters"),
 
-    lastName: body("lastName")
+    lastName: body("personalInfo.lastName")
         .notEmpty().withMessage("lastName is rquired")
         .isString().withMessage("lastName must be string")
         .isLength({min:2}).withMessage("lastName mustn't be at least 2 characters"),
 
-    address: body("address")
+    address: body("personalInfo.address")
         .notEmpty().withMessage("address is rquired")
         .isString().withMessage("address must be string")
         .isLength({min:2}).withMessage("address mustn't be at least 2 characters"),
 
-    phoneNumber: body("phoneNumber")
+    phoneNumber: body("personalInfo.phoneNumber")
         .notEmpty().withMessage("phoneNumber is rquired")
         .isString().withMessage("phoneNumber must be string")
         .isLength({min:10}).withMessage("phoneNumber mustn't be at least 10 characters")
         .isLength({max:15}).withMessage("phoneNumber mustn't be more than 15 characters"),
         
-    email: body("email")
+    email: body("personalInfo.email")
         .notEmpty().withMessage("email is rquired")
         .isEmail().withMessage("Invalid email")
         .isString().withMessage("email must be string"),
         
-    password: body("password")
+    password: body("personalInfo.password")
         .notEmpty().withMessage("password is rquired")
         .isString().withMessage("password must be string")
         .isStrongPassword({minLength: 8,minLowercase: 1,minUppercase:0, minNumbers: 1,minSymbols: 1})

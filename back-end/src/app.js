@@ -11,6 +11,7 @@ import authRoutes from './routes/auth.routes.js'
 const app = express() 
 dotenv.config()
 
+// cors
 const allowedOrigins = process.env.ORIGINS.split(',') || []
 app.use(cors({
     origin: (origin, callBack) => {
@@ -42,12 +43,15 @@ const ConnectDB = async () => {
 ConnectDB()
 
 
+// 
 app.get('/', (req, res) => {
     res.status(200).json({message:"hello user"})
 })
 
+// auth routes
 app.use('/api/auth', authRoutes)
 
+// not found routes
 app.use((req, res) => {
     res.status(404).json({message:`Route ${req.originalUrl} not found.`})
 })
@@ -58,12 +62,12 @@ app.use((err, req, res, next) => {
 })
 
 
-if (process.env.NODE_ENV !== 'production') {
+// if (process.env.NODE_ENV !== 'production') {
   const Port = process.env.PORT || 5000
   app.listen(Port, () => console.log(`Server running on port ${Port}...`))
-}
+// }
 
 // when deploy on vercel ✌️
-export default app
+// export default app
 
 

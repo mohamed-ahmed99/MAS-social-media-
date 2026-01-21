@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 import Users from '../models/user.schema.js'
-import wrapperMD from '../models/wrapperMD.js'
+import wrapperMD from './wrapperMD.js'
 
 dotenv.config()
 

@@ -65,12 +65,14 @@ const SignUp = () => {
         const callBack = async () => {
             setLoading(true)
             
+            // http://localhost:5150/api/auth/signup
+            // https://masproback.vercel.app/api/auth/signup
             try{
-                const res = await fetch("https://masproback.vercel.app/api/auth/signup",{
+                const res = await fetch("http://localhost:5150/api/auth/signup",{
                     method:"POST",
                     headers:{"content-type":"application/json"},
                     credentials:"include",
-                    body:JSON.stringify(data)
+                    body:JSON.stringify({personalInfo:data})
                 })
 
                 const resData = await res.json()

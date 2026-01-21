@@ -4,62 +4,68 @@ import transporter from "../utils/sendEmail.js"
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv';
 import {verifyEmailMSG} from '../utils/emailMessages.js';
-import wrapperMD from "../models/wrapperMD.js";
+import wrapperMD from "../middlewares/wrapperMD.js";
+import Sessions from "../models/userSessions.model.js";
 
 dotenv.config()
 
 
-
+// sign up
 export const SignUp = wrapperMD(async (req, res) => {
-    // 
-    const user = await Users.findOne({email:req.body.email})
+    // check if user has an acound or not 
+    const user = await Users.findOne({"personalInfo.email":req.body.personalInfo.email})
     if(user) return res.status(400).json({message:"This email connected with another account", order:"login"})
 
-    req.body.password = await bcrypt.hash(req.body.password, 10)
+    // hash password, create verification code & create user
+    req.body.personalInfo.password = await bcrypt.hash(req.body.personalInfo.password, 10)
     const verifyCode = Math.floor(Math.random() * 900000 + 100000).toString()
-    const newUser = await Users.create({...req.body, verifyCode:verifyCode})
+    const newUser = await Users.create({...req.body,verifyUser:{verifyCode:verifyCode}})
 
+    // send code to user
     await transporter.sendMail({
         from:process.env.EMAIL_FROM,
-        to:req.body.email,
+        to:req.body.personalInfo.email,
         subject:"Verify Your Account",
-        html:verifyEmailMSG(newUser.firstName, verifyCode)
+        html:verifyEmailMSG(newUser.personalInfo.firstName, verifyCode)
     })
+    // response
     res.status(201).json({message:"successful registration, check your email"})
-
-    
 })
 
 
+// verify email
 export const VerifyEmail = async (req, res) => {
-    const {email, code} = req.body
-     if(!email || !code) return res.status(400).json({message:"email and code are required"})
+    // check body
+    const {email, code} = req.body.personalInfo
+    if(!email || !code) return res.status(400).json({message:"email and code are required"})
 
     // check if user in dataBase or varification time expired or not
-    const user = await Users.findOne({email: req.body.email}).select("+verifyCode +sessions")
+    const user = await Users.findOne({email: email})
     if(!user) return res.status(404).json({message:"User not found. Please check your email or create a new account."})
 
     // check code
-    if(code != user.verifyCode) return res.status(401).json({message:"Incorrect verification code"})
+    if(code != user.verifyUser.verifyCode) return res.status(401).json({message:"Incorrect verification code"})
         
     // token and ip
     const token = jwt.sign({_id:user._id, email:user.email}, process.env.JWT_SECRET)
     const ip = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress
 
-    // update user
-    await Users.updateOne(  { email },
-        {
-            $set: {
-            isVerified: true,
-            verifyCode: null,
-            emailVerificationExpires: null,
-            },
-            $push: { sessions: { token, ip } },
-        }
-    );
+
+    // create session
+    const session = {token, ip}
+    await Sessions.create({user:user._id, sessions:[session]})
+
+    // update DB
+    user.verifyUser = {
+        isVerified: true,
+        verifyCode:null,
+        emailVerificationExpires: null,
+    }
+    await user.save()
+    
 
 
-       // cookies doesn't work on Vercel deployment
+    // cookies doesn't work on Vercel deployment
     // res.cookie("MASproAuth", token, {
     //     httpOnly:true,
     //     secure:process.env.NODE_ENV === "production",
@@ -69,16 +75,15 @@ export const VerifyEmail = async (req, res) => {
     // })
     
     // response
-    const getUser = await Users.findOne({email: email})
-    const sentUser = {...getUser, token: token}
-    return res.status(200).json({ message: "Verified successfully", user:sentUser});
+    const userData = {...user.personalInfo, isVerified:true, token: token}
+    return res.status(200).json({ message: "Verified successfully", user:userData});
 }
 
 
 export const SignIn = wrapperMD(async (req, res) => {
     // check if user in dataBase or not
     const user = await Users.findOne({email: req.body.email}).select("+password +emailVerificationExpires +sessions")
-    if(!user) return res.status(404).json({message:"User not found. Please check your email or create a new account."})
+    if(!user) return res.status(404).json({message:"User not found. check that your email is correct or create a new account."})
 
     // check password
     if(! await user.checkPassword(req.body.password)){
