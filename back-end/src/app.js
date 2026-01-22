@@ -58,6 +58,7 @@ app.use((req, res) => {
 
 // error middleWare
 app.use((err, req, res, next) => {
+    console.log(err)
     return res.status(500).send({message:"fail", error:err.message})
 })
 

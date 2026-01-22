@@ -83,12 +83,12 @@ export const VerifyEmail = async (req, res) => {
 
 export const SignIn = wrapperMD(async (req, res) => {
     // check if user in dataBase or not
-    const { personalInfo } = req.body
-    const user = await Users.findOne({"personalInfo.email": personalInfo.email})
+    const { email, password } = req.body
+    const user = await Users.findOne({"personalInfo.email": email}).select("+personalInfo.password")
     if(!user) return res.status(404).json({message:"User not found. check that your email is correct or create a new account."})
 
     // check password
-    if(! await user.checkPassword(personalInfo.password)){
+    if(! await user.checkPassword(password)){
         return res.status(401).json({message:"The password you entered is incorrect."})
     }
         
@@ -101,11 +101,11 @@ export const SignIn = wrapperMD(async (req, res) => {
     }
 
     // token and ip
-    const token = jwt.sign({_id:user._id, email:user.email}, process.env.JWT_SECRET)
+    const token = jwt.sign({_id:user._id, email:user.personalInfo.email}, process.env.JWT_SECRET)
     const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.connection.remoteAddress
 
     // update user
-    await Users.updateOne({ email: req.body.email },
+    await Sessions.updateOne({ user: user._id },
         {
             // $set: { emailVerificationExpires: null },
             $push: { sessions: { token, ip } },
@@ -113,8 +113,8 @@ export const SignIn = wrapperMD(async (req, res) => {
     );
         
     // response
-    const getUser = await Users.findOne({email: req.body.email})
-    return res.status(200).json({ message: "successful login", user:getUser, token});
+    const userData = {...user.personalInfo, isVerified:user.verifyUser.isVerified}
+    return res.status(200).json({ message: "successful login", user:userData, token});
         
 })
 
