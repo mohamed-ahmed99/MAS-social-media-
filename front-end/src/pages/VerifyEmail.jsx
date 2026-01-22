@@ -70,9 +70,9 @@ export default function VerifyEmail() {
 
     const callAPI = async () => {
       try {
-        // https://masproback.vercel.app/api/auth/verify-email
         // http://localhost:5150//auth/verify-email
-        const res = await fetch("http://localhost:5150/api/auth/verify-email", {
+        // https://masproback.vercel.app/api/auth/verify-email
+        const res = await fetch("https://masproback.vercel.app/api/auth/verify-email", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           credentials: "include",

@@ -2,12 +2,13 @@ import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 import Users from '../models/user.schema.js'
 import wrapperMD from './wrapperMD.js'
+import Sessions from '../models/userSessions.model.js'
 
 dotenv.config()
 
 export const checkAuth = wrapperMD(async(req, res, next) => {
     // get token
-     const authorization = req.headers.authorization
+    const authorization = req.headers.authorization
     if(!authorization) return res.status(401).json({ message: "No token provided" })
         
     // token exist?
@@ -18,10 +19,10 @@ export const checkAuth = wrapperMD(async(req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET) // check token
 
     // is token in DataBase
-    const user = await Users.find({_id:decoded._id, "sessions.token": token}).select("+sessions.token")
+    const user = await Sessions.find({user:decoded._id, "sessions.token": token})
     if (!user)
         return res.status(401).json({ message: "Session expired or invalid token" });
 
-    req.user = { decoded };
+    req.decoded = { ...decoded };
     next()
 })

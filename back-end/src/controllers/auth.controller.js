@@ -121,15 +121,13 @@ export const SignIn = wrapperMD(async (req, res) => {
 
 
 // verify-me 
-export const VerifyMe = async (req, res) =>{
+export const VerifyMe = wrapperMD(async (req, res) =>{
     // 
-    if (!req.user?.decoded?._id) return res.status(401).json({ message: "Unauthorized" });
+    if (!req.decoded?._id) return res.status(401).json({ message: "Unauthorized" });
 
-    const userData = await Users.findById(req.user.decoded._id)
-    if (!userData) return res.status(404).json({ message: "User not found" });
+    const user = await Users.findById(req.decoded._id)
+    if (!user) return res.status(404).json({ message: "User not found" });
 
+    const userData = {...user.personalInfo, isVerified: user.verifyUser.isVerified,}
     res.status(200).json({ message: "User verified successfully", data:{user: userData} });        
-}
-
-
-
+})
