@@ -2,6 +2,7 @@ import React from 'react'
 import Post from '../../components/post/Post.jsx';
 
 export default function Posts() {
+  
   return (
     <div className='col-span-10 lg:col-span-6 space-y-1 mt-2'>
         <Post profile={true} />

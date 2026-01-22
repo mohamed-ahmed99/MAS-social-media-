@@ -15,7 +15,6 @@ export default function ProfilePage() {
   }, [])
 
   const {userData, setUserData} = useUserContext()
-  useEffect(() => console.log(userData), [userData])
 
 
   

@@ -61,7 +61,7 @@ const AppRoutes = () => {
           if(!response.ok) {
               return navigate('/signin')
           }else{
-            console.log(data.data)
+            console.log('start',data.data)
             setUserData(data.data)
           }
         }

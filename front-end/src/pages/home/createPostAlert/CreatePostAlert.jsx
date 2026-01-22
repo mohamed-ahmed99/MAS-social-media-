@@ -108,11 +108,11 @@ export default function CreatePostAlert({setCreatePost}) {
                       <FaTrash className='text-white group-hover:text-black'/>
                     </button>
                     {/* img */}
-                    <img 
-                      src={data.img ? URL.createObjectURL(data.img) : ""} 
+                    { data.img && <img 
+                      src={URL.createObjectURL(data.img)} 
                       alt="Post preview" 
                       className='w-full h-auto object-cover'
-                    />
+                    />}
                   </div>
               </div>
 

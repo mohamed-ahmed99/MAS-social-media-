@@ -19,11 +19,14 @@ import { AiFillLike } from "react-icons/ai";
 import { AiOutlineLike } from "react-icons/ai";
 import { useState } from "react";
 import PostComments from "./PostComments";
+import {useUserContext} from "../../hooks/useUserContext.jsx"
 
 
 
 
-export default function Post({img, profile=false, userData}) {
+export default function Post({img, profile=false}) {
+    const {userData, serUserData} = useUserContext()
+    
     const [showPostImage, setShowPostImage] = useState(false)
     const [hiddenPost, setHiddenPost] = useState(false)
 
@@ -106,7 +109,8 @@ export default function Post({img, profile=false, userData}) {
                     <div className="leading-tight">
                         <Link 
                             to={'/profile'}
-                            className="font-semibold text-[15px]"> Mohamed Ahmed
+                            className="font-semibold text-[15px]"> 
+                            {userData? `${userData.user?.firstName} ${userData.user?.lastName}`: "user"}
                         </Link>
                         <p className="text-xs text-gray-500">November 11 at 3:33 PM</p>
                     </div>
