@@ -36,18 +36,19 @@ export const SignUp = wrapperMD(async (req, res) => {
 // verify email
 export const VerifyEmail = async (req, res) => {
     // check body
-    const {email, code} = req.body.personalInfo
+    console.log(req.body)
+    const {email, code} = req.body
     if(!email || !code) return res.status(400).json({message:"email and code are required"})
 
     // check if user in dataBase or varification time expired or not
-    const user = await Users.findOne({email: email})
+    const user = await Users.findOne({"personalInfo.email": email})
     if(!user) return res.status(404).json({message:"User not found. Please check your email or create a new account."})
 
     // check code
     if(code != user.verifyUser.verifyCode) return res.status(401).json({message:"Incorrect verification code"})
         
     // token and ip
-    const token = jwt.sign({_id:user._id, email:user.email}, process.env.JWT_SECRET)
+    const token = jwt.sign({_id:user._id, email:user.personalInfo.email}, process.env.JWT_SECRET)
     const ip = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress
 
 
@@ -82,19 +83,18 @@ export const VerifyEmail = async (req, res) => {
 
 export const SignIn = wrapperMD(async (req, res) => {
     // check if user in dataBase or not
-    const user = await Users.findOne({email: req.body.email}).select("+password +emailVerificationExpires +sessions")
+    const { personalInfo } = req.body
+    const user = await Users.findOne({"personalInfo.email": personalInfo.email})
     if(!user) return res.status(404).json({message:"User not found. check that your email is correct or create a new account."})
 
     // check password
-    if(! await user.checkPassword(req.body.password)){
+    if(! await user.checkPassword(personalInfo.password)){
         return res.status(401).json({message:"The password you entered is incorrect."})
     }
         
 
     // have user verified his email ?
-    if(user.isVerified == false) {
-        user.emailVerificationExpires = Date.now() + 1000 * 60 * 10 // 10 minutes
-        await user.save()
+    if(user.verifyUser.isVerified == false) {
         return res.status(401).json(
             {message:"Account not verified. A verification code has been sent to your email.", order:"verifyEmail"}
         )
@@ -105,9 +105,9 @@ export const SignIn = wrapperMD(async (req, res) => {
     const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.connection.remoteAddress
 
     // update user
-    await Users.updateOne(  { email: req.body.email },
+    await Users.updateOne({ email: req.body.email },
         {
-            $set: { emailVerificationExpires: null },
+            // $set: { emailVerificationExpires: null },
             $push: { sessions: { token, ip } },
         }
     );
