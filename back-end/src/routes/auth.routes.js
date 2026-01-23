@@ -8,7 +8,7 @@ const authRoutes = Router()
 authRoutes.post('/signup', registerValidator, SignUp)
 authRoutes.post('/signin', signinValidator, SignIn)
 authRoutes.post('/verify-email', VerifyEmail)
-authRoutes.get('/verify-me', checkAuth, VerifyMe)
+authRoutes.get('/verify-me', checkAuth(), VerifyMe)
 
 
 export default authRoutes

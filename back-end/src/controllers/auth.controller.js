@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt'
 import transporter from "../utils/sendEmail.js"
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv';
-import {verifyEmailMSG} from '../utils/emailMessages.js';
+import {verifyEmailMSG} from '../config/emailMessages.js';
 import wrapperMD from "../middlewares/wrapperMD.js";
 import Sessions from "../models/userSessions.model.js";
 
@@ -48,7 +48,7 @@ export const VerifyEmail = async (req, res) => {
     if(code != user.verifyUser.verifyCode) return res.status(401).json({message:"Incorrect verification code"})
         
     // token and ip
-    const token = jwt.sign({_id:user._id, email:user.personalInfo.email}, process.env.JWT_SECRET)
+    const token = jwt.sign({_id:user._id, email:user.personalInfo.email, role:user.role}, process.env.JWT_SECRET)
     const ip = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress
 
 
@@ -101,7 +101,7 @@ export const SignIn = wrapperMD(async (req, res) => {
     }
 
     // token and ip
-    const token = jwt.sign({_id:user._id, email:user.personalInfo.email}, process.env.JWT_SECRET)
+    const token = jwt.sign({_id:user._id, email:user.personalInfo.email, role:user.role}, process.env.JWT_SECRET)
     const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.connection.remoteAddress
 
     // update user
