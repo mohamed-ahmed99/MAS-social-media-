@@ -1,9 +1,11 @@
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { useEffect } from 'react'
-import { Link } from "react-router-dom";
-import CircularImage from '../../../components/CircularImage.jsx';
+import CircularImage from '../../components/CircularImage.jsx';
 import {motion, AnimatePresence} from 'framer-motion'
 import ButtonList from './ButtonList.jsx';
+import {PuffLoader } from 'react-spinners'
+import { addPost } from './addPost.js';
+import Alert from '../Alert.jsx'
 
 // icons
 import { IoMdPhotos } from "react-icons/io";
@@ -15,6 +17,7 @@ import { FaTrash } from "react-icons/fa";
 export default function CreatePostAlert({setCreatePost}) {
   const getImage = useRef(null);
   const textRef = useRef(null);
+  const closeBtnRef = useRef(null);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -23,43 +26,56 @@ export default function CreatePostAlert({setCreatePost}) {
     };
   }, [])
 
-  const [data, setData] = useState({img:""})
-  console.log(data)
-
-
+  
+  
   // get type of post "public" , "freinds" or "only me"
   const [selectionBtn, setSelectionBtn] = useState("public")
-
+  
+  const [image, setImage] = useState("")
+  console.log(image)
+  
   const handleAddImage = () => {
     getImage.current.click();
   };
 
+  // validation message
   const [validation, setValidation] = useState("")
-  const handlePost = () => {
-    if(!textRef.current?.value) setValidation("no text to post")
+  const [loading, setIsLoading] = useState(false);
+
+
+  const handlePost = async () => {
+    if(!textRef.current?.value && !image) {
+      setValidation("no content to post")
+      return;
+    }
     else setValidation("")
+
+    // proceed to post creation
+    const response = await addPost(textRef.current?.value, image, selectionBtn, setIsLoading);
+    if(response.success){
+      closeBtnRef.current.click();
+    }
+    console.log(response);
   }
 
 
-  // 
+  //  handeDeleteImage
   const handeDeleteImage = () => {
-    setData(prev => ({...prev, img: ''}))
+    setImage("")
     getImage.current.value = null
   }
 
   // message of validation
   useEffect(() => {
-    if(validation){
-      setTimeout(() => setValidation(""), 5000);
-    }
-
+    if(validation) setTimeout(() => setValidation(""), 5000);
   },[validation])
 
   return (
     <AnimatePresence>
       <div 
         onClick={() => setCreatePost(false)}
-        className="absolute top-0 left-0 -translate-y-[100px] lg:-translate-y-[80px] h-[calc(100vh+200px)] lg:h-[calc(100vh+80px)] w-full bg-white/70 flex items-center justify-center z-[9999]">
+        className="absolute top-0 left-0 -translate-y-[100px] lg:-translate-y-[80px] h-[calc(100vh+200px)] lg:h-[calc(100vh+80px)] w-full bg-white/70 flex items-center justify-center z-[9999]"
+        >
           
           <motion.div 
             onClick={(e) => e.stopPropagation() }
@@ -69,12 +85,19 @@ export default function CreatePostAlert({setCreatePost}) {
             transition={{duration:0.4}}
             className='lg:-translate-y-10 shadow-xl h-screen lg:h-[400px] overflow-y-scroll shadow-black/50 bg-white rounded-lg p-2 sm:p-4 border-[1.5px] border-gray-300 max-w-full lg:max-w-[800px] w-full lg:mx-2'
           >
+            {/* loading */}
+            {loading &&  <div className='absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center z-10'>
+                      <PuffLoader color="#000" size={100}/>
+            </div>}
+
+
               
               {/* top */}
               <div className='flex relative'>
                   <h2 className="text-xl font-semibold mb-2 text-center w-full">Create Post</h2>
 
                   <button 
+                    ref={closeBtnRef}
                     onClick={() => setCreatePost(false)}
                     className='absolute top-1/3 -translate-y-1/2 right-2 bg-gray-200 p-1 rounded-full hover:bg-gray-300 transition-colors'>
                       <IoClose fontSize={25}/>
@@ -99,7 +122,7 @@ export default function CreatePostAlert({setCreatePost}) {
                   ></textarea>
 
                   <div 
-                    className={`${!data.img && 'hidden'} relative mt-2 max-h-72 sm:max-h-[50vh] lg:max-h-[550px] overflow-hidden rounded`}
+                    className={`${!image && 'hidden'} relative mt-2 max-h-72 sm:max-h-[50vh] lg:max-h-[550px] overflow-hidden rounded`}
                   >
                     <button 
                       onClick={() => handeDeleteImage()}
@@ -108,8 +131,8 @@ export default function CreatePostAlert({setCreatePost}) {
                       <FaTrash className='text-white group-hover:text-black'/>
                     </button>
                     {/* img */}
-                    { data.img && <img 
-                      src={URL.createObjectURL(data.img)} 
+                    {image && <img 
+                      src={URL.createObjectURL(image)} 
                       alt="Post preview" 
                       className='w-full h-auto object-cover'
                     />}
@@ -131,7 +154,7 @@ export default function CreatePostAlert({setCreatePost}) {
                             type="file"
                             accept="image/*"
                             ref={getImage}
-                            onChange={(e) => setData(prev => ({...prev, img:e.target.files[0]}))}
+                            onChange={(e) => setImage(e.target.files[0])}
                             hidden
                           />
                           
@@ -172,6 +195,8 @@ export default function CreatePostAlert({setCreatePost}) {
               </button>
           </motion.div>
       </div>
+
+      
     </AnimatePresence>
   )
 }

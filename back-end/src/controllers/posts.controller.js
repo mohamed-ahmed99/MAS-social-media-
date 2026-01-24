@@ -5,7 +5,7 @@ import Posts from "../models/post.schema.js"
 export const addPost = wrapperMD( async(req, res) => {
     // validate content
     if(!req.body.text && !req.body.images){
-        return res.status(400).json({message:"Post content is required"})
+        return res.status(400).json({status:"fail", message:"Post content is required"})
     }
 
     // create new post

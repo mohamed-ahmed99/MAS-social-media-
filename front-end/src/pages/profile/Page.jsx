@@ -5,6 +5,8 @@ import ProfileCard from "./ProfileCard";
 import NavOfAcountComponents from "./NavOfAcountComponents";
 import { Outlet } from "react-router-dom";
 
+import CreatePostAlert from "../../components/createPostAlert/CreatePostAlert.jsx";
+
 import { useState } from "react";
 
 export default function ProfilePage() {
@@ -15,18 +17,20 @@ export default function ProfilePage() {
   }, [])
 
   const {userData, setUserData} = useUserContext()
+  const [createPost, setCreatePost] = useState(false)
 
 
   
   return (
-    <div className="min-h-screen space-y-0 lg:space-y-4 bg-gray-100 pb-4">
+    <div className="min-h-screen relative space-y-0 lg:space-y-4 bg-gray-100 pb-4">
+        {createPost && <CreatePostAlert setCreatePost={setCreatePost}/>}
         
         <div className="bg-gradient-to-b from-[#999]/40 from-3% to-white shadow space-y-5">
 
           <div className=" w-full lg:max-w-[900px] m-auto space-y-6" >
             <CoverPhoto img={'/cover.jpg'} edit={true}/>
             <div>
-              <ProfileCard userData={userData.user} edit={true}/>
+              <ProfileCard userData={userData.user} edit={true} setCreatePost={setCreatePost}/>
               <NavOfAcountComponents />
             </div>
           </div>

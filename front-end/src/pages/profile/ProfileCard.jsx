@@ -1,4 +1,6 @@
 
+
+
 // icons
 import { IoIosArrowDown } from "react-icons/io";
 import { FaPen } from "react-icons/fa";
@@ -7,9 +9,13 @@ import { FaUserCheck } from "react-icons/fa";
 import { FaFacebookMessenger } from "react-icons/fa";
 
 
-export default function ProfileCard({userData, edit=false}) {
+export default function ProfileCard({userData, edit=false, setCreatePost}) {
     console.log("user",userData)
 
+    const handlePostClick = () => {
+        window.scrollTo(0, 0);
+        setCreatePost(true)
+    }
 
   const Buttons = () => {
     if(edit == false) return (
@@ -28,6 +34,7 @@ export default function ProfileCard({userData, edit=false}) {
         return(
         <>
             <button 
+                onClick={() => handlePostClick()}
                 className="flex flex-grow items-center justify-center gap-2 px-3 py-1 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">
                 <FaPlus fontSize={14}/>
                 <span>Post</span>

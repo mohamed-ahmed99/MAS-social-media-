@@ -4,7 +4,7 @@ import { useUserContext } from '../../hooks/useUserContext';
 import { memo } from 'react';
 import CreatePostBox from './CreatePostBox';
 import Post from '../../components/post/Post.jsx';
-import CreatePostAlert from './createPostAlert/CreatePostAlert.jsx';
+import CreatePostAlert from '../../components/createPostAlert/CreatePostAlert.jsx';
 import { useState } from 'react';
 
 export default memo( function Home () {

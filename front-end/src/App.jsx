@@ -32,6 +32,7 @@ function App() {
 const AppRoutes = () => {
     const navigate = useNavigate()
     const {userData, setUserData} = useUserContext()
+   
 
     const [loading, setIsLoading] = useState(true)
     
@@ -129,6 +130,9 @@ const AppRoutes = () => {
                 <AppLoading loading={loading}/>
        </div>
       }
+
+      {/* alert */}
+
     </>
   )
   

@@ -64,7 +64,7 @@ const SignIn = () => {
 
                 localStorage.setItem("MASproAuth", serverRes.token)
                 serverRes.user.token = ""
-                setUserData(serverRes.user)
+                setUserData(serverRes)
                 navigate('/profile')
             }
             catch(error){
