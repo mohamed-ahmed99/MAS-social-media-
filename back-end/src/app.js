@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import mongoose from 'mongoose'
-
+import postRoute from './routes/post.routes.js'
 
 // routes
 import authRoutes from './routes/auth.routes.js'
@@ -50,6 +50,7 @@ app.get('/', (req, res) => {
 
 // auth routes
 app.use('/api/auth', authRoutes)
+app.use('/api/posts', postRoute)
 
 // not found routes
 app.use((req, res) => {

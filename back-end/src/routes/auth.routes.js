@@ -2,6 +2,7 @@ import {Router} from 'express'
 import { SignUp, SignIn, VerifyEmail, VerifyMe } from '../controllers/auth.controller.js'
 import {registerValidator, signinValidator} from '../validators/auth.validators.js'
 import {checkAuth} from '../middlewares/checkAuth.js'
+// import {ROLES} from '../config/constants.js'
 
 const authRoutes = Router()
 
