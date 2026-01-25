@@ -24,7 +24,7 @@ import {useUserContext} from "../../hooks/useUserContext.jsx"
 
 
 
-export default function Post({img, profile=false}) {
+export default function Post({data, img, profile=false}) {
     const {userData, serUserData} = useUserContext()
     
     const [showPostImage, setShowPostImage] = useState(false)
@@ -47,7 +47,7 @@ export default function Post({img, profile=false}) {
 
     // data about the reactions
     const reactionsData = {
-        reactions:99,
+        reactions: 92,
         comments:20,
         shares:10,
         reactionsTypes:{
@@ -112,7 +112,7 @@ export default function Post({img, profile=false}) {
                             className="font-semibold text-[15px]"> 
                             {userData? `${userData.user?.firstName} ${userData.user?.lastName}`: "user"}
                         </Link>
-                        <p className="text-xs text-gray-500">November 11 at 3:33 PM</p>
+                        <p className="text-xs text-gray-500">{new Date(data?.createdAt).toLocaleString()}</p>
                     </div>
                 </div>
 
@@ -135,8 +135,8 @@ export default function Post({img, profile=false}) {
             {/* text */}
             <div className="px-3 mt-3 mb-2">
                 <p className="text-[15px] leading-relaxed whitespace-pre-line text-black/90">
-                {` hello, I'm the one who built this website\n`}
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio, ipsa?
+                {data?.content?.text}
+                
                 </p>
             </div>
 
@@ -165,7 +165,7 @@ export default function Post({img, profile=false}) {
                     </div> }
 
                     {/* count of reactions */}
-                    <p className="text-gray-600 font-semibold ">{reactionsData.reactions}</p>
+                    <p className="text-gray-600 font-semibold ">{data?.reactions?.length || 0}</p>
                 </div>
 
                 <div className="flex items-center justify-between gap-3 text-gray-600 px-3 ">
@@ -174,12 +174,12 @@ export default function Post({img, profile=false}) {
                         onClick={() => setOpenComments(!openComments)}
                         className="flex items-center justify-between gap-1 cursor-pointer px-3 py-2"
                     >
-                        <div>{reactionsData.comments}</div>
+                        <div>{data?.comments?.length || 0}</div>
                         <div className=""><FaComment/></div>
                     </button>
                     {/* share */}
                     <button className="flex items-center justify-between gap-1 cursor-pointer">
-                        <div>{reactionsData.shares}</div>
+                        <div>{data?.shares?.length || 0}</div>
                         <div><PiShareFatFill/></div>
                     </button>
                 </div>
@@ -213,7 +213,7 @@ export default function Post({img, profile=false}) {
                             className="hover:bg-gray-200 px-2 py-1 rounded-md"> 
                             {liked ? <AiFillLike color="blue" fontSize={22}/> : <AiOutlineLike fontSize={22}/>} 
                         </button>
-                        <p>{reactionsData.reactions}</p>
+                        <p>{data?.reactions?.length || 0}</p>
                     </div>
 
                     {/* comment */}
@@ -222,11 +222,11 @@ export default function Post({img, profile=false}) {
                         className="flex items-center"
                     > 
                         <button className="hover:bg-gray-200 px-2 py-1 rounded-md"> <FaRegComment fontSize={19}/> </button>
-                        <p>{reactionsData.comments}</p>
+                        <p>{data?.comments?.length || 0}</p>
                     </div>
                     <div className="flex items-center">
                         <button className="hover:bg-gray-200 px-2 py-1 rounded-md"> <PiShareFat fontSize={22}/> </button>
-                        <p>{reactionsData.shares}</p>
+                        <p>{data?.shares?.length || 0}</p>
                     </div>
                 </div>
 

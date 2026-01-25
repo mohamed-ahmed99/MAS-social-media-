@@ -75,3 +75,14 @@ export const editPost = wrapperMD( async(req, res) => {
     // response
     res.status(200).json({message:"Post edited successfully", post})
 })
+
+
+// get posts
+export const getPosts = wrapperMD( async (req, res ) => {
+    const {limit, page} = req.query
+    const posts = await Posts.find().sort({createdAt: -1}).limit(limit)
+        .skip((page - 1) * limit).populate('author', 'personalInfo.firstName personalInfo.lastName').lean()
+
+
+    res.status(200).json({status:"success", message:"Posts fetched successfully", posts})
+})

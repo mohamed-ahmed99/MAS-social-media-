@@ -1,32 +1,50 @@
+import { useEffect } from "react";
 import { useState } from "react";
-import { data } from "react-router-dom";
 
 
-export const getFromServer = async (url, options = {}) => {
+export const useGetFromServer = (url, options = {}) => {
+
+    const [data, setData] = useState(null);
+    const [status, setStatus] = useState("loading");
+    const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(true);
 
-    try{
-        const response = await fetch(url, {
-            method:"GET",
-            headers:{
-                "Content-Type":"application/json",
-                ...options.headers
-            },
-            credentials:"include"
-        });
-        const result = await response.json();
 
-        if(!response.ok){
-            return {status:"fail", data: null, loading, message: result.message || "Failed to fetch data from server."};
+    useEffect(() => {
+        const fetchData = async() =>{
+            try{
+                const response = await fetch(url, {
+                    method:"GET",
+                    headers:{
+                        "Content-Type":"application/json",
+                        ...options.headers
+                    },
+                    credentials:"include"
+                });
+                const result = await response.json();
+        
+                if(!response.ok){
+                    setStatus("fail");
+                    setData(null);
+                    setMessage(result.message || "Failed to fetch data.");
+                }else{
+                    setStatus("success");
+                    setData(result.posts);
+                    setMessage(result.message || "Data fetched successfully.");
+                }
+        
+            }
+            catch(error){
+                console.error("Error fetching from server:", error);
+                setStatus("fail");
+                setData(null);
+                setMessage(error.message);
+            }finally{
+                setLoading(false);
+            }
         }
+        fetchData();
 
-        return {status:"success", data: result, loading, message: result.message || "Data fetched successfully."};
-
-    }
-    catch(error){
-        console.error("Error fetching from server:", error);
-        return {status:"fail", message: error.message, data: null, loading};
-    }finally{
-        setLoading(false);
-    }
+    },[url]);
+    return {status, message, data, loading};
 }

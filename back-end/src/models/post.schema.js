@@ -44,6 +44,20 @@ const postSchema = new mongoose.Schema(
         },
       },
     ],
+    // shares
+    shares: [
+      {
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "users",
+          required: true,
+        },
+        createdAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
 
     // is deleted
     isDeleted: {
