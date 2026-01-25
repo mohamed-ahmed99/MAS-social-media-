@@ -20,8 +20,8 @@ export default memo( function Home () {
     const [createPost, setCreatePost] = useState(false)
 
     // http://localhost:5150/api/posts?limit=${query.limit}&page=${query.page}
-    // https://masproback.vercel.app/api/posts?limit=${query.limit}&page=${query.page}
-    const url = `https://masproback.vercel.app/api/posts?limit=${query.limit}&page=${query.page}`
+    // https://masproback.vercel.app/api/posts/get?limit=${query.limit}&page=${query.page}
+    const url = `https://masproback.vercel.app/api/posts/get?limit=${query.limit}&page=${query.page}`
     const token = localStorage.getItem("MASproAuth")
     const {status, message, data, loading} = useGetFromServer(url, {headers:{authorization:`Bearer ${token}`}})
     const [allPosts, setAllPosts] = useState(data || [])
