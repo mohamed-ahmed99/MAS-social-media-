@@ -78,6 +78,8 @@ export default function Post({data, img, profile=false}) {
         setLiked(!liked)
     }
 
+    console.log("post data:", data);
+    const username = `${data?.author?.personalInfo?.firstName} ${data?.author?.personalInfo?.lastName}`
 
 
   return (
@@ -110,7 +112,7 @@ export default function Post({data, img, profile=false}) {
                         <Link 
                             to={'/profile'}
                             className="font-semibold text-[15px]"> 
-                            {userData? `${userData.user?.firstName} ${userData.user?.lastName}`: "user"}
+                            {username}
                         </Link>
                         <p className="text-xs text-gray-500">{new Date(data?.createdAt).toLocaleString()}</p>
                     </div>
