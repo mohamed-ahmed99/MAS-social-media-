@@ -42,21 +42,28 @@ export default memo( function Home () {
                 <CreatePostBox setCreatePost={setCreatePost}/>
                 {createPost && <CreatePostAlert setCreatePost={setCreatePost}/>}
 
-                {!loading ?
-                <>
-                    <div className='flex flex-col gap-1 lg:gap-2 bg-gray-200'>
-                        <Post img={"./cover.jpg"}/>
-                        {allPosts.map((post, index) => (
-                            <Post key={index} data={post} />
-                        ))}
-                        
+                <div className='flex flex-col gap-1 lg:gap-2 bg-gray-200'>
+                    {/* <Post img={"./cover.jpg"} /> */}
+                    {allPosts.map((post) => (
+                        <Post key={post._id} data={post} />
+                    ))}
+                </div>
 
-                    </div>
+                {/* FIRST LOAD LOADING */}
+                {loading && query.page === 1 && (
+                <div className='absolute inset-0 flex items-center justify-center mt-4'>
+                    <PuffLoader size={200} color="#000" />
+                </div>
+                )}
 
-                    <SeeMoreBtn setQuery={setQuery}/>
-                </>:
-                <div className='text-center text-gray-500 font-medium mt-4'><PuffLoader size={20} color="#000"/></div>
-                }
+                {/* SEE MORE BUTTON (after first load) */}
+                {!loading && (
+                    <SeeMoreBtn setQuery={setQuery} loading={loading} />
+                )}
+
+                {loading && query.page > 1 && (
+                    <SeeMoreBtn setQuery={setQuery} loading={loading} />
+                )}
 
             </div>
         </div>

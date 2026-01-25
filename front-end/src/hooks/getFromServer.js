@@ -7,11 +7,12 @@ export const useGetFromServer = (url, options = {}) => {
     const [data, setData] = useState(null);
     const [status, setStatus] = useState("loading");
     const [message, setMessage] = useState("");
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
 
     useEffect(() => {
         const fetchData = async() =>{
+            setLoading(true);
             try{
                 const response = await fetch(url, {
                     method:"GET",
