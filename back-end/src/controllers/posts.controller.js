@@ -90,5 +90,16 @@ export const getPosts = wrapperMD( async (req, res ) => {
 
 // get user posts
 export const getUserPosts = wrapperMD( async (req, res ) => {
+    const {userId, limit, page} = req.query
+    if(!userId){
+        return res.status(400).json({message:"User ID is required"})
+    }
+    if(!limit || !page){
+        return res.status(400).json({message:"Limit and page are required"})
+    }
 
+    const posts = await Posts.find({$or: [{author: userId}, {"shares.user": userId}]}).sort({createdAt: -1})
+        .limit(limit).skip((page - 1) * limit).populate('author', 'personalInfo.firstName personalInfo.lastName').lean()
+
+    res.status(200).json({status:"success", message:"User posts fetched successfully", posts})
 })
