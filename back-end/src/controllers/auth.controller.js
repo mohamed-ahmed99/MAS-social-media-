@@ -49,7 +49,8 @@ export const VerifyEmail = async (req, res) => {
         
     // token and ip
     const token = jwt.sign({_id:user._id, email:user.personalInfo.email, role:user.role}, process.env.JWT_SECRET)
-    const ip = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.connection.remoteAddress
+     
 
 
     // create session
