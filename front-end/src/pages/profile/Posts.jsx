@@ -13,7 +13,7 @@ export default function Posts() {
 
   // http://localhost:5150/api/posts/get/user?limit=${query.limit}&page=${query.page}&userId=${userData?.user?._id}
   // https://masproback.vercel.app/api/posts/get/user?limit=${query.limit}&page=${query.page}&userId=${userData?.user?._id}
-  const [query, setQuery] = useState({limit: 1, page: 1,});
+  const [query, setQuery] = useState({limit: 10, page: 1,});
 
   const userId = userData?.user?._id;
 
