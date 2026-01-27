@@ -7,14 +7,14 @@ import Post from '../../components/post/Post.jsx';
 import CreatePostAlert from '../../components/createPostAlert/CreatePostAlert.jsx';
 import { useState } from 'react';
 import {useGetFromServer} from '../../hooks/getFromServer.js'
-import SeeMoreBtn from './SeeMoreBtn.jsx';
+import SeeMoreBtn from '../../components/SeeMoreBtn.jsx';
 import {PuffLoader } from 'react-spinners'
 import { useEffect } from 'react';
 
 export default memo( function Home () {
 
     const {userData, setUserData} = useUserContext() 
-    const [query, setQuery] = useState({limit:10, page:1})
+    const [query, setQuery] = useState({limit:1, page:1})
     console.log("home rendered", query)
 
     const [createPost, setCreatePost] = useState(false)
@@ -31,8 +31,6 @@ export default memo( function Home () {
         }
     },[data])
     
-    console.log("posts data:", {data, status, message, loading})
-    console.log("posts data:", {allPosts})
 
 
     return(

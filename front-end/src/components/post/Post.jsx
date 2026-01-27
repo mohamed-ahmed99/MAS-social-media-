@@ -78,7 +78,6 @@ export default function Post({data, img, profile=false}) {
         setLiked(!liked)
     }
 
-    console.log("post data:", data);
     const username = `${data?.author?.personalInfo?.firstName} ${data?.author?.personalInfo?.lastName}`
 
 

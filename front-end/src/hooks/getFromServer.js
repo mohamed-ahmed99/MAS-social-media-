@@ -3,9 +3,9 @@ import { useState } from "react";
 
 
 export const useGetFromServer = (url, options = {}) => {
-
+    
     const [data, setData] = useState(null);
-    const [status, setStatus] = useState("loading");
+    const [status, setStatus] = useState("idle");
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
 
@@ -44,7 +44,13 @@ export const useGetFromServer = (url, options = {}) => {
                 setLoading(false);
             }
         }
-        fetchData();
+        if(url){
+            fetchData();
+        }else{
+            setStatus("idle");
+            setData(null);
+            setMessage("");
+        }
 
     },[url]);
     return {status, message, data, loading};

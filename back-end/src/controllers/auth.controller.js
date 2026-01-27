@@ -129,6 +129,6 @@ export const VerifyMe = wrapperMD(async (req, res) =>{
     const user = await Users.findById(req.decoded._id)
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    const userData = {...user.personalInfo, isVerified: user.verifyUser.isVerified,}
-    res.status(200).json({ message: "User verified successfully", data:{user: userData} });        
+    const userData = {...user.personalInfo, isVerified: user.verifyUser.isVerified, _id: user._id};
+    return res.status(200).json({ message: "User verified successfully", data:{user: userData} });        
 })
