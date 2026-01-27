@@ -14,7 +14,7 @@ import { useEffect } from 'react';
 export default memo( function Home () {
 
     const {userData, setUserData} = useUserContext() 
-    const [query, setQuery] = useState({limit:1, page:1})
+    const [query, setQuery] = useState({limit:10, page:1})
     console.log("home rendered", query)
 
     const [createPost, setCreatePost] = useState(false)
