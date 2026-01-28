@@ -44,7 +44,6 @@ export default function Posts() {
           <Post key={post._id} data={post} profile={true} />
         ))
       }
-      <Post img={'/cover.jpg'} profile={true} />
 
 
       {!loading && (
@@ -52,7 +51,7 @@ export default function Posts() {
       )}
 
 
-      {loading && query.page >= 1 && (
+      {loading && query.page > 1 && (
         <SeeMoreBtn setQuery={setQuery} loading={loading} />
       )}
 

@@ -1,7 +1,7 @@
 
 
-export const addPost = async (text, image, selectionBtn, setIsLoading) => {
-    image = null; // to be implemented later
+export const addPost = async (text, selectionBtn, setIsLoading) => {
+   
     setIsLoading(true)
     try{
         // http://localhost:5150/api/posts/add
@@ -12,7 +12,7 @@ export const addPost = async (text, image, selectionBtn, setIsLoading) => {
                 'Content-Type': 'application/json',
                 authorization: `Bearer ${localStorage.getItem('MASproAuth')}`
             },
-            body: JSON.stringify({text, image, visibility: selectionBtn})
+            body: JSON.stringify({text, visibility: selectionBtn})
         })
 
         const data = await response.json();

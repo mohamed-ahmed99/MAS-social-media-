@@ -12,7 +12,6 @@ const postSchema = new mongoose.Schema(
     //content
     content: {
       text: {type: String, trim: true },
-      image: String,
     },
 
     // reactions

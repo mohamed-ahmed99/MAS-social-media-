@@ -15,7 +15,6 @@ import { MdEmojiEmotions } from "react-icons/md";
 import { FaTrash } from "react-icons/fa";
 
 export default function CreatePostAlert({setCreatePost}) {
-  const getImage = useRef(null);
   const textRef = useRef(null);
   const closeBtnRef = useRef(null);
 
@@ -31,12 +30,6 @@ export default function CreatePostAlert({setCreatePost}) {
   // get type of post "public" , "freinds" or "only me"
   const [selectionBtn, setSelectionBtn] = useState("public")
   
-  const [image, setImage] = useState("")
-  console.log(image)
-  
-  const handleAddImage = () => {
-    getImage.current.click();
-  };
 
   // validation message
   const [validation, setValidation] = useState("")
@@ -44,26 +37,20 @@ export default function CreatePostAlert({setCreatePost}) {
 
 
   const handlePost = async () => {
-    if(!textRef.current?.value && !image) {
+    if(!textRef.current?.value) {
       setValidation("no content to post")
       return;
     }
     else setValidation("")
 
     // proceed to post creation
-    const response = await addPost(textRef.current?.value, image, selectionBtn, setIsLoading);
+    const response = await addPost(textRef.current?.value, selectionBtn, setIsLoading);
     if(response.success){
       closeBtnRef.current.click();
     }
     console.log(response);
   }
 
-
-  //  handeDeleteImage
-  const handeDeleteImage = () => {
-    setImage("")
-    getImage.current.value = null
-  }
 
   // message of validation
   useEffect(() => {
@@ -121,22 +108,7 @@ export default function CreatePostAlert({setCreatePost}) {
                     className='w-full min-h-[80px] sm:min-h-[130px] resize-none outline-none border-none text-sm sm:text-lg ' 
                   ></textarea>
 
-                  <div 
-                    className={`${!image && 'hidden'} relative mt-2 max-h-72 sm:max-h-[50vh] lg:max-h-[550px] overflow-hidden rounded`}
-                  >
-                    <button 
-                      onClick={() => handeDeleteImage()}
-                      className='absolute top-3 right-4 hover:bg-white p-2 hover:shadow-lg group z-10'
-                    >
-                      <FaTrash className='text-white group-hover:text-black'/>
-                    </button>
-                    {/* img */}
-                    {image && <img 
-                      src={URL.createObjectURL(image)} 
-                      alt="Post preview" 
-                      className='w-full h-auto object-cover'
-                    />}
-                  </div>
+                  
               </div>
 
               {/* add to your post */}
@@ -144,29 +116,10 @@ export default function CreatePostAlert({setCreatePost}) {
                   <h4 className='font-semibold mb-2'>Add to your post</h4>
                   
                   <div className='flex gap-3'>
-                      <button 
-                        onClick={() => handleAddImage()}
-                        className='bg-blue-100 text-blue-600 px-3 py-2 rounded-lg hover:bg-blue-200 transition-colors'
-                      >
-                          <IoMdPhotos className='block sm:hidden'/>
-                          <span className='hidden sm:block'>Photo/Video</span>
-                          <input
-                            type="file"
-                            accept="image/*"
-                            ref={getImage}
-                            onChange={(e) => setImage(e.target.files[0])}
-                            hidden
-                          />
-                          
-                      </button>
+
                       <button className='bg-green-100 text-green-600 px-3 py-2 rounded-lg hover:bg-green-200 transition-colors'>
                           <FaUserTag className='block sm:hidden'/>
                           <span className='hidden sm:block'>Tag Friends</span>
-                          
-                      </button>
-                      <button className='bg-yellow-100 text-yellow-600 px-3 py-2 rounded-lg hover:bg-yellow-200 transition-colors'>
-                          <MdEmojiEmotions className='block sm:hidden'/>
-                          <span className='hidden sm:block'>Feeling/Activity</span>
                           
                       </button>
                   </div>

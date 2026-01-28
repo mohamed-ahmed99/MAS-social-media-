@@ -99,12 +99,6 @@ if(screenWidth >= 900)
                         <MdOutlinePeopleAlt fontSize={25} /> 
                     </NavLink>
 
-                    <NavLink to={'/photos'}
-                        className={({isActive}) => `hover:opacity-85 transition-colors py-2 md:px-6 lg:px-8 xl:px-10  h-full flex items-center  border-b-2 
-                                                    ${isActive ? "border-blue-600 text-blue-600" : "border-transparent text-black/85"}`}> 
-                        <BsImages fontSize={25} /> 
-                    </NavLink>
-
                     <NavLink to={'/profile'}
                         className={({isActive}) => `hover:opacity-85 transition-colors py-2 md:px-6 lg:px-8 xl:px-10  h-full flex items-center  border-b-2 
                                                     ${isActive ? "border-blue-600 text-blue-600" : "border-transparent text-black/85"}`}> 
@@ -152,11 +146,6 @@ else{
                     <NavLink to={'/friends'}
                         className={({isActive}) => `text-black/85 border-b-2  px-2  py-3 ${isActive ? "border-blue-600 text-blue-600" : "border-transparent text-black/85"}`}> 
                         <MdOutlinePeopleAlt fontSize={25} /> 
-                    </NavLink>
-
-                    <NavLink to={'/photos'}
-                        className={({isActive}) => `text-black/85 border-b-2  px-2  py-3 ${isActive ? "border-blue-600 text-blue-600" : "border-transparent text-black/85"}`}> 
-                        <BsImages fontSize={25} /> 
                     </NavLink>
 
                     <NavLink to={'/profile'}

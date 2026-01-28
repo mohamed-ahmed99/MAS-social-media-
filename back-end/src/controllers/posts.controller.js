@@ -4,7 +4,7 @@ import Posts from "../models/post.schema.js"
 
 export const addPost = wrapperMD( async(req, res) => {
     // validate content
-    if(!req.body.text && !req.body.images){
+    if(!req.body.text){
         return res.status(400).json({status:"fail", message:"Post content is required"})
     }
 
@@ -13,7 +13,6 @@ export const addPost = wrapperMD( async(req, res) => {
         author: req.decoded._id,
         content:{
             text: req.body.text,
-            image: req.body.image
         },
         visibility: req.body.visibility || "public"
     })
@@ -48,7 +47,7 @@ export const deletePost = wrapperMD( async(req, res) => {
 // edit post
 export const editPost = wrapperMD( async(req, res) => {
     // vaidate content
-    if(!req.body.text && !req.body.image && !req.body.visibility){
+    if(!req.body.text && !req.body.visibility){
         return res.status(400).json({message:"Post content is required to update"})
     }
 
@@ -68,7 +67,6 @@ export const editPost = wrapperMD( async(req, res) => {
     }
     // update post
     post.content.text = req.body.text || post.content.text
-    post.content.image = req.body.image || post.content.image
     post.visibility = req.body.visibility || post.visibility
     post.isEdited = true
     await post.save()
