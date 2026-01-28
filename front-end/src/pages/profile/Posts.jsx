@@ -4,6 +4,8 @@ import { useGetFromServer } from '../../hooks/getFromServer.js';
 import { useUserContext } from '../../hooks/useUserContext.jsx';
 import SeeMoreBtn from '../../components/SeeMoreBtn.jsx';
 import {PuffLoader} from "react-spinners"
+import EndOfPosts from '../../components/post/EndOfPosts.jsx';
+import { End_Of_Posts_Message } from '../../messages'
 
 export default function Posts() {
 
@@ -45,8 +47,13 @@ export default function Posts() {
         ))
       }
 
+      {/* NO MORE POSTS */}
+      {!loading && data && data.length < query.limit && (
+          <EndOfPosts text={End_Of_Posts_Message.noPosts}/>
+      )}
 
-      {!loading && (
+
+      {!loading && data && data.length >= query.limit &&  (
         <SeeMoreBtn setQuery={setQuery} loading={loading} />
       )}
 

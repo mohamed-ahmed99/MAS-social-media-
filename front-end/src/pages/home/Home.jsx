@@ -10,11 +10,13 @@ import {useGetFromServer} from '../../hooks/getFromServer.js'
 import SeeMoreBtn from '../../components/SeeMoreBtn.jsx';
 import {PuffLoader } from 'react-spinners'
 import { useEffect } from 'react';
+import EndOfPosts from '../../components/post/EndOfPosts.jsx';
+import { End_Of_Posts_Message } from '../../messages'
 
 export default memo( function Home () {
 
     const {userData, setUserData} = useUserContext() 
-    const [query, setQuery] = useState({limit:10, page:1})
+    const [query, setQuery] = useState({limit:5, page:1})
     console.log("home rendered", query)
 
     const [createPost, setCreatePost] = useState(false)
@@ -54,8 +56,13 @@ export default memo( function Home () {
                 </div>
                 )}
 
+                {/* NO MORE POSTS */}
+                {!loading && data && data.length < query.limit && (
+                    <EndOfPosts text={End_Of_Posts_Message.noPosts}/>
+                )}
+
                 {/* SEE MORE BUTTON (after first load) */}
-                {!loading && (
+                {!loading && data && data.length >= query.limit && (
                     <SeeMoreBtn setQuery={setQuery} loading={loading} />
                 )}
 
