@@ -83,13 +83,7 @@ export default function Post({data, img, profile=false}) {
 
   return (
     <>
-        <FullScreenImage 
-            img={img}
-            showPostImage={showPostImage} 
-            userName={`Mohamed Ahmed`}
-            text={'uasi inventore te veritatis. Nemo natus autem rem molestias accusamus aperiam libero dolorum, numquam consequuntur, explicabo esse quas hic, reiciendis veritatis!'}
-            setShowPostImage={setShowPostImage}
-        />
+        
     <AnimatePresence>
         {hiddenPost ? null : (  
         <motion.div 

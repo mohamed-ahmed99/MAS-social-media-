@@ -6,6 +6,7 @@ import SeeMoreBtn from '../../components/SeeMoreBtn.jsx';
 import {PuffLoader} from "react-spinners"
 import EndOfPosts from '../../components/post/EndOfPosts.jsx';
 import LastPostInProfiles from '../../components/post/LastPostInProfiles.jsx';
+import PostLoading from '../../components/post/PostLoading.jsx';
 
 export default function Posts() {
 
@@ -41,17 +42,21 @@ export default function Posts() {
   return (
     <div className='col-span-10 lg:col-span-6 space-y-1 mt-2'>
 
-      {loading && query.page === 1 && (
-        <div className='flex items-center justify-center mt-4'>
-            <PuffLoader size={200} color="#000" />
-        </div>
-      )}
 
       {allPosts && allPosts.length > 0 &&
         allPosts.map((post) => (
           <Post key={post._id} data={post} profile={true} />
         ))
       }
+
+      {
+        loading && (
+          <div className='space-y-2'>
+            <PostLoading />
+            <PostLoading />
+          </div>
+        )
+      }      
 
       {/* NO MORE POSTS */}
       {!loading && data?.posts && data?.posts.length < query.limit && (

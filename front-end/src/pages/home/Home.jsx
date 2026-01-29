@@ -12,11 +12,12 @@ import {PuffLoader } from 'react-spinners'
 import { useEffect } from 'react';
 import EndOfPosts from '../../components/post/EndOfPosts.jsx';
 import { End_Of_Posts_Message } from '../../messages'
+import PostLoading from '../../components/post/PostLoading.jsx';
 
 export default memo( function Home () {
 
     const {userData, setUserData} = useUserContext() 
-    const [query, setQuery] = useState({limit:5, page:1})
+    const [query, setQuery] = useState({limit:10, page:1})
     console.log("home rendered", query)
 
     const [createPost, setCreatePost] = useState(false)
@@ -51,8 +52,12 @@ export default memo( function Home () {
 
                 {/* FIRST LOAD LOADING */}
                 {loading && query.page === 1 && (
-                <div className='absolute inset-0 flex items-center justify-center mt-4'>
-                    <PuffLoader size={200} color="#000" />
+                <div className='space-y-2 mt-2'>
+                    <PostLoading />
+                    <PostLoading />
+                    <PostLoading />
+                    <PostLoading />
+                    <PostLoading />
                 </div>
                 )}
 
