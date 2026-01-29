@@ -10,7 +10,8 @@ import { End_Of_Posts_Message } from '../../messages'
 export default function Posts() {
 
   const {userData, setUserData} = useUserContext();
-  console.log("userData in profile posts:", userData);
+
+  
 
 
   // http://localhost:5150/api/posts/get/user?limit=${query.limit}&page=${query.page}&userId=${userData?.user?._id}
@@ -49,7 +50,7 @@ export default function Posts() {
 
       {/* NO MORE POSTS */}
       {!loading && data && data.length < query.limit && (
-          <EndOfPosts text={End_Of_Posts_Message.noPosts}/>
+          <EndOfPosts text={`You joined us at `}/>
       )}
 
 

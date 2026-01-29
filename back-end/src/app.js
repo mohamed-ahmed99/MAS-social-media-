@@ -3,10 +3,11 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import mongoose from 'mongoose'
-import postRoute from './routes/post.routes.js'
 
 // routes
 import authRoutes from './routes/auth.routes.js'
+import postRoute from './routes/post.routes.js'
+import usersRouter from './routes/users.routes.js'
 
 const app = express() 
 dotenv.config()
@@ -51,6 +52,7 @@ app.get('/', (req, res) => {
 // auth routes
 app.use('/api/auth', authRoutes)
 app.use('/api/posts', postRoute)
+app.use('/api/users', usersRouter)
 
 // not found routes
 app.use((req, res) => {
@@ -64,12 +66,12 @@ app.use((err, req, res, next) => {
 })
 
 
-if (process.env.NODE_ENV !== 'production') {
+// if (process.env.NODE_ENV !== 'production') {
   const Port = process.env.PORT || 5000
   app.listen(Port, () => console.log(`Server running on port ${Port}...`))
-}
+// }
 
 // when deploy on vercel 
-export default app
+// export default app
 
 

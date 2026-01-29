@@ -132,3 +132,5 @@ export const VerifyMe = wrapperMD(async (req, res) =>{
     const userData = {...user.personalInfo, isVerified: user.verifyUser.isVerified, _id: user._id};
     return res.status(200).json({ message: "User verified successfully", data:{user: userData} });        
 })
+
+

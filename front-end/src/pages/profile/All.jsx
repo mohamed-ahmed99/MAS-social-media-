@@ -5,8 +5,13 @@ import PostEditor from "./PostEditor";
 import PostView from "./PostView";
 import Friends from "./Friends";
 import Posts from "./Posts";
+import { useUserContext } from '../../hooks/useUserContext';
 
 export default function All() {
+
+  const {userData, setUserData} = useUserContext()
+  console.log("userData in profile all page:", userData);
+
   return (
     <>
      <div className="hidden lg:block w-full lg:max-w-[900px] m-auto gap-4">
@@ -27,7 +32,7 @@ export default function All() {
               </div>
 
               <div className="mt-4">
-                  <Posts/>
+                  <Posts />
               </div>
 
           </div>
@@ -45,7 +50,7 @@ export default function All() {
 
 
           <Friends/>
-          <Posts/>
+          <Posts />
         </div>
     
     

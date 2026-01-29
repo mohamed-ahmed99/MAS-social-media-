@@ -101,3 +101,5 @@ export const getUserPosts = wrapperMD( async (req, res ) => {
 
     res.status(200).json({status:"success", message:"User posts fetched successfully", posts})
 })
+
+
