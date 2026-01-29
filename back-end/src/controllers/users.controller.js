@@ -19,5 +19,5 @@ export const getUserKey = wrapperMD( async (req, res ) => {
         return  res.status(400).json({status:"fail", message:`Key '${key}' not found`})
     }
 
-    return res.status(200).json({status:"success", [key]:targetKey[key]})
+    return res.status(200).json({status:"success", data:{[key]:targetKey[key]}, message:"Key fetched successfully"})
 })

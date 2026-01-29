@@ -21,15 +21,15 @@ export default memo( function Home () {
 
     const [createPost, setCreatePost] = useState(false)
 
-    // http://localhost:5150/api/posts?limit=${query.limit}&page=${query.page}
+    // http://localhost:5150/api/posts/get?limit=${query.limit}&page=${query.page}
     // https://masproback.vercel.app/api/posts/get?limit=${query.limit}&page=${query.page}
     const url = `https://masproback.vercel.app/api/posts/get?limit=${query.limit}&page=${query.page}`
     const token = localStorage.getItem("MASproAuth")
     const {status, message, data, loading} = useGetFromServer(url, {headers:{authorization:`Bearer ${token}`}})
-    const [allPosts, setAllPosts] = useState(data || [])
+    const [allPosts, setAllPosts] = useState([])
     useEffect(() => {
-        if(data && data.length > 0){
-            setAllPosts(prev => query.page === 1 ? data : [...prev, ...data]);
+        if(data?.posts && data?.posts?.length > 0){
+            setAllPosts(prev => query.page === 1 ? data.posts : [...prev, ...data.posts]);
         }
     },[data])
     
@@ -44,8 +44,8 @@ export default memo( function Home () {
 
                 <div className='flex flex-col gap-1 lg:gap-2 bg-gray-200'>
                     {/* <Post img={"./cover.jpg"} /> */}
-                    {allPosts.map((post) => (
-                        <Post key={post._id} data={post} />
+                    {allPosts.map((post, index) => (
+                        <Post key={index} data={post} />
                     ))}
                 </div>
 
@@ -57,12 +57,12 @@ export default memo( function Home () {
                 )}
 
                 {/* NO MORE POSTS */}
-                {!loading && data && data.length < query.limit && (
+                {!loading && data?.posts && data?.posts?.length < query.limit && (
                     <EndOfPosts text={End_Of_Posts_Message.noPosts}/>
                 )}
 
                 {/* SEE MORE BUTTON (after first load) */}
-                {!loading && data && data.length >= query.limit && (
+                {!loading && data && data?.posts?.length >= query.limit && (
                     <SeeMoreBtn setQuery={setQuery} loading={loading} />
                 )}
 

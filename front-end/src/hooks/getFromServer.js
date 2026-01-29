@@ -30,7 +30,7 @@ export const useGetFromServer = (url, options = {}) => {
                     setMessage(result.message || "Failed to fetch data.");
                 }else{
                     setStatus("success");
-                    setData(result.posts);
+                    setData(result.data);
                     setMessage(result.message || "Data fetched successfully.");
                 }
         

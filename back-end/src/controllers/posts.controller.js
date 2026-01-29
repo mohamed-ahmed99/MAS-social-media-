@@ -71,7 +71,7 @@ export const editPost = wrapperMD( async(req, res) => {
     post.isEdited = true
     await post.save()
     // response
-    res.status(200).json({message:"Post edited successfully", post})
+    res.status(200).json({message:"Post edited successfully", data:{post}})
 })
 
 
@@ -82,7 +82,7 @@ export const getPosts = wrapperMD( async (req, res ) => {
         .skip((page - 1) * limit).populate('author', 'personalInfo.firstName personalInfo.lastName').lean()
 
 
-    res.status(200).json({status:"success", message:"Posts fetched successfully", posts})
+    res.status(200).json({status:"success", message:"Posts fetched successfully", data:{posts}})
 })
 
 
@@ -99,7 +99,7 @@ export const getUserPosts = wrapperMD( async (req, res ) => {
     const posts = await Posts.find({$or: [{author: userId}, {"shares.user": userId}]}).sort({createdAt: -1})
         .limit(limit).skip((page - 1) * limit).populate('author', 'personalInfo.firstName personalInfo.lastName').lean()
 
-    res.status(200).json({status:"success", message:"User posts fetched successfully", posts})
+    res.status(200).json({status:"success", message:"User posts fetched successfully", data:{posts}})
 })
 
 
