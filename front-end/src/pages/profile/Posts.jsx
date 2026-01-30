@@ -8,7 +8,7 @@ import EndOfPosts from '../../components/post/EndOfPosts.jsx';
 import LastPostInProfiles from '../../components/post/LastPostInProfiles.jsx';
 import PostLoading from '../../components/post/PostLoading.jsx';
 
-export default function Posts() {
+export default function Posts({memberId=null}) {
 
   const {userData, setUserData} = useUserContext();
 
@@ -20,9 +20,9 @@ export default function Posts() {
   const [query, setQuery] = useState({limit: 10, page: 1,});
 
   // user id
-  const userId = userData?.user?._id;
+  const userId = memberId || userData?.user?._id;
   const url = userId ? 
-  `https://masproback.vercel.app/api/posts/get/user?limit=${query.limit}&page=${query.page}&userId=${userData?.user?._id}` : null;
+  `https://masproback.vercel.app/api/posts/get/user?limit=${query.limit}&page=${query.page}&userId=${userId}` : null;
 
   // get posts data
   const {status, message, data, loading} = 

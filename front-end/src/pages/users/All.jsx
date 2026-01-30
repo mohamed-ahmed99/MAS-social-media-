@@ -5,6 +5,7 @@ import PostEditor from "../profile/PostEditor";
 import PostView from "../profile/PostView";
 import Friends from "../profile/Friends";
 import Posts from "../profile/Posts";
+import {useLocation} from 'react-router-dom';
 
 // my hooks 
 import {useUserContext} from '../../hooks/useUserContext'
@@ -13,6 +14,10 @@ import {pageTop} from '../../hooks/someFunctions'
 export default function AllUserPage() {
 
   pageTop('user - MAS Social Media ')
+
+  // 
+  const location = useLocation();
+  const userId = location.pathname.split('-').pop();
 
   return (
     <>
@@ -33,7 +38,7 @@ export default function AllUserPage() {
               </div>
 
               <div className="mt-4">
-                  <Posts />
+                  <Posts memberId={userId}/>
               </div>
 
           </div>
@@ -51,7 +56,7 @@ export default function AllUserPage() {
 
 
           <Friends/>
-          <Posts/>
+          <Posts memberId={userId}/>
         </div>
     
     
