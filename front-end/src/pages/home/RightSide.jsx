@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import {useGetFromServer} from '../../hooks/getFromServer'
 import { useEffect } from "react";
 import {useUserContext} from '../../hooks/useUserContext'
+import FriendCardLoading from "./FriendCardLoading";
 
 export default function RightSide() {
   const {userData, setUserData} = useUserContext()
@@ -20,26 +21,6 @@ export default function RightSide() {
 
 // {{dev}}/api/users/get-users?limit=10&page=1
 
-  const localData = [
-    {img:"./user.jpg", name:"Mohamed waleed", lastSeen:"Today at 2:00am", online:true},
-    {img:"./user.jpg", name:"Abd_el_wahhab Ali", lastSeen:"Today at 3:00am", online:false},
-    {img:"./user.jpg", name:"Mohamed waleed", lastSeen:"Today at 1:00am", online:true},
-    {img:"./user.jpg", name:"Mohamed waleed", lastSeen:"Today at 1:00am", online:true},
-    {img:"./user.jpg", name:"Mohamed waleed", lastSeen:"Today at 1:00am", online:true},
-    {img:"./user.jpg", name:"Mohamed waleed", lastSeen:"Today at 1:00am", online:true},
-    {img:"./user.jpg", name:"Mohamed waleed", lastSeen:"Today at 1:00am", online:true},
-    {img:"./user.jpg", name:"Mohamed waleed", lastSeen:"Today at 1:00am", online:true},
-    {img:"./user.jpg", name:"Mohamed waleed", lastSeen:"Today at 1:00am", online:true},
-    {img:"./user.jpg", name:"Mohamed waleed", lastSeen:"Today at 1:00am", online:true},
-    {img:"./user.jpg", name:"Mohamed waleed", lastSeen:"Today at 1:00am", online:true},
-    {img:"./user.jpg", name:"Mohamed waleed", lastSeen:"Today at 1:00am", online:true},
-    {img:"./user.jpg", name:"Mohamed waleed", lastSeen:"Today at 1:00am", online:true},
-    {img:"./user.jpg", name:"Mohamed waleed", lastSeen:"Today at 1:00am", online:true},
-    {img:"./user.jpg", name:"Mohamed waleed", lastSeen:"Today at 1:00am", online:true},
-    {img:"./user.jpg", name:"Mohamed waleed", lastSeen:"Today at 1:00am", online:true},
-    {img:"./user.jpg", name:"Mohamed waleed", lastSeen:"Today at 1:00am", online:true},
-    {img:"./user.jpg", name:"Mohamed waleed", lastSeen:"Today at 1:00am", online:true},
-  ];
 
   return (
     <div className='hidden xl:block bg-white w-[300px] h-[calc(100vh-60px)] fixed right-0 py-4 px-3 overflow-y-scroll border-l'>
@@ -83,6 +64,20 @@ export default function RightSide() {
             </Link>
           </motion.div>
         )}
+      )}
+      
+      {loading && (
+        <div className="space-y-2">
+          <FriendCardLoading/>
+          <FriendCardLoading/>
+          <FriendCardLoading/>
+          <FriendCardLoading/>
+          <FriendCardLoading/>
+          <FriendCardLoading/>
+          <FriendCardLoading/>
+          <FriendCardLoading/>
+          <FriendCardLoading/>
+        </div>
       )}
 
     </div>

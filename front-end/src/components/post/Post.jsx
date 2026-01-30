@@ -79,6 +79,10 @@ export default function Post({data, img, profile=false}) {
     }
 
     const username = `${data?.author?.personalInfo?.firstName} ${data?.author?.personalInfo?.lastName}`
+    console.log("post data:", data?.author?._id)
+
+
+    const route =data?.author?._id === userData?.user?._id ? `/profile` : `/user/${(username.replaceAll(' ', '_')).replaceAll('-','_')}-${data?.author?._id}`
 
 
   return (
@@ -96,14 +100,14 @@ export default function Post({data, img, profile=false}) {
             <div className="flex items-center justify-between px-4">
                 {/* name. img, date */}
                 <div className="flex items-center gap-4">
-                    <Link to={'/profile'}
+                    <Link to={route}
                         className="h-[40px] w-[40px] rounded-full overflow-hidden block">
                         <img className="h-full w-full object-cover" src="/user.jpg" alt="user" />
                     </Link>
 
                     <div className="leading-tight">
                         <Link 
-                            to={'/profile'}
+                            to={route}
                             className="font-semibold text-[15px]"> 
                             {username}
                         </Link>

@@ -31,9 +31,9 @@ export default function Posts({memberId=null}) {
 
   const [allPosts, setAllPosts] = useState([])
   useEffect(() => {
-      if(data?.posts && data?.posts?.length > 0){
-          setAllPosts(prev => query.page === 1 ? data.posts : [...prev, ...data.posts]);
-      }
+    if(data?.posts && data?.posts?.length > 0){
+        setAllPosts(prev => query.page === 1 ? data.posts : [...prev, ...data.posts]);
+    }
   },[data])
 
   
