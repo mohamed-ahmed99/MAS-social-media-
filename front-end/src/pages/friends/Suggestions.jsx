@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react'
 import FriendCards from './FriendCard'
 import {useGetFromServer} from '../../hooks/getFromServer.js'
 import SeeMoreBtn from '../../components/SeeMoreBtn.jsx'
+import FriendCardLoading from './FriendCardLoading.jsx'
 
 export default function Suggestions() {
 
   const token = localStorage.getItem("MASproAuth")
-  const [query, setQuery] = useState({limit:3, page:1})
+  const [query, setQuery] = useState({limit:20, page:1})
 
   // http://localhost:5150/api/users/get-users?limit=${query.limit}&page=${query.page}
   // https://masproback.vercel.app/api/users/get-users?limit=${query.limit}&page=${query.page}
@@ -32,6 +33,12 @@ export default function Suggestions() {
             return <FriendCards key={index} userData={user} blueBtn="add friend"/>
           })} 
       </div>
+      
+      {loading && query.page === 1 &&
+        <div className='grid grid-cols-3 lmd:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-2 lmd:gap-4 px-3 lmd:pr-5 lmd:pl-1 '>
+          {Array(20).fill(0).map((_, index) => (<FriendCardLoading key={index}/>))}
+        </div>
+      }
 
       <div className=' w-full '>
 
