@@ -3,8 +3,10 @@ import { IoMdSettings } from "react-icons/io";
 
 import { Link } from 'react-router-dom';
 
-export default function FriendCards({friendData,  blueBtn}) {
+export default function FriendCards({userData,  blueBtn}) {
+  console.log(userData)
 
+  const userName = userData?.personalInfo ? `${userData.personalInfo.firstName} ${userData.personalInfo.lastName}` : ""
   
     const [screenWidth, setScreenWidth] = React.useState(window.innerWidth);
 
@@ -62,6 +64,7 @@ export default function FriendCards({friendData,  blueBtn}) {
       }
     }
     
+
   if(screenWidth > 900) {   
     return (
       <Link to={'/'}
@@ -70,7 +73,7 @@ export default function FriendCards({friendData,  blueBtn}) {
           {/* img */}
           <div className='w-full h-[200px]'>
             <img 
-              src={friendData.img} 
+              src={`/user.jpg`} 
               alt="friend-img" 
               className='w-full h-[200px] object-cover'
             />
@@ -80,8 +83,8 @@ export default function FriendCards({friendData,  blueBtn}) {
 
           {/* name and mutual friends */}
           <div className='px-2'>
-            <h2 className='text-[15px] font-semibold text-stone-800'>{friendData.name}</h2>
-            <p className='text-sm text-gray-700'>{friendData.mutualFriends} mutual friends</p>
+            <h2 className='text-[15px] font-semibold text-stone-800'>{userName}</h2>
+            <p className='text-sm text-gray-700'>{ 0} mutual friends</p>
           </div>
 
           {/* buttons */}
@@ -104,14 +107,14 @@ export default function FriendCards({friendData,  blueBtn}) {
       >
         {/* img */}
         <div className='w-[100px] h-[100px] rounded-full overflow-hidden bg-black shrink-0'>
-          <img src={friendData.img} alt="friend-img" />
+          <img src={`/user.jpg`}  alt="friend-img" />
         </div>
 
         <div className='w-full'>
           {/* info */}
           <div>
-            <h2 className='font-semibold text-stone-800'>{friendData.name}</h2>
-            <p className='text-sm text-gray-700'>{friendData.mutualFriends} mutual friends</p>
+            <h2 className='font-semibold text-stone-800'>{userName}</h2>
+            <p className='text-sm text-gray-700'>{0} mutual friends</p>
           </div>
 
           {/* btns */}
