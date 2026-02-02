@@ -68,15 +68,7 @@ export default function RightSide() {
       
       {loading && (
         <div className="space-y-2">
-          <FriendCardLoading/>
-          <FriendCardLoading/>
-          <FriendCardLoading/>
-          <FriendCardLoading/>
-          <FriendCardLoading/>
-          <FriendCardLoading/>
-          <FriendCardLoading/>
-          <FriendCardLoading/>
-          <FriendCardLoading/>
+          {Array(9).fill(0).map((_, index) => (<FriendCardLoading key={index}/>))}
         </div>
       )}
 
