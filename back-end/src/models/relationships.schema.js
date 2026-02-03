@@ -22,8 +22,7 @@ const relationsSchema = new mongoose.Schema({
     },
     status:{
         type:String,
-        enum:["pending", "accepted"],
-        default:"pending"
+        enum:["pending", "accepted"]
     },
     
 
@@ -32,7 +31,8 @@ const relationsSchema = new mongoose.Schema({
 
 relationsSchema.index({from:1, to:1, type:1}, {unique:true})
 
-const relationships = mongoose.model('relationships', relationsSchema)
-export default relationships
+const Relationships = mongoose.model('relationships', relationsSchema)
+export default Relationships
 
 
+ 

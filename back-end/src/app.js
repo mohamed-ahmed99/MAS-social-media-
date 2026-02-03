@@ -8,6 +8,7 @@ import mongoose from 'mongoose'
 import authRoutes from './routes/auth.routes.js'
 import postRoute from './routes/post.routes.js'
 import usersRouter from './routes/users.routes.js'
+import relationshipsRouter from './routes/relationships.routes.js'
 
 const app = express() 
 dotenv.config()
@@ -53,6 +54,7 @@ app.get('/', (req, res) => {
 app.use('/api/auth', authRoutes)
 app.use('/api/posts', postRoute)
 app.use('/api/users', usersRouter)
+app.use('/api', relationshipsRouter)
 
 // not found routes
 app.use((req, res) => {
@@ -66,12 +68,12 @@ app.use((err, req, res, next) => {
 })
 
 
-if (process.env.NODE_ENV !== 'production') {
+// if (process.env.NODE_ENV !== 'production') {
   const Port = process.env.PORT || 5000
   app.listen(Port, () => console.log(`Server running on port ${Port}...`))
-}
+// }
 
 // when deploy on vercel 
-export default app
+// export default app
 
 

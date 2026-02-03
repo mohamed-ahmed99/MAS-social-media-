@@ -17,10 +17,17 @@ const postSchema = new mongoose.Schema(
     // reactions
     reactions: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "users",
-        enum: ["like", "love", "haha", "wow", "sad", "angry"],
-      },
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "users",
+          required: true
+        },
+        type: {
+          type: String,
+          enum: ["like", "love", "haha", "wow", "sad", "angry"],
+          required: true
+        }
+      }
     ],
 
     // comments
