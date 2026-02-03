@@ -9,9 +9,9 @@ export default function Suggestions() {
   const token = localStorage.getItem("MASproAuth")
   const [query, setQuery] = useState({limit:20, page:1})
 
-  // http://localhost:5150/api/users/get-users?limit=${query.limit}&page=${query.page}
-  // https://masproback.vercel.app/api/users/get-users?limit=${query.limit}&page=${query.page}
-  const url = `https://masproback.vercel.app/api/users/get-users?limit=${query.limit}&page=${query.page}`
+  // http://localhost:5150/api/users/get?limit=${query.limit}&page=${query.page}
+  // https://masproback.vercel.app/api/users/get?limit=${query.limit}&page=${query.page}
+  const url = `https://masproback.vercel.app/api/users/get?limit=${query.limit}&page=${query.page}`
 
   const {status, message, data, loading} = useGetFromServer(url, {headers:{authorization:`Bearer ${token}`}})
   
