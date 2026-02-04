@@ -62,7 +62,7 @@ export default function FriendCards({userData,  blueBtn}) {
 
     // handle blue button
     const HandleBlueBtn = () => {
-      const style = `${status_p === "success" ? "bg-gray-500" :"bg-blue-500"} grow text-white px-4 py-[6px] rounded-md hover:bg-blue-600 capitalize`
+      const style = `${status_p === "success" ? "bg-gray-500" :"bg-blue-500 hover:bg-blue-600"} grow text-white px-4 py-[6px] rounded-md capitalize`
       // message
       if(blueBtn === "message") {
         return (
@@ -81,6 +81,7 @@ export default function FriendCards({userData,  blueBtn}) {
         }
         return <button 
                 onClick={(e) => handleAddFriend(e)}
+                disabled={loading_p}
                 className={style}>
                   {loading_p ? 
                       (<span className='flex gap-1 items-center justify-around text-[16px]'>{blueBtn} 

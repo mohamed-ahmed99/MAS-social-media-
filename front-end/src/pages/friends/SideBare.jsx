@@ -8,6 +8,7 @@ import { IoMdSettings } from "react-icons/io";
 import { FaUserFriends } from "react-icons/fa";
 import { AiOutlineUserAdd } from "react-icons/ai";
 import { TbWorldSearch } from "react-icons/tb";
+import { BiTimeFive } from "react-icons/bi";
 
 export default function SideBare() {
 
@@ -19,6 +20,7 @@ export default function SideBare() {
         {text:"Friends", to:"/friends", icon:<FaUserFriends size={25}/>},
         {text:"Friends requests", to:"friends_requests", icon:<AiOutlineUserAdd size={25}/>},
         {text:"Suggestions", to:"friends_suggestions", icon:<TbWorldSearch size={25}/>},
+        {text:"pendings", to:"pendings", icon:<BiTimeFive size={25}/>},
     ]
 
 
