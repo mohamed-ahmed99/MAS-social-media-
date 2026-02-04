@@ -105,6 +105,7 @@ const AppRoutes = () => {
             <Route index element={<Friends/>}/>
             <Route path='friends_requests' element={<Requestes/>}/>
             <Route path='friends_suggestions' element={<Suggestions/>}/>
+            <Route path='pendings' element={<NotFound/>}/>
           </Route>
 
           {/* userPage */}

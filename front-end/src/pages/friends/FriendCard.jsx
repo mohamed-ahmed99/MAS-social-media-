@@ -1,10 +1,14 @@
 import React from 'react'
-import { IoMdSettings } from "react-icons/io";
 
+import { IoMdSettings } from "react-icons/io";
+import { ClipLoader } from 'react-spinners'
 import { Link } from 'react-router-dom';
 
+import { usePostMethod } from '../../hooks/usePostMethod';
+
 export default function FriendCards({userData,  blueBtn}) {
-  console.log(userData)
+
+  const {postData, status_p, message_p, data_p, loading_p} = usePostMethod()
 
   const userName = userData?.personalInfo ? `${userData.personalInfo.firstName} ${userData.personalInfo.lastName}` : ""
   
@@ -30,10 +34,21 @@ export default function FriendCards({userData,  blueBtn}) {
       e.stopPropagation();
     }
     // handle add friend button
-    const handleAddFriend = (e) => {
+    const handleAddFriend = async (e) => {
       e.preventDefault();
       e.stopPropagation();
+      const text = e.target.innerHTML
+
+      const url = `https://masproback.vercel.app/api/relationships?type=friend`
+      if(text === "pending"){
+        e.target.style.background = '#6B7280'
+        return null
+      }
+      const token = localStorage.getItem("MASproAuth")
+      const body = {to:userData?._id}
+      await postData(url, {headers:{authorization:`Bearer ${token}`}}, body)
     }
+    console.log({status_p, message_p, data_p, loading_p})
 
 
     // handle delete button
@@ -46,8 +61,8 @@ export default function FriendCards({userData,  blueBtn}) {
 
 
     // handle blue button
-    const HandleBlueBtn = ({width="100%"}) => {
-      const style = `bg-blue-500 w-${width} text-white px-4 py-[6px] rounded-md hover:bg-blue-600 capitalize`
+    const HandleBlueBtn = () => {
+      const style = `${status_p === "success" ? "bg-gray-500" :"bg-blue-500"} grow text-white px-4 py-[6px] rounded-md hover:bg-blue-600 capitalize`
       // message
       if(blueBtn === "message") {
         return (
@@ -60,7 +75,19 @@ export default function FriendCards({userData,  blueBtn}) {
       }
       // add
       else if (blueBtn === "add friend"){
-        return <button onClick={(e) => handleAddFriend(e)} className={style}>{blueBtn}</button>
+        
+        if(loading_p){
+          
+        }
+        return <button 
+                onClick={(e) => handleAddFriend(e)}
+                className={style}>
+                  {loading_p ? 
+                      (<span className='flex gap-1 items-center justify-around text-[16px]'>{blueBtn} 
+                      <ClipLoader size={20} color='white'/></span>) 
+                    : status_p === "success"  ? "pending" : blueBtn 
+                  }
+        </button>
       }
     }
     
@@ -119,10 +146,10 @@ export default function FriendCards({userData,  blueBtn}) {
 
           {/* btns */}
           <div className="flex gap-2 mt-2 w-full">
-            <HandleBlueBtn width="1/2"/>
+            <HandleBlueBtn/>
             <button  
                 onClick={(e) => handleDelete(e)}
-                className='bg-gray-200 w-1/2 block px-4 py-[6px] rounded-md hover:bg-gray-300'
+                className='bg-gray-200 grow  block px-4 py-[6px] rounded-md hover:bg-gray-300'
               >Delete
             </button>
           </div>

@@ -13,20 +13,21 @@ export default function TopBar() {
         {text:"friends", to:"/friends"},
         {text:"requests", to:"friends_requests"},
         {text:"Suggestions", to:"friends_suggestions"},
+        {text:"pendings", to:"pendings"},
     ]
 
 
 
   return (
     <div className='flex md:hidden items-stretch justify-between bg-white px-2 py-1 gap-3'>
-        <div className='flex items-center gap-2   w-full'>
+        <div className='flex items-center gap-2 w-full overflow-x-auto whitespace-nowrap scrollbar-hide'>
             {/* Top bar content goes here */}
 
             {links.map((link, index) => (
                 <NavLink
                     key={index}
                     to={link.to}
-                    className={({ isActive }) => `px-4 py-2  text-sm font-medium rounded-lg 
+                    className={({ isActive }) => `inline-block px-4 py-2  text-sm font-medium rounded-lg 
                         ${isActive && lastPathSegment === link.to.split('/').pop() ? 
                             "bg-blue-600 text-white" : "text-gray-700 bg-gray-200 hover:bg-gray-300"}`}
 
