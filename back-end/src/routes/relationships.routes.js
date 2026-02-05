@@ -1,14 +1,14 @@
 import { Router } from "express";
 import { checkAuth } from "../middlewares/checkAuth.js";
-import { makeRelationship } from "../controllers/relationship.controller.js"; 
+import { makeRelationship, toMe} from "../controllers/relationship.controller.js"; 
 
 
 const relationshipsRouter = Router();
 
 
 
-relationshipsRouter.post("/relationships", checkAuth(), makeRelationship)
-
+relationshipsRouter.post("/relationship", checkAuth(), makeRelationship)
+relationshipsRouter.get("/relationship/users", checkAuth(), toMe)
 
 
 

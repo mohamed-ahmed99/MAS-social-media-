@@ -7,7 +7,7 @@ export const makeRelationship = wrapperMD(async (req, res) => {
     const {type} = req.query
 
     if(!to || !type){
-        return res.status(400).json({status:"fail", message:"'to' or 'type' required in query.", data:null})
+        return res.status(400).json({status:"fail", message:"'to' or 'type' is required in query.", data:null})
     }
 
     // users can't make a relationship with them selves
@@ -25,10 +25,28 @@ export const makeRelationship = wrapperMD(async (req, res) => {
     let status;
     if(type == "friend") status = "pending"
     else status = null
-    
+
     await Relationships.create({from, to, type, status})
     res.status(201).json({status:"success", message:"friend request sended successfully", data:null})
     
-
 })
 
+
+
+
+// get all who follow or send a friend request or block me 
+export const toMe = wrapperMD( async (req, res) => {
+    const {limit, page, type, status} = req.query
+
+    if(!limit || !page || !type){
+        return res.status(400).json({status:"fail", message:"'limit', 'page' and 'type' are required in query.", data:null})
+    }   
+
+    let filter = {to:req.decoded._id, type:type}
+    if(status) filter.status = status
+    
+    const users = await Relationships.find(filter)
+        .sort({createdAt:-1}).limit(limit).skip((page - 1) * limit)
+    return res.status(200).json({status:"success", message:`${limit} users or less sent successfully `, data:{users}})
+
+})
