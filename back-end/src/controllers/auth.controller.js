@@ -106,12 +106,19 @@ export const SignIn = wrapperMD(async (req, res) => {
     const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.connection.remoteAddress
 
     // update user
-    await Sessions.updateOne({ user: user._id },
-        {
-            // $set: { emailVerificationExpires: null },
-            $push: { sessions: { token, ip } },
-        }
-    );
+    const userSession = await Sessions.findOne({user:user._id})
+    console.log(userSession)
+    if(userSession){
+        await Sessions.updateOne({ user: user._id },
+            {
+                // $set: { emailVerificationExpires: null },
+                $push: { sessions: { token, ip } },
+            }
+        );
+
+    }else{
+        await Sessions.create({user:user._id, sessions:[{token, ip}]})
+    }
         
     // response
     const userData = {...user.personalInfo, isVerified:user.verifyUser.isVerified}
