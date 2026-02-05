@@ -45,8 +45,38 @@ export const toMe = wrapperMD( async (req, res) => {
     let filter = {to:req.decoded._id, type:type}
     if(status) filter.status = status
     
-    const users = await Relationships.find(filter)
-        .sort({createdAt:-1}).limit(limit).skip((page - 1) * limit)
-    return res.status(200).json({status:"success", message:`${limit} users or less sent successfully `, data:{users}})
+    const users = await Relationships.find(filter).sort({ createdAt: -1 })
+        .limit(limit).skip((page - 1) * limit).populate('from', 'personalInfo.firstName personalInfo.lastName').lean()
+
+    const usersInfo = users.map((user) => ({personalInfo:user.from.personalInfo, _id:user._id}))
+
+    return res.status(200).json({status:"success", message:`${limit} users or less sent successfully `, data:{users:usersInfo}})
+
+})
+
+
+
+// 
+export const acceptFriend = wrapperMD(async (req, res) => {
+    const { from }= req.query
+    if (!from){
+        return res.status(400).json({status:"fail", message:"'from' is required in query.", data:null})
+    }
+
+    const relationship = await Relationships.findOne({from, to:req.decoded._id, type:'friend'})
+
+    if(!relationship){
+        return res.status(400).json({status:"fail", message:"relationship not found", data:null})
+    }
+
+    if(relationship.status === "accepted"){
+        return res.status(400).json({status:"fail", message:"friend request has been accepted before ", data:null})
+    }
+
+    relationship.status = 'accepted'
+    relationship.save()
+
+
+    return res.status(200).json({status:"success", message:"accepted successfully ", data:null})
 
 })
