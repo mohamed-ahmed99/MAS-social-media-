@@ -55,5 +55,5 @@ export const suggestFriends = wrapperMD(async (req, res) => {
 
     res.status(200).json({status:"success", message:`${limit} users sent successfully`, data:{users:suggestions}})
 
-
+    
 })
