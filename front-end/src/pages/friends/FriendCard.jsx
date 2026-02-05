@@ -40,7 +40,7 @@ export default function FriendCards({userData,  blueBtn}) {
       const text = e.target.innerHTML
 
       // https://masproback.vercel.app/api/relationships?type=friend
-      const url = `http://localhost:5150/api/relationship?type=friend`
+      const url = `https://masproback.vercel.app/api/relationships?type=friend`
       if(text === "pending"){
         e.target.style.background = '#6B7280'
         return null
