@@ -10,7 +10,7 @@ export default function FriendRequests() {
     const [query, setQuery] = useState({limit:20, page:1})
 
     // http://localhost:5150/api/relationship/me?type=friend&limit=20&page=1&status=pending
-    const url = `http://localhost:5150/api/relationship/me?type=friend&limit=${query.limit}&page=${query.page}&status=pending`
+    const url = `https://masproback.vercel.app/api/relationship/me?type=friend&limit=${query.limit}&page=${query.page}&status=pending`
     const {status, message, data, loading} = useGetFromServer(url, {headers:{authorization:`Bearer ${token}`}})
   
     const [allUsers, setAllUsers] = useState([])
