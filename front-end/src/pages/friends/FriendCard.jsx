@@ -5,12 +5,15 @@ import { ClipLoader } from 'react-spinners'
 import { Link } from 'react-router-dom';
 
 import { usePostMethod } from '../../hooks/usePostMethod';
+import { usePathMethod } from '../../hooks/usePatchMethod';
 
 export default function FriendCards({userData,  blueBtn}) {
+  console.log(userData)
 
   const {postData, status_p, message_p, data_p, loading_p} = usePostMethod()
+  const {editData, status_e, message_e, data_e, loading_e} = usePathMethod()
 
-  const userName = userData?.personalInfo ? `${userData.personalInfo.firstName} ${userData.personalInfo.lastName}` : ""
+  const userName = userData?.personalInfo ? `${userData.personalInfo.firstName} ${userData.personalInfo.lastName}` : "userName"
   
     const [screenWidth, setScreenWidth] = React.useState(window.innerWidth);
 
@@ -20,6 +23,8 @@ export default function FriendCards({userData,  blueBtn}) {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    const token = localStorage.getItem("MASproAuth")
+
 
 
     // handle comessage button
@@ -28,28 +33,38 @@ export default function FriendCards({userData,  blueBtn}) {
       e.stopPropagation();
     }
 
+
     // handle confirm button
-    const handleConfirm = (e) => {
+    const handleConfirm = async (e) => {
       e.preventDefault();
       e.stopPropagation();
+      const text = e.target.innerHTML
+
+      // http://localhost:5150/api/relationship/accept-friend?from=${userData?._id}
+      const url = `https://masproback.vercel.app/api/relationship/accept-friend?from=${userData?._id}`
+      if(text == "confirmed"){
+        e.target.style.background = '#6B7280'
+        return null
+      }
+      await editData(url,null)
     }
+    console.log({status_e, message_e, data_e, loading_e})
+
+
     // handle add friend button
     const handleAddFriend = async (e) => {
       e.preventDefault();
       e.stopPropagation();
       const text = e.target.innerHTML
 
-      // https://masproback.vercel.app/api/relationship?type=friend
       const url = `https://masproback.vercel.app/api/relationship?type=friend`
       if(text === "pending"){
         e.target.style.background = '#6B7280'
         return null
       }
-      const token = localStorage.getItem("MASproAuth")
       const body = {to:userData?._id}
       await postData(url, {headers:{authorization:`Bearer ${token}`}}, body)
     }
-    console.log({status_p, message_p, data_p, loading_p})
 
 
     // handle delete button
@@ -63,23 +78,30 @@ export default function FriendCards({userData,  blueBtn}) {
 
     // handle blue button
     const HandleBlueBtn = () => {
-      const style = `${status_p === "success" ? "bg-gray-500" :"bg-blue-500 hover:bg-blue-600"} grow text-white px-4 py-[6px] rounded-md capitalize`
+      const style = `${status_p === "success" || status_e === "success"  ? "bg-gray-500" :"bg-blue-500 hover:bg-blue-600"} grow text-white px-4 py-[6px] rounded-md capitalize`
       // message
       if(blueBtn === "message") {
         return (
           <button onClick={(e) => handleMessage(e)} className={style}>{blueBtn}</button>
         )
       }
+
       // confirm
       else if (blueBtn === "confirm"){
-        return <button onClick={(e) => handleConfirm(e)} className={style}>{blueBtn}</button>
+        return <button 
+                  onClick={(e) => handleConfirm(e)} 
+                  disabled={loading_e}
+                  className={style}>
+                    {loading_e ? 
+                        (<span className='flex gap-1 items-center justify-around text-[16px]'>{blueBtn} 
+                        <ClipLoader size={20} color='white'/></span>) 
+                      : status_e === "success"  ? "confirmed" : blueBtn 
+                    }
+        </button>
       }
       // add
       else if (blueBtn === "add friend"){
         
-        if(loading_p){
-          
-        }
         return <button 
                 onClick={(e) => handleAddFriend(e)}
                 disabled={loading_p}

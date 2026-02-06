@@ -46,9 +46,9 @@ export const toMe = wrapperMD( async (req, res) => {
     if(status) filter.status = status
     
     const users = await Relationships.find(filter).sort({ createdAt: -1 })
-        .limit(limit).skip((page - 1) * limit).populate('from', 'personalInfo.firstName personalInfo.lastName').lean()
+        .limit(limit).skip((page - 1) * limit).populate('from', '_id personalInfo.firstName personalInfo.lastName').lean()
 
-    const usersInfo = users.map((user) => ({personalInfo:user.from.personalInfo, _id:user._id}))
+    const usersInfo = users.map((user) => ({personalInfo:user.from.personalInfo, _id:user.from._id}))
 
     return res.status(200).json({status:"success", message:`${limit} users or less sent successfully `, data:{users:usersInfo}})
 
@@ -74,7 +74,7 @@ export const acceptFriend = wrapperMD(async (req, res) => {
     }
 
     relationship.status = 'accepted'
-    relationship.save()
+    await relationship.save()
 
 
     return res.status(200).json({status:"success", message:"accepted successfully ", data:null})
