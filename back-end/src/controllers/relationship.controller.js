@@ -80,3 +80,27 @@ export const acceptFriend = wrapperMD(async (req, res) => {
     return res.status(200).json({status:"success", message:"accepted successfully ", data:null})
 
 })
+
+
+
+// 
+export const fromMe = wrapperMD(async (req, res) => {
+    const {type, limit, page, status} = req.query
+    console.log(req.decoded._id)
+    
+    
+    if(!limit || !page || !type){
+        return res.status(400).json({status:"fail", message:"'limit', 'page' and 'type' are required in query.", data:null})
+    }   
+
+    let filter = {from:req.decoded._id, type}
+    if(status) filter.status = status
+
+    const relations = await Relationships.find(filter).limit(limit).skip((page - 1) * limit)
+        .sort({createdAt: -1}).populate('to', '_id personalInfo.firstName personalInfo.lastName').lean()
+    
+    const users = relations.map((user) => ({_id: user.to._id, personalInfo: user.to.personalInfo}))
+
+    return res.status(200).json({status:"success", message:"accepted successfully ", data:{users}})
+    
+})
