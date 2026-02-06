@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { usePostMethod } from '../../hooks/usePostMethod';
 import { usePathMethod } from '../../hooks/usePatchMethod';
 
-export default function FriendCards({userData,  blueBtn}) {
+export default function FriendCards({userData,  blueBtn, grayBtn="Delete"}) {
   console.log(userData)
 
   const {postData, status_p, message_p, data_p, loading_p} = usePostMethod()
@@ -143,8 +143,8 @@ export default function FriendCards({userData,  blueBtn}) {
               <HandleBlueBtn/>
               <button 
                 onClick={(e) => handleDelete(e)}
-                className='bg-gray-200 text-gray-700 px-4 py-[6px] rounded-md hover:bg-gray-300'
-              >Delete</button>
+                className='capitalize bg-gray-200 text-gray-700 px-4 py-[6px] rounded-md hover:bg-gray-300'
+              >{grayBtn}</button>
           </div>
 
 
@@ -173,8 +173,8 @@ export default function FriendCards({userData,  blueBtn}) {
             <HandleBlueBtn/>
             <button  
                 onClick={(e) => handleDelete(e)}
-                className='bg-gray-200 grow  block px-4 py-[6px] rounded-md hover:bg-gray-300'
-              >Delete
+                className='capitalize bg-gray-200 grow  block px-4 py-[6px] rounded-md hover:bg-gray-300'
+              >{grayBtn}
             </button>
           </div>
         </div>
