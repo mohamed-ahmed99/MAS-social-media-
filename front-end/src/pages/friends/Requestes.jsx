@@ -12,11 +12,11 @@ export default function FriendRequests() {
     const url = `https://masproback.vercel.app/api/relationship/users?type=friend&limit=${query.limit}&page=${query.page}&status=pending`
     const {status, message, data, loading} = useGetFromServer(url, {headers:{authorization:`Bearer ${token}`}})
   
-    const [allFriends, setAllFriends] = useState([])
+    const [allUsers, setAllUsers] = useState([])
 
     useEffect(() => {
       if(data?.users){
-        setAllFriends(prev => query.page === 1 ? data.users : [...prev, ...data.users]);
+        setAllUsers(prev => query.page === 1 ? data.users : [...prev, ...data.users]);
       }
     },[data])
 
@@ -25,7 +25,7 @@ export default function FriendRequests() {
     <div>
         <div className='space-y-4 pb-4'>
               <div className='grid grid-cols-3 lmd:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-2 lmd:gap-4 px-3 lmd:pr-5 lmd:pl-1 '>
-                  {allFriends.map((user, index) => {
+                  {allUsers.map((user, index) => {
                     console.log('useeeeeeeeeeeeeeeeeeeeeeeeer',user)
                     return <FriendCards key={index} userData={user} blueBtn="confirm"/>
                   })} 
