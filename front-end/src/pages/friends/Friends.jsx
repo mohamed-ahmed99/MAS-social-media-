@@ -10,7 +10,7 @@ export default function Friends() {
     const token = localStorage.getItem("MASproAuth")
     const [query, setQuery] = useState({limit:20, page:1})
 
-    const url = `https://masproback.vercel.app/api/relationship/users?type=friend&limit=${query.limit}&page=${query.page}&status=accepted`
+    const url = `https://masproback.vercel.app/api/relationship/me?type=friend&limit=${query.limit}&page=${query.page}&status=accepted`
     const {status, message, data, loading} = useGetFromServer(url, {headers:{authorization:`Bearer ${token}`}})
   
     const [allFriends, setAllFriends] = useState([])
