@@ -59,11 +59,13 @@ export default function Suggestions() {
       {/* if there is no data */}
       {allFriends.length == 0  &&
         <div className='flex items-center justify-center'>
-          <UI_Message 
-              iconColor="text-gray-500" 
-              icon={<FaUserAltSlash size={200}/>} 
-              text={`No suggestions at the moment.`}  
-          />
+          <div className='flex items-center justify-center h-[calc(100vh-30vh)] '>
+                          <UI_Message 
+                              iconColor="text-gray-500" 
+                              icon={<FaUserAltSlash size={window.innerWidth >= 480 ? 200 : 150}/>} 
+                              text={`You have no friend requests yet.`}  
+                          />
+                        </div>
         </div>
       }
     </div>
