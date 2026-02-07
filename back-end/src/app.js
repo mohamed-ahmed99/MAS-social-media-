@@ -74,6 +74,6 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // when deploy on vercel 
-export default app
+export default app   
 
 

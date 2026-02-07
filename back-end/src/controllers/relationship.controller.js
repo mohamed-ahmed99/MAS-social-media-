@@ -86,21 +86,35 @@ export const acceptFriend = wrapperMD(async (req, res) => {
 // 
 export const fromMe = wrapperMD(async (req, res) => {
     const {type, limit, page, status} = req.query
-    console.log(req.decoded._id)
-    
     
     if(!limit || !page || !type){
         return res.status(400).json({status:"fail", message:"'limit', 'page' and 'type' are required in query.", data:null})
     }   
 
-    let filter = {from:req.decoded._id, type}
-    if(status) filter.status = status
+    let baseFilter = {type}
+    let filter ;
+    if(status) baseFilter.status = status
+
+    if(type === "friend"){
+       filter = {
+        $or:[
+            {from:req.decoded._id, ...baseFilter},
+            {to:req.decoded._id, ...baseFilter},
+        ]
+       }
+    }else{
+        filter = {from:req.decoded._id, ...baseFilter}
+    }
 
     const relations = await Relationships.find(filter).limit(limit).skip((page - 1) * limit)
-        .sort({createdAt: -1}).populate('to', '_id personalInfo.firstName personalInfo.lastName').lean()
+        .sort({createdAt: -1}).populate('from to', '_id personalInfo.firstName personalInfo.lastName').lean()
     
-    const users = relations.map((user) => ({_id: user.to._id, personalInfo: user.to.personalInfo}))
+    const users = relations.map((user) => {
+        const validUsers = user.from._id.toString() === req.decoded._id ? user.to : user.from
+        return {_id: validUsers._id, personalInfo: validUsers.personalInfo}
+    })
 
     return res.status(200).json({status:"success", message:"accepted successfully ", data:{users}})
     
 })
+

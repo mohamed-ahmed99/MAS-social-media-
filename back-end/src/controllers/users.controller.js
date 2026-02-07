@@ -43,17 +43,20 @@ export const suggestFriends = wrapperMD(async (req, res) => {
     const skip = (page - 1) * limit
     
     if(!limit || !page ){
-        res.status(400).send({status:"fail",message:"'limit' and 'page' are required.", data:null})
+        return res.status(400).send({status:"fail",message:"'limit' and 'page' are required.", data:null})
     }
 
-    const myFriends = await Relationships.find({from: req.decoded._id, type:"friend"}).select("to -_id")
-    const friendsIDs = myFriends.map(f => f.to.toString()) 
-    friendsIDs.push(req.decoded._id.toString()) // I don't wanna get the user
+    const myFriends = await Relationships.find({$or:[
+        {from: req.decoded._id},
+        {to: req.decoded._id}
+    ]}).select("from to -_id")
+
+    const friendsIDs = myFriends.map(f => (req.decoded._id === f.from.toString() ? f.to : f.from)) 
+    friendsIDs.push(req.decoded._id) // I don't wanna get the user
 
     // get user that not my friends
     const suggestions = await Users.find({_id:{'$nin':friendsIDs}}).limit(limit).skip(skip).sort({createdAt:-1})
 
     res.status(200).json({status:"success", message:`${limit} users sent successfully`, data:{users:suggestions}})
 
-    
 })
