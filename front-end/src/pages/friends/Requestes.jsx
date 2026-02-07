@@ -3,6 +3,9 @@ import FriendCards from './FriendCard'
 import {useGetFromServer} from '../../hooks/getFromServer.js'
 import SeeMoreBtn from '../../components/SeeMoreBtn.jsx'
 import FriendCardLoading from './FriendCardLoading.jsx'
+import UI_Message from '../../components/UI_Message.jsx'
+import { FaUserAltSlash } from "react-icons/fa";
+
 
 export default function FriendRequests() {
 
@@ -49,6 +52,18 @@ export default function FriendRequests() {
                   )}
               </div>
             </div>
+
+
+            {/* if there is no data */}
+            {allUsers.length == 0  &&
+              <div className='flex items-center justify-center'>
+                <UI_Message 
+                    iconColor="text-gray-500" 
+                    icon={<FaUserAltSlash size={200}/>} 
+                    text={`You have no friend requests yet.`}  
+                />
+              </div>
+            }
     </div>
   )
 }
