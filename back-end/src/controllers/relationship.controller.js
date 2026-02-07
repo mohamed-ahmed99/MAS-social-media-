@@ -95,7 +95,7 @@ export const fromMe = wrapperMD(async (req, res) => {
     let filter ;
     if(status) baseFilter.status = status
 
-    if(type === "friend"){
+    if(type === "friend"&& status == "accepted" ){
        filter = {
         $or:[
             {from:req.decoded._id, ...baseFilter},
