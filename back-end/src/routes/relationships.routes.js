@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { checkAuth } from "../middlewares/checkAuth.js";
-import { makeRelationship, toMe, acceptFriend, fromMe} from "../controllers/relationship.controller.js"; 
+import { makeRelationship, toMe, acceptFriend, fromMe, deleteRelationship} from "../controllers/relationship.controller.js"; 
 
 
 const relationshipsRouter = Router();
@@ -12,6 +12,7 @@ relationshipsRouter.get("/relationship/users", checkAuth(), toMe)
 relationshipsRouter.patch("/relationship/accept-friend", checkAuth(), acceptFriend)
 relationshipsRouter.get("/relationship/me", checkAuth(), fromMe)
 
+relationshipsRouter.delete("/relationship/me/:targetUserId", checkAuth(), deleteRelationship)
 
 
 export default relationshipsRouter;

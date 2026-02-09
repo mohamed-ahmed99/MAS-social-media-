@@ -118,3 +118,32 @@ export const fromMe = wrapperMD(async (req, res) => {
     
 })
 
+
+// delete a relationship
+export const deleteRelationship = wrapperMD(async (req, res) => {
+  const { type, status } = req.query
+  const { targetUserId } = req.params
+  const userId = req.decoded._id
+
+  if (!type) {
+    return res.status(400).json({ message: "Type is required" })
+  }
+
+  let baseFilter = {type}
+  if(status) baseFilter.status = status
+
+  const relation = await Relationships.findOneAndDelete({
+    $or: [
+      { from: targetUserId, to: userId, ...baseFilter },
+      { from: userId, to: targetUserId, ...baseFilter }
+    ]
+  })
+
+  if (!relation) {
+    return res.status(404).json({ message: "Relationship not found" })
+  }
+
+  res.status(200).json({ message: "Relationship deleted successfully" })
+})
+
+
