@@ -83,10 +83,10 @@ export default function FriendCards({userData,  blueBtn, grayBtn}) {
       let url
 
       if(text.toLowerCase() === "delete"){
-        url = `http://localhost:5150/api/relationship/me/${userData?._id}?type=friend&status=accepted`
+        url = `https://masproback.vercel.app/api/relationship/me/${userData?._id}?type=friend&status=accepted`
       }
       else if (text.toLowerCase() === "cancel" || text.toLowerCase() === "reject"){
-        url = `http://localhost:5150/api/relationship/me/${userData?._id}?type=friend&status=pending`
+        url = `https://masproback.vercel.app/api/relationship/me/${userData?._id}?type=friend&status=pending`
       }
 
       await deleteData(url)
