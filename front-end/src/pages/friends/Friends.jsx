@@ -37,7 +37,7 @@ export default function Friends() {
                   <div className='grid grid-cols-3 lmd:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-2 lmd:gap-4 px-3 lmd:pr-5 lmd:pl-1 '>
                       {allFriends.map((user, index) => {
                         console.log('useeeeeeeeeeeeeeeeeeeeeeeeer',user)
-                        return <FriendCards key={index} userData={user} blueBtn="message"/>
+                        return <FriendCards key={index} userData={user} blueBtn="message" grayBtn='delete'/>
                       })} 
                   </div>
                   
