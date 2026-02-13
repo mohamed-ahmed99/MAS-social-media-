@@ -102,7 +102,13 @@ export default function ProfileCard({userData, edit=false, setCreatePost, otherU
 
             <div className="absolute flex items-center justify-between px-3  top-7 sm:top-4 left-0 w-full lg:hidden">
                 <h2 className="text-xl sm:text-2xl font-semibold flex-grow ">
-                    {userData? userData.firstName + ' ' + userData.lastName :"user"}
+                    {otherUserData?.loading ? 
+                        (<p>loading...</p>) : 
+                        (edit ?  
+                            `${userData.firstName} ${userData.lastName}` :
+                            `${otherUserData?.userData?.firstName} ${otherUserData?.userData?.lastName}`
+                        )
+                    }
                 </h2>
 
                     <div className="flex gap-4 ">
