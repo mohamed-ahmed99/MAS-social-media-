@@ -9,7 +9,6 @@ export default function LastPostInProfiles({text}) {
     const {status, message, data, loading} =
         useGetFromServer(url, {headers:{"Authorization": `Bearer ${localStorage.getItem("MASproAuth")}`}})
 
-    console.log({data, status, message})
 
   if (loading) return <PostLoading />
   return (

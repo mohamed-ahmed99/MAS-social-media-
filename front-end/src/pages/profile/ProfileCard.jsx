@@ -9,7 +9,7 @@ import { FaUserCheck } from "react-icons/fa";
 import { FaFacebookMessenger } from "react-icons/fa";
 
 
-export default function ProfileCard({userData, edit=false, setCreatePost}) {
+export default function ProfileCard({userData, edit=false, setCreatePost, otherUserData}) {
     console.log("user",userData)
 
     const handlePostClick = () => {
@@ -74,7 +74,13 @@ export default function ProfileCard({userData, edit=false, setCreatePost}) {
             {/*  */}
             <div className="hidden lg:flex items-center justify-center lg:justify-between">
                 <h2 className="text-2xl font-semibold">
-                    {userData? userData.firstName + ' ' + userData.lastName :"user"}
+
+                    {otherUserData?.loading ? 
+                        (<p>loading...</p>) : 
+                        (edit ?  
+                            `${userData.firstName} ${userData.lastName}` :
+                            `${otherUserData?.userData?.firstName} ${otherUserData?.userData?.lastName}`)}
+                    
                 </h2>
 
                 

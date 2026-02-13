@@ -60,3 +60,19 @@ export const suggestFriends = wrapperMD(async (req, res) => {
     res.status(200).json({status:"success", message:`${limit} users sent successfully`, data:{users:suggestions}})
 
 })
+
+
+export const getUser = wrapperMD( async (req, res) => {
+    const {userId} = req.params
+
+    if (! userId){
+        return res.status(400).send({status:"fail",message:"id is required.", data:null})
+    }
+
+    const user = await Users.findOne({_id:userId}).select()
+    if(!user){
+        return res.status(400).send({status:"fail",message:"user not found", data:null})
+    }
+    res.status(200).json({status:"success", message:`user data has sent successfully`, data:{user}})
+})
+

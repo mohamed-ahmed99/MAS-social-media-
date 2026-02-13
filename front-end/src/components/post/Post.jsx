@@ -79,7 +79,6 @@ export default function Post({data, img, profile=false}) {
     }
 
     const username = `${data?.author?.personalInfo?.firstName} ${data?.author?.personalInfo?.lastName}`
-    console.log("post data:", data?.author?._id)
 
 
     const route =data?.author?._id === userData?.user?._id ? `/profile` : `/user/${(username.replaceAll(' ', '_')).replaceAll('-','_')}-${data?.author?._id}`

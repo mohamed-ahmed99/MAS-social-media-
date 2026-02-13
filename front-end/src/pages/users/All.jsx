@@ -11,13 +11,18 @@ import {useLocation} from 'react-router-dom';
 import {useUserContext} from '../../hooks/useUserContext'
 import {pageTop} from '../../hooks/someFunctions'
 
+
 export default function AllUserPage() {
+  
+  const location = useLocation();
+  const userId = location.pathname.split('-').pop();
+
+
+  
 
   pageTop('user - MAS Social Media ')
 
   // 
-  const location = useLocation();
-  const userId = location.pathname.split('-').pop();
 
   return (
     <>
@@ -25,7 +30,7 @@ export default function AllUserPage() {
               <div className="grid grid-cols-10 gap-4">
 
                 <div className="col-span-6 flex flex-col justify-between">
-                      <PersonalDetails me={false}/>
+                      <PersonalDetails me={false} />
                       <div className="col-span-10 lg:col-span-6 lg:rounded-xl space-y-4">
                         <PostEditor placeholder={`write a post to user `} me={false} />
                       </div>
