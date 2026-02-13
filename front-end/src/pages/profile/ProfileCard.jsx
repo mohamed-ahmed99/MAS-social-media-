@@ -79,7 +79,9 @@ export default function ProfileCard({userData, edit=false, setCreatePost, otherU
                         (<p>loading...</p>) : 
                         (edit ?  
                             `${userData.firstName} ${userData.lastName}` :
-                            `${otherUserData?.userData?.firstName} ${otherUserData?.userData?.lastName}`)}
+                            `${otherUserData?.userData?.firstName} ${otherUserData?.userData?.lastName}`
+                        )
+                    }
                     
                 </h2>
 

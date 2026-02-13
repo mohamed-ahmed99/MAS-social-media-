@@ -15,7 +15,10 @@ export default function UserPage() {
   const userId = location.pathname.split('-').pop();
 
   const token = localStorage.getItem("MASproAuth")
-  const url = `http://localhost:5150/api/users/getuser/${userId}`
+
+  // http://localhost:5150/api/users/getuser/${userId}
+  // https://masproback.vercel.app/api/users/getuser/${userId}
+  const url = `https://masproback.vercel.app/api/users/getuser/${userId}`
   const {status, message, data, loading} = useGetFromServer(url, {headers:{authorization:`Bearer ${token}`}})
   console.log("user data",data?.user?.personalInfo?.firstName)
 

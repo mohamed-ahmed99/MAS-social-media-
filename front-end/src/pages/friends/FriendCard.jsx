@@ -167,7 +167,7 @@ export default function FriendCards({userData,  blueBtn, grayBtn}) {
 
   if(screenWidth > 900) {   
     return (
-      <Link to={'/'}
+      <Link to={`/user/${(userName.replaceAll(" ", "_")).replaceAll("-", "_")}-${userData?._id}`}
         className='max-w-[250px] grow overflow-hidden flex flex-col gap-2 bg-white rounded-md' >
         
           {/* img */}
@@ -201,7 +201,7 @@ export default function FriendCards({userData,  blueBtn, grayBtn}) {
   }else{
     return (
       <Link 
-        to={'/'}
+        to={`/user/${(userName.replaceAll(" ", "_")).replaceAll("-", "_")}-${userData?._id}`}
         className='col-span-3 shadow w-full flex items-center gap-4 bg-white rounded-md p-2 max-w-full overflow-hidden' 
       >
         {/* img */}
