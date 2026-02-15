@@ -22,6 +22,9 @@ import FriendRequests from './pages/friends/Requestes'
 import UserPage from './pages/users/page'
 import AllUserPage from './pages/users/All'
 
+// notications
+import Notification from './pages/notifications/page'
+
 
 function App() {
   return (
@@ -115,9 +118,11 @@ const AppRoutes = () => {
           </Route>
           
 
+          <Route path='/notifications' element={<Notification/>}/>
+
+
           {/* other pages - not implemented yet */}
           <Route path='/photos' element={<NotFound/>}/>
-          <Route path='/notifications' element={<NotFound/>}/>
           <Route path='/settings' element={<NotFound/>}/>
           <Route path='/chat' element={<NotFound/>}/>
            

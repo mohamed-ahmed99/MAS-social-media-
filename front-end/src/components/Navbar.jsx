@@ -1,6 +1,6 @@
 import React from 'react'
 import { IoMdSearch } from "react-icons/io";
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { href, Link, NavLink, useLocation } from 'react-router-dom';
 import { FaFacebookMessenger } from "react-icons/fa";
 import { IoNotifications } from "react-icons/io5";
 import { IoHomeOutline } from "react-icons/io5";
@@ -13,6 +13,9 @@ import { useRef } from 'react';
 import { HiBars3BottomRight } from "react-icons/hi2";
 import { HiMiniBars3BottomRight } from "react-icons/hi2";
 
+// notification
+import Dropdown from '../pages/notifications/Dropdown';
+
 
 
 
@@ -21,6 +24,7 @@ export default function Navbar() {
     const chatRef = useRef(null)
     const notRef = useRef(null)
     const settingRef = useRef(null)
+    const notificationList = useRef(null)
     
     const [screenWidth, setScreenWidth] = useState()
     const location = useLocation()
@@ -30,7 +34,7 @@ export default function Navbar() {
         const onResize = () =>  setScreenWidth(window.innerWidth)
         window.addEventListener("resize", onResize)
         return () => window.removeEventListener("resize", onResize)
-    })
+    },[])
 
     const [openChat, setOpenChat] = useState(false)
     const [openNot, setOpenNot] = useState(false)
@@ -43,7 +47,9 @@ export default function Navbar() {
             if (chatRef.current && !chatRef.current.contains(e.target)) {
                 setOpenChat(false);
             }
-            if (notRef.current && !notRef.current.contains(e.target)) {
+            if (notRef.current && notificationList.current && 
+                !notRef.current.contains(e.target) && !notificationList.current.contains(e.target)
+            ) {
                 setOpenNot(false);
             }
             if (settingRef.current && !settingRef.current.contains(e.target)) {
@@ -56,6 +62,18 @@ export default function Navbar() {
 
     }, [])
 
+    const handleOpenNotifications = () => {
+        setOpenSettings(prev => !prev)
+    }
+
+
+    const middleLinks = [
+        {href:"/", icon: <IoHomeOutline fontSize={25} /> },
+        {href:"/friends", icon: <MdOutlinePeopleAlt fontSize={25} /> },
+        {href:"/profile", icon: <FaRegUserCircle fontSize={25} /> },
+    ]
+
+
 
 
 if(screenWidth >= 900)
@@ -66,8 +84,9 @@ if(screenWidth >= 900)
                 <div className='flex items-center gap-1'>
                     {/* logo */}
                     <div className='w-14 h-14 overflow-hidden'>
-                    <img  className='w-full h-full'
-                        src="/logo.png" alt="" />
+                        <img  className='w-full h-full'
+                            src="/logo.png" alt="" 
+                        />
                     </div>
                     
                     {/* input */}
@@ -87,24 +106,21 @@ if(screenWidth >= 900)
                 
                 {/* links */}
                 <div className='navResLG flex items-center justify-between h-full  gap-3  -translate-x-16'>
-                    <NavLink to={'/'}
-                        className={({isActive}) => `hover:opacity-85 transition-colors py-2 md:px-6 lg:px-8 xl:px-10  h-full flex items-center  border-b-2  
-                                                    ${isActive ? "border-blue-600 text-blue-600" : "border-transparent text-black/85"}`}> 
-                        <IoHomeOutline fontSize={25} /> 
-                    </NavLink>
-
-                    <NavLink to={'/friends'}
-                        className={({isActive}) => `hover:opacity-85 transition-colors py-2 md:px-6 lg:px-8 xl:px-10  h-full flex items-center  border-b-2 
-                                                    ${isActive ? "border-blue-600 text-blue-600" : "border-transparent text-black/85"}`}> 
-                        <MdOutlinePeopleAlt fontSize={25} /> 
-                    </NavLink>
-
-                    <NavLink to={'/profile'}
-                        className={({isActive}) => `hover:opacity-85 transition-colors py-2 md:px-6 lg:px-8 xl:px-10  h-full flex items-center  border-b-2 
-                                                    ${isActive ? "border-blue-600 text-blue-600" : "border-transparent text-black/85"}`}> 
-                        <FaRegUserCircle fontSize={25} /> 
-                    </NavLink>
-             </div>
+                    {middleLinks.map((link, index) => {
+                        return (
+                            <NavLink
+                                to={link.href}
+                                key={index}
+                                className={({isActive}) => `hover:opacity-85 transition-colors py-2 md:px-6 lg:px-8 xl:px-10  h-full flex items-center  border-b-2 
+                                            ${isActive ? "border-blue-600 text-blue-600" : "border-transparent text-black/85"}`}
+                                >
+                                {link.icon}
+                                
+                            </NavLink>
+                        )
+                    })}
+                    
+                </div>
 
 
                 {/* some linkes like notifications, massenges, settings */}
@@ -121,12 +137,17 @@ if(screenWidth >= 900)
                     </button>
 
                     {/* user */}
-                    <button onClick={() => setOpenSettings(prev => !prev)} ref={settingRef}
+                    <button onClick={() => handleOpenNotifications()} ref={settingRef}
                         className='w-[35px] h-[35px] rounded-full overflow-hidden -ml-2 cursor-pointer'>
                         <img className='w-full h-full' src="/user.jpg" alt="" />
                     </button>
                 </div>
             </nav>
+
+            <div ref={notificationList}>
+                {openNot && <Dropdown /> }
+            </div>
+            
         </div>
     )
 

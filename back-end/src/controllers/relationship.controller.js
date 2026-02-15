@@ -100,7 +100,7 @@ export const fromMe = wrapperMD(async (req, res) => {
         $or:[
             {from:req.decoded._id, ...baseFilter},
             {to:req.decoded._id, ...baseFilter},
-        ]
+            ]
        }
     }else{
         filter = {from:req.decoded._id, ...baseFilter}
