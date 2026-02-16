@@ -7,3 +7,6 @@ export const ROLES = {
 };
 
 
+export const NOTIFICATIONT_TYPE = {
+    FRIEND_REQUEST:"FRIEND_REQUEST",
+}

@@ -1,5 +1,8 @@
 import wrapperMD from '../middlewares/wrapperMD.js'
 import Relationships from '../models/relationships.schema.js'
+import { createNotification } from './notifications.controller.js'
+import {NOTIFICATIONT_TYPE} from '../config/constants.js'
+import Users from '../models/user.schema.js'
 
 export const makeRelationship = wrapperMD(async (req, res) => {
     const to = req.body.to
@@ -26,7 +29,20 @@ export const makeRelationship = wrapperMD(async (req, res) => {
     if(type == "friend") status = "pending"
     else status = null
 
+    // create relationship
     await Relationships.create({from, to, type, status})
+
+    // create a notification
+    const me = await Users.findById(from).select("personalInfo.firstName personalInfo.lastName")
+    const userName = `${me.personalInfo.firstName} ${me.personalInfo.lastName}` // userName
+   
+    await createNotification({
+        from, to, 
+        type:NOTIFICATIONT_TYPE.FRIEND_REQUEST,
+        title:`${userName} send you a Friend request`
+    })
+
+    // response 
     res.status(201).json({status:"success", message:"friend request sended successfully", data:null})
     
 })
