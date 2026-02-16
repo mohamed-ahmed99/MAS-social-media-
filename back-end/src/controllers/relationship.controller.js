@@ -35,12 +35,20 @@ export const makeRelationship = wrapperMD(async (req, res) => {
     // create a notification
     const me = await Users.findById(from).select("personalInfo.firstName personalInfo.lastName")
     const userName = `${me.personalInfo.firstName} ${me.personalInfo.lastName}` // userName
-   
-    await createNotification({
-        from, to, 
-        type:NOTIFICATIONT_TYPE.FRIEND_REQUEST,
-        title:`${userName} send you a Friend request`
-    })
+    
+    // Type of notification and title
+    let notificationType;
+    let notificationMessage;
+    if (type == "friend"){
+        notificationType = NOTIFICATIONT_TYPE.FRIEND_REQUEST
+        notificationMessage = `${userName} sent you a Friend request`
+    }
+    else if (type == "follow"){
+        notificationType = NOTIFICATIONT_TYPE.FOLLOW
+        notificationMessage = `${userName} started following you`
+    }
+    // notification    
+    await createNotification({from, to, type:notificationType,title: notificationMessage})
 
     // response 
     res.status(201).json({status:"success", message:"friend request sended successfully", data:null})
@@ -92,6 +100,16 @@ export const acceptFriend = wrapperMD(async (req, res) => {
     relationship.status = 'accepted'
     await relationship.save()
 
+    
+    // create notification 
+    const me = await Users.findById(req.decoded._id).select("personalInfo.firstName personalInfo.lastName")
+    const userName = `${me.personalInfo.firstName} ${me.personalInfo.lastName}` // userName
+
+    await createNotification({
+        from: req.decoded._id, to:from, 
+        type:NOTIFICATIONT_TYPE.ACCEPT_FRIEND_REQUEST,
+        title:`${userName} accepted your Friend request`
+    })
 
     return res.status(200).json({status:"success", message:"accepted successfully ", data:null})
 
@@ -158,6 +176,8 @@ export const deleteRelationship = wrapperMD(async (req, res) => {
   if (!relation) {
     return res.status(404).json({ message: "Relationship not found" })
   }
+  
+
 
   res.status(200).json({ message: "Relationship deleted successfully" })
 })
