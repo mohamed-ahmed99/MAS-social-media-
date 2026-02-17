@@ -1,6 +1,6 @@
 import wrapperMD from '../middlewares/wrapperMD.js'
 import Relationships from '../models/relationships.schema.js'
-import { createNotification } from './notifications.controller.js'
+import { createNotification, deleteNotification } from './notifications.controller.js'
 import {NOTIFICATIONT_TYPE} from '../config/constants.js'
 import Users from '../models/user.schema.js'
 
@@ -155,31 +155,32 @@ export const fromMe = wrapperMD(async (req, res) => {
 
 // delete a relationship
 export const deleteRelationship = wrapperMD(async (req, res) => {
-  const { type, status } = req.query
-  const { targetUserId } = req.params
-  const userId = req.decoded._id
+    const { type, status } = req.query
+    const { targetUserId } = req.params
+    const userId = req.decoded._id
 
-  if (!type) {
-    return res.status(400).json({ message: "Type is required" })
-  }
+    if (!type) {
+        return res.status(400).json({ message: "Type is required" })
+    }
 
-  let baseFilter = {type}
-  if(status) baseFilter.status = status
+    let baseFilter = {type}
+    if(status) baseFilter.status = status
 
-  const relation = await Relationships.findOneAndDelete({
-    $or: [
-      { from: targetUserId, to: userId, ...baseFilter },
-      { from: userId, to: targetUserId, ...baseFilter }
-    ]
-  })
+    const relation = await Relationships.findOneAndDelete({
+        $or: [
+            { from: targetUserId, to: userId, ...baseFilter },
+            { from: userId, to: targetUserId, ...baseFilter }
+        ]
+    })
 
-  if (!relation) {
-    return res.status(404).json({ message: "Relationship not found" })
-  }
-  
+    if (!relation) {
+        return res.status(404).json({ message: "Relationship not found" })
+    }
+    
+    // delete notification
+    await deleteNotification({from:userId, to:targetUserId})
 
-
-  res.status(200).json({ message: "Relationship deleted successfully" })
+    res.status(200).json({ message: "Relationship deleted successfully" })
 })
 
 
