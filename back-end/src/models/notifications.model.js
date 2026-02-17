@@ -29,8 +29,8 @@ const notificationSchema = new mongoose.Schema({
 
 
 
-notificationSchema.index({to:1, isRead:1, createdAt:-1})
 notificationSchema.index({from:1, to:1})
+notificationSchema.index({to:1, createdAt:-1})
 
 const Notifications = mongoose.model("notifications", notificationSchema)
 

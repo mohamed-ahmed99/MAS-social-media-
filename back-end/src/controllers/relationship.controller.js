@@ -3,6 +3,7 @@ import Relationships from '../models/relationships.schema.js'
 import { createNotification, deleteNotification } from './notifications.controller.js'
 import {NOTIFICATIONT_TYPE} from '../config/constants.js'
 import Users from '../models/user.schema.js'
+import Notifications from '../models/notifications.model.js'
 
 export const makeRelationship = wrapperMD(async (req, res) => {
     const to = req.body.to
@@ -131,9 +132,9 @@ export const fromMe = wrapperMD(async (req, res) => {
 
     if(type === "friend"&& status == "accepted" ){
        filter = {
-        $or:[
-            {from:req.decoded._id, ...baseFilter},
-            {to:req.decoded._id, ...baseFilter},
+            $or:[
+                {from:req.decoded._id, ...baseFilter},
+                {to:req.decoded._id, ...baseFilter},
             ]
        }
     }else{
@@ -179,8 +180,9 @@ export const deleteRelationship = wrapperMD(async (req, res) => {
     
     // delete notification
     await deleteNotification({from:userId, to:targetUserId})
-
-    res.status(200).json({ message: "Relationship deleted successfully" })
+    
+    res.status(200).json({status:"success", message: "Relationship deleted successfully", data:null})
 })
+
 
 

@@ -9,6 +9,7 @@ import authRoutes from './routes/auth.routes.js'
 import postRoute from './routes/post.routes.js'
 import usersRouter from './routes/users.routes.js'
 import relationshipsRouter from './routes/relationships.routes.js'
+import notificationRoutes from './routes/notification.routes.js'
 
 const app = express() 
 dotenv.config()
@@ -55,6 +56,7 @@ app.use('/api/auth', authRoutes)
 app.use('/api/posts', postRoute)
 app.use('/api/users', usersRouter)
 app.use('/api', relationshipsRouter)
+app.use('/api', notificationRoutes)
 
 // not found routes
 app.use((req, res) => {

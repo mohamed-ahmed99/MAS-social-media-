@@ -15,6 +15,20 @@ export const createNotification = async (data) => {
 }
 
 
+//////// get notifications
+export const getNotifications = wrapperMD( async (req, res) => {
+    const {limit, page} = req.query
+    if(!limit || !page){
+        return res.status(400).json({status:"fail", message:"limit and page are required", data:null})
+    }
+
+    //
+    const notifications = await Notifications.find({to:req.decoded._id}).sort({createdAt:-1})
+        .limit(limit).skip((page-1) * limit).populate('from', "personalInfo.firstName personalInfo.lastName")
+    return res.status(200).send({status:"success", message:"", data:{notifications}})
+})
+
+
 export const deleteNotification = async (data) => {
     const {to, from} = data
     if (!to || !from){
@@ -25,8 +39,10 @@ export const deleteNotification = async (data) => {
         $or:[
             {from, to},
             {from:to, to: from}
-        ]
+        ]            
     }
     await Notifications.findOneAndDelete(filter)
 }
+
+
 
