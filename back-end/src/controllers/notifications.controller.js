@@ -27,6 +27,17 @@ export const getNotifications = wrapperMD( async (req, res) => {
     const notifications = await Notifications.find({to:req.decoded._id}).sort({createdAt:-1})
         .limit(limit).skip((page-1) * limit).populate('from', "personalInfo.firstName personalInfo.lastName")
 
+    const notRead = notifications.filter(n => (!n.isRead)).map(n => (n._id))
+    console.log(notRead)
+    
+    if(notRead.length > 0){
+        await Notifications.updateMany(
+            {_id: {$in: notRead}},
+            {$set: {isRead: true}},
+        )
+    }
+
+
     return res.status(200).send({
         status:"success",
         message:"",
