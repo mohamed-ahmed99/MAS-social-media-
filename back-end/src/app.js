@@ -56,7 +56,7 @@ app.use('/api/auth', authRoutes)
 app.use('/api/posts', postRoute)
 app.use('/api/users', usersRouter)
 app.use('/api', relationshipsRouter)
-app.use('/api', notificationRoutes)
+app.use('/api/notifications', notificationRoutes)
 
 // not found routes
 app.use((req, res) => {

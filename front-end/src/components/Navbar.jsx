@@ -10,7 +10,6 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useRef } from 'react';
-import { HiBars3BottomRight } from "react-icons/hi2";
 import { HiMiniBars3BottomRight } from "react-icons/hi2";
 
 // notification

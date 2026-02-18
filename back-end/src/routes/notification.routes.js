@@ -6,7 +6,7 @@ import { checkAuth } from '../middlewares/checkAuth.js'
 
 const notificationRoutes = Router()
 
-notificationRoutes.get('/get-notifications', checkAuth(), getNotifications)
+notificationRoutes.get('/get', checkAuth(), getNotifications)
 
 
 

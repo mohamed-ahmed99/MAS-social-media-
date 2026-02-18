@@ -21,11 +21,20 @@ export const getNotifications = wrapperMD( async (req, res) => {
     if(!limit || !page){
         return res.status(400).json({status:"fail", message:"limit and page are required", data:null})
     }
+    
 
     //
     const notifications = await Notifications.find({to:req.decoded._id}).sort({createdAt:-1})
         .limit(limit).skip((page-1) * limit).populate('from', "personalInfo.firstName personalInfo.lastName")
-    return res.status(200).send({status:"success", message:"", data:{notifications}})
+
+    return res.status(200).send({
+        status:"success",
+        message:"",
+        data:{
+            notificationLength:notifications.length,
+            notifications, 
+        }
+    })
 })
 
 

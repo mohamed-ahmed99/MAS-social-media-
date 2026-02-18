@@ -1,6 +1,14 @@
 import {motion} from "framer-motion"
+import { useNotifications } from "./useNotification";
+
+
+// my hooks
 
 export default function Dropdown() {
+
+  const {notifications, fetchedCount, loading, status, loadMore } = useNotifications(20)
+  console.log({notifications, fetchedCount, loading, status })
+
   return (
     
     <motion.div 
@@ -19,6 +27,8 @@ export default function Dropdown() {
           Your order has been shipped
         </div>
       </div>
+
+      <button onClick={() => loadMore}>hello</button>
     </motion.div>
   );
 }
