@@ -3,6 +3,7 @@ import { useNotifications } from "./useNotification";
 import CircularImage from "../../components/CircularImage";
 import LoadMoreBtn from "../../components/btns/LoadMore";
 import { Link } from "react-router-dom";
+import NotificationLoading from "../../components/loadings/NotificationLoading";
 
 export default function Notification() {
 
@@ -64,6 +65,12 @@ export default function Notification() {
 
           </motion.div>
         ))}
+
+        {loading && 
+          <div className="space-y-1 px-4">
+            {Array(4).fill(0).map((_, index) => <NotificationLoading key={index}/>)}
+          </div>
+        }
 
       </div>
 
