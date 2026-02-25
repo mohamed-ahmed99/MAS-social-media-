@@ -68,7 +68,7 @@ export default function Notification() {
 
         {loading && 
           <div className="space-y-1 px-4">
-            {Array(4).fill(0).map((_, index) => <NotificationLoading key={index}/>)}
+            {Array(20).fill(0).map((_, index) => <NotificationLoading key={index}/>)}
           </div>
         }
 

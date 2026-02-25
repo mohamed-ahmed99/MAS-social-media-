@@ -5,13 +5,23 @@ import Notifications from '../models/notifications.model.js'
 
 export const createNotification = async (data) => {
     console.log(data)
-    const {to, from, title, type} = data
+    const {to, from, title, type, fromName} = data
 
     if (!to || !from || !type || !title){
         throw new Error("Notification will not be sent to user")
     }
 
-    await Notifications.create(data)
+    // 
+    const checkNotifications = await Notifications.findOne({to, type, isRead:false})
+    if(checkNotifications){
+        await Notifications.updateOne(
+            {to, type, isRead:false}, 
+            {title:`${fromName} and others sent you a friend request`}
+        )
+    }
+    else{
+        await Notifications.create(data)
+    }
 }
 
 

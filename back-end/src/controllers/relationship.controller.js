@@ -49,7 +49,7 @@ export const makeRelationship = wrapperMD(async (req, res) => {
         notificationMessage = `${userName} started following you`
     }
     // notification    
-    await createNotification({from, to, type:notificationType,title: notificationMessage})
+    await createNotification({from, to, type:notificationType,title: notificationMessage, fromName:userName})
 
     // response 
     res.status(201).json({status:"success", message:"friend request sended successfully", data:null})
@@ -109,7 +109,8 @@ export const acceptFriend = wrapperMD(async (req, res) => {
     await createNotification({
         from: req.decoded._id, to:from, 
         type:NOTIFICATIONT_TYPE.ACCEPT_FRIEND_REQUEST,
-        title:`${userName} accepted your Friend request`
+        title:`${userName} accepted your Friend request`,
+        fromName:userName
     })
 
     return res.status(200).json({status:"success", message:"accepted successfully ", data:null})
