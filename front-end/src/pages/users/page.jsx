@@ -22,7 +22,7 @@ export default function UserPage() {
 
   // http://localhost:5150/api/users/getuser/${userId}
   // https://masproback.vercel.app/api/users/getuser/${userId}
-  const url = `http://localhost:5150/api/users/getuser/${userId}`
+  const url = `https://masproback.vercel.app/api/users/getuser/${userId}`
 
   useEffect(() => {
     getData(url)

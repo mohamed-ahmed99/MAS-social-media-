@@ -180,7 +180,9 @@ export const deleteRelationship = wrapperMD(async (req, res) => {
     }
     
     // delete notification
-    await deleteNotification({from:userId, to:targetUserId})
+    if(relation.type == NOTIFICATIONT_TYPE.FRIEND_REQUEST){
+        await deleteNotification({from:userId, to:targetUserId})
+    }
     
     res.status(200).json({status:"success", message: "Relationship deleted successfully", data:null})
 })
