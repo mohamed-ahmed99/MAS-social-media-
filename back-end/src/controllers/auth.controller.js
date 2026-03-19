@@ -4,37 +4,70 @@ import transporter from "../utils/sendEmail.js"
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv';
 import {verifyEmailMSG} from '../config/emailMessages.js';
-import wrapperMD from "../middlewares/wrapperMD.js";
+import asyncHandler from "../middlewares/wrapperMD.js";
 import Sessions from "../models/userSessions.model.js";
 
 dotenv.config()
 
 
-// sign up
-export const SignUp = wrapperMD(async (req, res) => {
+/*
+    @desc: sign up
+    @route: POST /api/auth/signup
+    @access: public
+*/ 
+export const SignUp = asyncHandler(async (req, res) => {
     // check if user has an acound or not 
-    const user = await Users.findOne({"personalInfo.email":req.body.personalInfo.email})
-    if(user) return res.status(400).json({message:"This email connected with another account", order:"login"})
+    const user = await Users.findOne({"contactInfo.email":req.body.contactInfo.email})
+    if(user) {
+        if(user.account.status === "Active"){
+            return res.status(400).json({status:"fail", message:"This email is already connected with an account"})
+        }
+        else if(user.account.status === "Blocked"){
+            return res.status(400).json({status:"fail", message:"This email is blocked"})
+        }
+        else if(user.account.status === "Unverified"){
+            return res.status(400).json({status:"fail", message:"This email is already connected with another account, please verify it first or use another email."})
+        }
+    }
 
     // hash password, create verification code & create user
-    req.body.personalInfo.password = await bcrypt.hash(req.body.personalInfo.password, 10)
+    req.body.account.password = await bcrypt.hash(req.body.account.password, 10)
     const verifyCode = Math.floor(Math.random() * 900000 + 100000).toString()
-    const newUser = await Users.create({...req.body,verifyUser:{verifyCode:verifyCode}})
+    const newUser = await Users.create({...req.body,verification:{verifyCode:verifyCode}})
 
     // send code to user
-    await transporter.sendMail({
-        from:process.env.EMAIL_FROM,
-        to:req.body.personalInfo.email,
-        subject:"Verify Your Account",
-        html:verifyEmailMSG(newUser.personalInfo.firstName, verifyCode)
-    })
+    try{
+        await transporter.sendMail({
+            from:process.env.EMAIL_FROM,
+            to:req.body.contactInfo.email,
+            subject:"Verify Your Account",
+            html:verifyEmailMSG(newUser.personalInfo.firstName, verifyCode)
+        })
+    }catch(error){
+        console.log(error)
+        return res.status(500).json({status:"fail",message:"Failed to send verification email"})
+    }
+
+    // create token for verify email page authorization
+    const token = jwt.sign({_id:newUser._id, email:newUser.contactInfo.email, role:newUser.role}, process.env.JWT_SECRET, {expiresIn:"30d"})
+
+    // cookie for verify email page authorization
+    const isProduction = process.env.NODE_ENV === "production";
+    res.cookie("verifyEmailAccess", token, {
+        httpOnly: true,
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
+        path: "/",
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    });
+
     // response
-    res.status(201).json({message:"successful registration, check your email"})
+    res.status(201).json({status:"success",message:"successful registration, check your email"})
 })
 
 
 // verify email
-export const VerifyEmail = async (req, res) => {
+export const VerifyEmail = asyncHandler(async (req, res) => {
     // check body
     console.log(req.body)
     const {email, code} = req.body
@@ -79,10 +112,10 @@ export const VerifyEmail = async (req, res) => {
     // response
     const userData = {...user.personalInfo, isVerified:true, token: token}
     return res.status(200).json({ message: "Verified successfully", user:userData});
-}
+})
 
 
-export const SignIn = wrapperMD(async (req, res) => {
+export const SignIn = asyncHandler(async (req, res) => {
     // check if user in dataBase or not
     const { email, password } = req.body
     const user = await Users.findOne({"personalInfo.email": email}).select("+personalInfo.password")
@@ -125,11 +158,11 @@ export const SignIn = wrapperMD(async (req, res) => {
     return res.status(200).json({ message: "successful login", user:userData, token});
         
 })
-
+    
 
 
 // verify-me 
-export const VerifyMe = wrapperMD(async (req, res) =>{
+export const VerifyMe = asyncHandler(async (req, res) =>{
     // 
     if (!req.decoded?._id) return res.status(401).json({ message: "Unauthorized" });
 

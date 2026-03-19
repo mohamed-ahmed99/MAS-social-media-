@@ -1,35 +1,40 @@
-import { body, validationResult } from "express-validator"
+import { body} from "express-validator"
+import { validator } from "../middlewares/validator.js"
 
 
 const registerSchecma = {
     firstName: body("personalInfo.firstName")
-        .notEmpty().withMessage("username is rquired")
-        .isString().withMessage("username must be string")
-        .isLength({min:2}).withMessage("username mustn't be at least 2 characters"),
+        .notEmpty().withMessage("firstName is required")
+        .isString().withMessage("firstName must be string")
+        .isLength({min:2}).withMessage("firstName must be at least 2 characters"),
 
     lastName: body("personalInfo.lastName")
-        .notEmpty().withMessage("lastName is rquired")
+        .notEmpty().withMessage("lastName is required")
         .isString().withMessage("lastName must be string")
-        .isLength({min:2}).withMessage("lastName mustn't be at least 2 characters"),
-
-    address: body("personalInfo.address")
-        .notEmpty().withMessage("address is rquired")
-        .isString().withMessage("address must be string")
-        .isLength({min:2}).withMessage("address mustn't be at least 2 characters"),
-
-    phoneNumber: body("personalInfo.phoneNumber")
-        .notEmpty().withMessage("phoneNumber is rquired")
-        .isString().withMessage("phoneNumber must be string")
-        .isLength({min:10}).withMessage("phoneNumber mustn't be at least 10 characters")
-        .isLength({max:15}).withMessage("phoneNumber mustn't be more than 15 characters"),
+        .isLength({min:2}).withMessage("lastName must be at least 2 characters"),
         
-    email: body("personalInfo.email")
-        .notEmpty().withMessage("email is rquired")
+    gender: body("personalInfo.gender")
+        .notEmpty().withMessage("gender is required")
+        .isString().withMessage("gender must be string"),
+
+    address: body("contactInfo.address")
+        .notEmpty().withMessage("address is required")
+        .isString().withMessage("address must be string")
+        .isLength({min:2}).withMessage("address must be at least 2 characters"),
+
+    phoneNumber: body("contactInfo.phoneNumber")
+        .notEmpty().withMessage("phoneNumber is required")
+        .isString().withMessage("phoneNumber must be string")
+        .isLength({min:10}).withMessage("phoneNumber must be at least 10 characters")
+        .isLength({max:15}).withMessage("phoneNumber must not be more than 15 characters"),
+        
+    email: body("contactInfo.email")
+        .notEmpty().withMessage("email is required")
         .isEmail().withMessage("Invalid email")
         .isString().withMessage("email must be string"),
-        
-    password: body("personalInfo.password")
-        .notEmpty().withMessage("password is rquired")
+
+    password: body("account.password")
+        .notEmpty().withMessage("password is required")
         .isString().withMessage("password must be string")
         .isStrongPassword({minLength: 8,minLowercase: 1,minUppercase:0, minNumbers: 1,minSymbols: 1})
         .withMessage("Password must be at least 8 chars, include 1 lowercase, 1 number, 1 symbol"),
@@ -42,26 +47,9 @@ const signInSchema = {
         
     password: body("password")
         .notEmpty().withMessage("password is rquired")
-        .isLength({min:5}).withMessage("short password"),
+        .isLength({min:8}).withMessage("short password"),
 }
 
-
-// check data using schema
-const validator = (checkSchema) => {
-    const validatorArrays = Object.values(checkSchema)
-    
-    return async (req,res,next) => {
-        await Promise.all(validatorArrays.map(v => v.run(req)))
-        const errors = validationResult(req).array({onlyFirstError:true}) || []
-
-        if(errors.length) {
-            let errorsOBJ = {}
-            errors.forEach( error => errorsOBJ[error.path] = error.msg)
-            return res.status(400).json({validators: errorsOBJ})
-        }
-        next()
-    } 
-}
 
 // create middleware
 export const registerValidator = validator(registerSchecma)

@@ -7,11 +7,22 @@ const userSchema = new mongoose.Schema({
     personalInfo:{
         firstName:{type:String, required:true},
         lastName:{type:String, required:true},
-        email:{type:String, unique:true, required:true},
-        phoneNumber:String,
-        password:{type:String, required:true, select:false},
-        address:String,
         gender:String,
+    },
+    
+    contactInfo:{
+        phoneNumber:String,
+        address:String,
+        email:{type:String, required:true},
+    },
+
+    account:{
+        password:{type:String, required:true, select:false},
+        status: {
+            type: String,
+            enum: ["Active", "Blocked", "Deleted", "Unverified"],
+            default: "Unverified"
+        }   
     },
 
     // roles
@@ -24,20 +35,19 @@ const userSchema = new mongoose.Schema({
 
 
     // verify email 
-    verifyUser:{
-        isVerified: {type:Boolean, default:false},
+    verification:{
         verifyCode:{type:String},
-        emailVerificationExpires: {type:Date, default: () => (Date.now() + 1000 * 60 * 10)},
+        expiresAt: {type:Date, default: () => (Date.now() + 1000 * 60 * 10)},
     },
 
 }, {timestamps:true})
 
 userSchema.methods.checkPassword = async function (password) {
-    return await bcrypt.compare(password, this.personalInfo.password)
+    return await bcrypt.compare(password, this.account.password)
 }
 
+userSchema.index({"createdAt":-1})
+userSchema.index({"account.status":1})
 
-userSchema.index({"verifyUser.emailVerificationExpires":1}, {expireAfterSeconds:0})
-
-const Users = mongoose.model('users', userSchema)
+const Users = mongoose.model('user', userSchema)
 export default Users

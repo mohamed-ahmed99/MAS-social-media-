@@ -12,6 +12,5 @@ authRoutes.post('/verify-email', VerifyEmail)
 authRoutes.get('/verify-me', checkAuth(), VerifyMe)
 authRoutes.get('/getuser/key', checkAuth(), VerifyMe)
 
-
 export default authRoutes
 
