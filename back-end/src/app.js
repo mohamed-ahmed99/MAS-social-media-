@@ -12,6 +12,8 @@ import relationshipsRouter from './routes/relationships.routes.js'
 import notificationRoutes from './routes/notification.routes.js'
 
 const app = express() 
+app.set('trust proxy', true); // for get real ip
+
 dotenv.config()
 
 // cors

@@ -25,8 +25,10 @@ export const SignUp = asyncHandler(async (req, res) => {
         else if(user.account.status === "Blocked"){
             return res.status(400).json({status:"fail", message:"This email is blocked"})
         }
-        else if(user.account.status === "Unverified"){
-            return res.status(400).json({status:"fail", message:"This email is already connected with another account, please verify it first or use another email."})
+
+        // check if verification time expired or not
+        else if(user.account.status === "Unverified" && user.verification.expiresAt > Date.now()){
+            return res.status(400).json({status:"fail", message:"This email is already connected with another account, please login and verify this email"})
         }
     }
 
@@ -49,17 +51,20 @@ export const SignUp = asyncHandler(async (req, res) => {
     }
 
     // create token for verify email page authorization
-    const token = jwt.sign({_id:newUser._id, email:newUser.contactInfo.email, role:newUser.role}, process.env.JWT_SECRET, {expiresIn:"30d"})
+    const token = jwt.sign({_id:newUser._id, email:newUser.contactInfo.email}, process.env.JWT_SECRET, {expiresIn:"10m"}) 
 
-    // cookie for verify email page authorization
+    // cookie for 
     const isProduction = process.env.NODE_ENV === "production";
-    res.cookie("verifyEmailAccess", token, {
+    res.cookie("MASproAuth", token, {
         httpOnly: true,
         secure: isProduction,
         sameSite: isProduction ? "none" : "lax",
         path: "/",
-        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+        maxAge: 10 * 60 * 1000, // 10 minutes
     });
+
+    // create session
+    await Sessions.create({user:newUser._id, token, ip:req.ip, expiresAt: new Date(Date.now() + 1000 * 60 * 10)})
 
     // response
     res.status(201).json({status:"success",message:"successful registration, check your email"})

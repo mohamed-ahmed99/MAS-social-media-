@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
-import Users from '../models/user.schema.js'
 import wrapperMD from './wrapperMD.js'
 import Sessions from '../models/userSessions.model.js'
 

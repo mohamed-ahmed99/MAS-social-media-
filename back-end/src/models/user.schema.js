@@ -8,6 +8,10 @@ const userSchema = new mongoose.Schema({
         firstName:{type:String, required:true},
         lastName:{type:String, required:true},
         gender:String,
+        bio:String,
+        profilePicture:String,
+        coverPicture:String,
+        birthDate:String,
     },
     
     contactInfo:{
@@ -31,8 +35,6 @@ const userSchema = new mongoose.Schema({
         enum: [ROLES.ADMIN, ROLES.USER],
         default: ROLES.USER
     },
-
-
 
     // verify email 
     verification:{

@@ -1,23 +1,26 @@
 import mongoose from 'mongoose'
 
 const sessionSchema = new mongoose.Schema({
+
     // user
     user:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Users",
-        required:true
+        required:true,
+        index:true
     },
-    // sessions
-    sessions: {
-        type:[  
-            {
-                token:{type:String},
-                date:{type:Date, default: () => (Date.now())},
-                ip: String, 
-            }
-        ],
-        default: [] 
-    }
+    
+    token:{
+        type:String,
+        required:true,
+    },
+
+    ip:{
+        type:String,
+        required:true,
+    },
+
+   expiresAt:{type:Date},
 
 }, {timestamps:true})
 
