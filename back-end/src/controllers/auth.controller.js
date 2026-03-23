@@ -16,6 +16,7 @@ dotenv.config()
     @access: public
 */ 
 export const SignUp = asyncHandler(async (req, res) => {
+
     // check if user has an acound or not 
     const users = await Users.find({"contactInfo.email":req.body.contactInfo.email})
     if(users) {

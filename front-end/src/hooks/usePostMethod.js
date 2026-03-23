@@ -13,6 +13,8 @@ export const usePostMethod = () => {
     const postData = async (url, options = {}, body) => {
         if (!body) return null
         setLoading(true);
+        setMessage("");
+        setStatus("idle");
         try {
             const response = await fetch(url, {
                 method: "POST",

@@ -6,6 +6,8 @@ import {PuffLoader } from 'react-spinners'
 import { validateSignup } from './validation';
 import {usePostMethod} from "../../../hooks/usePostMethod"
 import List from '../../../components/List';
+import GeneralBtn from '../../../components/btns/GeneralBtn';
+import Message from '../../../components/Message';
 
 const SignUp = () => {
 
@@ -57,18 +59,60 @@ const SignUp = () => {
         // don't call back when the data is not what we want
         if(! Object.values(errors).some(v => v != "") ){
             console.log(data)
+
+            // Format data to match backend schema expectations
+            const payload = {
+                personalInfo: {
+                    firstName: data.firstName,
+                    lastName: data.lastName,
+                    gender: data.gender
+                },
+                contactInfo: {
+                    email: data.email,
+                    phoneNumber: data.phoneNumber,
+                    address: data.address
+                },
+                account: {
+                    password: data.password
+                }
+            };
+
             // http://localhost:5150/api/auth/signup
             // https://masproback.vercel.app/api/auth/signup
-            await postData("http://localhost:5150/api/auth/signup", {}, data)
+            await postData("http://localhost:5150/api/auth/signup", {}, payload)
         }
 
     }
+    const [message, setMessage] = useState(message_p)
+
+    useEffect(() => {
+        // if there is a message from back-end and it's not a success message
+        if(message_p && status_p !== "success") {
+            setMessage(message_p)
+        }
+
+        // if successful
+        if(status_p === "success") {
+            navigate("/auth/verify-email")
+        }
 
 
+
+
+
+        console.log({status_p, message_p, data_p, loading_p})
+    }, [status_p, data_p, message_p])
 
     return (
         <div className='bg-gray-100 min-h-screen flex md:items-center justify-center p-4 relative'>
             
+            {/* message */}
+            <Message 
+                message={message} 
+                setMessage={setMessage}
+                duration={5000}
+            />
+
             {/* card of form */}
             <motion.div 
                 initial={{scale:.8, opacity: 0}} 
@@ -190,18 +234,21 @@ const SignUp = () => {
                     </div>
 
 
-                    <motion.button 
+                    <motion.div
                         variants={{
                             hidden: { y: 20, opacity: 0 },
                             visible: { y: 0, opacity: 1 }
                         }}
-                        type='submit' 
-                        disabled={loading}
-                        className='bg-black text-white w-full p-[10px] rounded-md font-semibold 
-                        hover:opacity-80 cursor-pointer'
+                        className="w-full"
                     >
-                        Sign Up
-                    </motion.button>
+                        <GeneralBtn 
+                            type='submit' 
+                            loading={loading_p}
+                            disabled={loading_p}
+                            text="Sign Up"
+                            variant="black"
+                        />
+                    </motion.div>
 
                 </motion.form>
 
