@@ -1,8 +1,6 @@
 import {BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom'
 import Home from './pages/home/Page'
-import SignUp from './pages/SignUp'
 import SignIn from './pages/SignIn'
-import AuthLayout from './components/layouts/authLayout'
 import VerifyEmail from './pages/VerifyEmail'
 import ProfilePage from './pages/profile/Page'
 import { useEffect, useState } from 'react'
@@ -17,6 +15,13 @@ import Friends from './pages/friends/Friends'
 import Suggestions from './pages/friends/Suggestions'
 import Pendings from './pages/friends/Pendings'
 import FriendRequests from './pages/friends/Requestes'
+
+
+// auth
+import AuthLayout from './pages/auth/AuthLayout'
+import Signup from './pages/auth/signup/Signup'
+
+
 
 // User Page 
 import UserPage from './pages/users/page'
@@ -46,7 +51,7 @@ const AppRoutes = () => {
       const token = localStorage.getItem("MASproAuth")
       if(!token) {
         setIsLoading(false)
-        return navigate('/signin')
+        return navigate('/auth/signin')
       }
 
         // call back
@@ -64,7 +69,7 @@ const AppRoutes = () => {
           const data = await response.json()
           
           if(!response.ok) {
-              return navigate('/signin')
+              return navigate('/auth/signin')
           }else{
             console.log('start',data.data)
             setUserData(data.data)
@@ -86,9 +91,9 @@ const AppRoutes = () => {
 
         {/* auth */}
         <Route element={<AuthLayout/>}>
-            <Route path='/signup' element={<SignUp/>}/>
-            <Route path='/signin' element={<SignIn/>}/>
-            <Route path='/verify-email' element={<VerifyEmail/>}/>
+            <Route path='/auth/signup' element={<Signup/>}/>
+            <Route path='/auth/signin' element={<SignIn/>}/>
+            <Route path='/auth/verify-email' element={<VerifyEmail/>}/>
         </Route>
 
         {/* pages */}

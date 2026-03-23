@@ -10,21 +10,21 @@ export const verifyToken = (cookieName) => wrapperMD(async(req, res, next) => {
 
     // get token
     const token = req.cookies[cookieName]
-    if(!token) return res.status(401).json({ message: "No token provided" })
+    if(!token) return res.status(401).json({status:"fail", message: "No token provided" })
 
     // verify token
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
-    if(!decodedToken) return res.status(401).json({ message: "Invalid token" })
+    if(!decodedToken) return res.status(401).json({status:"fail", message: "Invalid token" })
 
     // check if token exist in DB
     const userSession = await Sessions.findOne({user:decodedToken._id})
-    if(!userSession) return res.status(401).json({ message: "Invalid token" })
+    if(!userSession) return res.status(401).json({status:"fail", message: "Invalid token" })
 
     const session = userSession.sessions.find(session => session.token === token)
-    if(!session) return res.status(401).json({ message: "Invalid token" })
+    if(!session) return res.status(401).json({status:"fail", message: "Invalid token" })
 
     // check if token expired
-    if(session.expiresAt < Date.now()) return res.status(401).json({ message: "Token expired" })
+    if(session.expiresAt < Date.now()) return res.status(401).json({status:"fail", message: "Token expired" })
 
     // attach user to request
     req.user = decodedToken
