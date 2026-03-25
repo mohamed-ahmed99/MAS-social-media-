@@ -59,8 +59,8 @@ export const SignUp = asyncHandler(async (req, res) => {
     const isProduction = process.env.NODE_ENV === "production";
     res.cookie("MASproAuth", token, {
         httpOnly: true,
-        secure: isProduction,
-        sameSite: isProduction ? "none" : "lax",
+        secure: true,
+        sameSite: "None",
         path: "/",
         maxAge: 10 * 60 * 1000, // 10 minutes
     });
