@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import Input from '../../../components/Input'
 import {motion} from 'framer-motion'
 import { useNavigate } from 'react-router-dom';
-import {PuffLoader } from 'react-spinners'
 import { validateSignup } from './validation';
 import {usePostMethod} from "../../../hooks/usePostMethod"
 import List from '../../../components/List';
@@ -22,8 +21,6 @@ const SignUp = () => {
         
     // some messages under input to make user know that the data he enterd is not what we want
     const [validation, setValidation] = useState({})
-
-    const [loading, setLoading] = useState(false)
 
     // Clear errors after 5 seconds
     useEffect(() => {
@@ -50,7 +47,6 @@ const SignUp = () => {
     const submition = async (e) => {
         e.preventDefault(); // prevent reload 
         let errors = {} // collect messages 
-        setLoading(false)
 
         // validate data
         errors = validateSignup(data)
@@ -79,7 +75,7 @@ const SignUp = () => {
 
             // http://localhost:5150/api/auth/signup
             // https://masproback.vercel.app/api/auth/signup
-            await postData("https://masproback.vercel.app/api/auth/signup", {}, payload)
+            await postData("http://localhost:5150/api/auth/signup", {}, payload)
         }
 
     }
@@ -91,13 +87,20 @@ const SignUp = () => {
             setMessage(message_p)
         }
 
+        // if validation
+        if(status_p === "validation") {
+            const newValidation = {};
+            for (const key in data_p?.errors) {
+                const shortKey = key.split('.').pop(); // get last part of the key
+                newValidation[shortKey] = data_p.errors[key]; 
+            }
+            setValidation(newValidation);
+        }
+
         // if successful
         if(status_p === "success") {
             navigate("/auth/verify-email")
         }
-
-
-
 
 
         console.log({status_p, message_p, data_p, loading_p})

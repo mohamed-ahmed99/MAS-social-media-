@@ -1,12 +1,11 @@
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
-import wrapperMD from './wrapperMD.js'
 import Sessions from '../models/userSessions.model.js'
 
 dotenv.config()
 
 
-export const verifyToken = (cookieName) => wrapperMD(async(req, res, next) => {
+export const verifyToken = (cookieName) => (async(req, res, next) => {
 
     // get token
     const token = req.cookies[cookieName]
@@ -17,10 +16,10 @@ export const verifyToken = (cookieName) => wrapperMD(async(req, res, next) => {
     if(!decodedToken) return res.status(401).json({status:"fail", message: "Invalid token" })
 
     // check if token exist in DB
-    const userSession = await Sessions.findOne({user:decodedToken._id})
-    if(!userSession) return res.status(401).json({status:"fail", message: "Invalid token" })
+    const userSession = await Sessions.find({user:decodedToken._id})
+    if(userSession.length === 0) return res.status(401).json({status:"fail", message: "Invalid token" })
 
-    const session = userSession.sessions.find(session => session.token === token)
+    const session = userSession.find(session => session.token === token)
     if(!session) return res.status(401).json({status:"fail", message: "Invalid token" })
 
     // check if token expired

@@ -18,20 +18,18 @@ dotenv.config()
 export const SignUp = asyncHandler(async (req, res) => {
 
     // check if user has an acound or not 
-    const users = await Users.find({"contactInfo.email":req.body.contactInfo.email})
-    if(users) {
-        users.forEach(user => {
-            if(user.account.status === "Blocked"){
-                return res.status(400).json({status:"fail", message:"This email is blocked"})
-            }
-            else if(user.account.status === "Active"){
-                return res.status(400).json({status:"fail", message:"This email is already connected with an account"})
-            }
-            // check if verification time expired or not
-            else if(user.account.status === "Unverified" && user.verification.expiresAt > Date.now()){
-                return res.status(400).json({status:"fail", message:"This email is already connected with another account, please login and verify this email"})
-            }
-        })
+    const user = await Users.findOne({"contactInfo.email":req.body.contactInfo.email})
+    if(user) {
+        if(user.account.status === "Blocked"){
+            return res.status(400).json({status:"fail", message:"This email is blocked"})
+        }
+        else if(user.account.status === "Active"){
+            return res.status(400).json({status:"fail", message:"This email is already connected with an account"})
+        }
+        // check if verification time expired or not
+        else if(user.account.status === "Unverified" && user.verification.expiresAt > Date.now()){
+            return res.status(400).json({status:"fail", message:"This email is already connected with another account, please login and verify this email"})
+        }
     }
 
     // hash password, create verification code & create user
@@ -77,16 +75,29 @@ export const SignUp = asyncHandler(async (req, res) => {
 export const VerifyEmail = asyncHandler(async (req, res) => {
 
     // check body
-    const {email, code} = req.body
-    if(!email || !code) return res.status(400).json({status:"fail", message:"email and code are required"})
+    const {code} = req.body
+    const email = req.user.email
+    if(!code) return res.status(400).json({status:"fail", message:"code is required"})
+
+    if(!email){
+        res.clearCookie("MASproAuth")
+        return res.status(401).json({status:"fail", message:"Unauthorized"})
+    }
 
     // check if user in dataBase or varification time expired or not
     const user = await Users.findOne({"contactInfo.email": email})
-    if(!user) return res.status(404).json({status:"fail", message:"User not found. Please check your email or create a new account.", data:null})
+    if(!user) {
+        return res.status(404).json({status:"fail", message:"User not found. Please check your email or create a new account.", data:null})
+    }
 
-    // check code
-    if(code != user.verification.verifyCode) {
-        return res.status(401).json({status:"fail", message:"Incorrect verification code", data:null})
+    // check if user is verified
+    if(user.account.status !== "Unverified") {
+        return res.status(400).json({status:"fail", message:"User is already verified", data:null})
+    }
+
+    // check if code is correct
+    if(user.verification.verifyCode !== code) {
+        return res.status(400).json({status:"fail", message:"Incorrect verification code", data:null})
     }
 
     // check if verification time expired or not
@@ -96,12 +107,13 @@ export const VerifyEmail = asyncHandler(async (req, res) => {
         
     // token and ip
     const token = jwt.sign({_id:user._id, email:user.contactInfo.email, role:user.role}, process.env.JWT_SECRET, {expiresIn:"30d"})
-    const ip = req.ip
-     
+    
+    // delete old sessions
+    await Sessions.deleteMany({user:user._id})
+    res.clearCookie("MASproAuth") // remove old cookie
 
-
-    // create session
-    await Sessions.create({user:user._id, token, ip, expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30)})
+    // create new session
+    await Sessions.create({user:user._id, token, ip:req.ip, expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30)})
 
     // update DB
     user.account.status = "Active"
@@ -112,8 +124,7 @@ export const VerifyEmail = asyncHandler(async (req, res) => {
     await user.save()
     
 
-
-    // cookies doesn't work on Vercel deployment
+    // cookies
     const isProduction = process.env.NODE_ENV === "production";
     res.cookie("MASproAuth", token, {
         httpOnly:true,
@@ -124,8 +135,8 @@ export const VerifyEmail = asyncHandler(async (req, res) => {
     })
     
     // response
-    const userData = {...user.personalInfo, isVerified:true, token: token}
-    return res.status(200).json({ message: "Verified successfully", user:userData});
+    const userData = {_id:user._id, role:user.role, status:user.account.status}
+    return res.status(200).json({ status:"success", message: "Verified successfully", data:{user:userData}});
 })
 
 

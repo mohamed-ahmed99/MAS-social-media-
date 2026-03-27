@@ -19,7 +19,7 @@ export const validator = (checkSchema) => {
         if(errors.length) {
             let errorsOBJ = {}
             errors.forEach( error => errorsOBJ[error.path] = error.msg)
-            return res.status(400).json({status:"fail", message:"Validation failed", errors: errorsOBJ})
+            return res.status(400).json({status:"validation", message:"Validation failed", data: {errors: errorsOBJ}})
         }
         
         // next middleware

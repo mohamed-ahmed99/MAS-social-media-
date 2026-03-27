@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
     contactInfo:{
         phoneNumber:String,
         address:String,
-        email:{type:String, required:true},
+        email:{type:String, required:true, unique:true, index:true},
     },
 
     account:{
@@ -39,7 +39,7 @@ const userSchema = new mongoose.Schema({
     // verify email 
     verification:{
         verifyCode:{type:String},
-        expiresAt: {type:Date, default: () => (Date.now() + 1000 * 60 * 10)},
+        expiresAt: {type:Date, default: () => (Date.now() + 10 * 60 * 1000 )},
     },
 
 }, {timestamps:true})
@@ -50,6 +50,7 @@ userSchema.methods.checkPassword = async function (password) {
 
 userSchema.index({"createdAt":-1})
 userSchema.index({"account.status":1})
+userSchema.index({"verification.expiresAt":1}, {expireAfterSeconds:0})
 
 const Users = mongoose.model('user', userSchema)
 export default Users

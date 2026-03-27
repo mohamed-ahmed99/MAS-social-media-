@@ -28,6 +28,12 @@ export const usePostMethod = () => {
             const result = await response.json();
 
             if (!response.ok) {
+                if(result.status === "validation") {
+                    setStatus("validation")
+                    setData(result.data)
+                    setMessage(result.message)
+                    return
+                }
                 setStatus("fail");
                 setData(null);
                 setMessage(result.message || "Failed to fetch data.");
