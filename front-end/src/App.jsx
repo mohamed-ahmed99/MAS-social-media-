@@ -1,7 +1,6 @@
 import {BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom'
 import Home from './pages/home/Page'
 import SignIn from './pages/SignIn'
-import VerifyEmail from './pages/VerifyEmail'
 import ProfilePage from './pages/profile/Page'
 import { useEffect, useState } from 'react'
 import { useUserContext } from './hooks/useUserContext'
@@ -20,6 +19,7 @@ import FriendRequests from './pages/friends/Requestes'
 // auth
 import AuthLayout from './pages/auth/AuthLayout'
 import Signup from './pages/auth/signup/Signup'
+import VerifyEmail from './pages/auth/signup/VeifyEmail'
 
 
 
@@ -39,50 +39,11 @@ function App() {
 }
 
 const AppRoutes = () => {
-    const navigate = useNavigate()
     const {userData, setUserData} = useUserContext()
    
 
-    const [loading, setIsLoading] = useState(true)
+    const [loading, setIsLoading] = useState(false)
     
-
-    const CheckToken = async () => {
-      setIsLoading(true)
-      const token = localStorage.getItem("MASproAuth")
-      if(!token) {
-        setIsLoading(false)
-        return navigate('/auth/signin')
-      }
-
-        // call back
-        try{
-          // http://localhost:5150/api/auth/verify-me
-          //https://masproback.vercel.app/api/auth/verify-me
-          const response = await fetch("https://masproback.vercel.app/api/auth/verify-me", {
-            method:"GET",
-            headers:{
-              "Authorization": `Bearer ${token}`,
-              "Content-Type": "application/json"
-            }
-          })
-
-          const data = await response.json()
-          
-          if(!response.ok) {
-              return navigate('/auth/signin')
-          }else{
-            console.log('start',data.data)
-            setUserData(data.data)
-          }
-        }
-        catch(error){
-          setIsLoading(false)
-          return {error:error.message}
-        }finally{
-          setIsLoading(false)
-        }
-    }
-    useEffect(() => { CheckToken() } ,[])
 
 
     return (
@@ -142,9 +103,6 @@ const AppRoutes = () => {
                 <AppLoading loading={loading}/>
        </div>
       }
-
-      {/* alert */}
-
     </>
   )
   

@@ -75,7 +75,7 @@ const SignUp = () => {
 
             // http://localhost:5150/api/auth/signup
             // https://masproback.vercel.app/api/auth/signup
-            await postData("http://localhost:5150/api/auth/signup", {}, payload)
+            await postData("https://masproback.vercel.app/api/auth/signup", {}, payload)
         }
 
     }
