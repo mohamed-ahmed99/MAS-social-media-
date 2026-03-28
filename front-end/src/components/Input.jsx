@@ -12,15 +12,15 @@ const Input = ({
     containerClassName = "",
 }) => {
     return (
-        <div 
-            className={`w-full flex flex-col gap-1.5 ${containerClassName}`} 
+        <div
+            className={`w-full flex flex-col gap-1.5 ${containerClassName}`}
         >
             {label && (
                 <label htmlFor={name} className="text-sm font-semibold text-black">
                     {label}
                 </label>
             )}
-            
+
             <input
                 type={type}
                 name={name}
@@ -28,16 +28,16 @@ const Input = ({
                 onChange={onChange}
                 placeholder={placeholder}
                 className={`w-full border p-2.5 block outline-none transition-colors rounded-lg bg-zinc-50 text-black placeholder-zinc-400
-                    ${error 
-                        ? 'border-red-500 bg-red-50 focus:border-red-600' 
+                    ${error
+                        ? 'border-red-500 bg-red-50 focus:border-red-600'
                         : 'border-zinc-300 focus:border-black bg-white focus:bg-zinc-50'} 
                     ${className}`}
-                
+
             />
-            
+
             <AnimatePresence mode="wait">
                 {error && (
-                    <motion.span 
+                    <motion.span
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}

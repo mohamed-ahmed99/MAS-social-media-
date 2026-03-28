@@ -75,3 +75,26 @@ export const validateSignup = (data) => {
     return errors
 }
     
+
+export const validateSignin = (data) => {
+    let errors = {}
+
+    // validate email
+    if (!data.email) {
+        errors.email = "Email is required" // no email
+    }
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+        errors.email = "Invalid email address" // not valid email
+    }
+
+    // validate password
+    if (!data.password) {
+        errors.password = "Password is required"
+    }
+    else if (data.password.length < 6) {
+        errors.password = "short password"
+    }
+
+    return errors
+}
+

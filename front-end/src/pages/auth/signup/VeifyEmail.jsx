@@ -1,21 +1,17 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { useMyStore } from '../../../hooks/useMyStore'
 import GeneralBtn from '../../../components/btns/GeneralBtn';
 import {usePostMethod} from '../../../hooks/usePostMethod'
 import Message from '../../../components/Message';
 
 export default function VerifyEmail() {
-    
+    // 
     const {postData, status_p, message_p, data_p, loading_p} = usePostMethod()
-
-    
     const inputsRefs = useRef([]) // refs for input fields
 
     // hooks
     const navigate = useNavigate()
-    const { store, setStore } = useMyStore()
     const location = useLocation()
 
     // states
@@ -93,7 +89,7 @@ export default function VerifyEmail() {
 
     useEffect(() => {
         if (status_p === "success") {
-            navigate("/profile")
+            navigate("/")
         }
         if (status_p === "fail") {
             setServerMessage(message_p)
@@ -185,9 +181,9 @@ export default function VerifyEmail() {
                         <AnimatePresence>
                             {validation && (
                                 <motion.p
-                                    initial={{ opacity: 0, y: -5 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: -5 }}
+                                    initial={{ opacity: 0, scale: 0.8 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.8 }}
                                     transition={{ duration: 0.2 }}
                                     className="text-red-500 text-center text-sm font-medium"
                                 >
@@ -204,8 +200,8 @@ export default function VerifyEmail() {
                         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                             <GeneralBtn
                                 type='submit'
-                                // loading={loading_p}
-                                // disabled={loading_p}
+                                loading={loading_p}
+                                disabled={loading_p}
                                 text="Send"
                                 variant="black"
                                 className="shadow-md py-3"
@@ -218,13 +214,3 @@ export default function VerifyEmail() {
     )
 }
 
-
-
-
-
-
-
-
-
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OWM2MDQ4ZTMwNDBlYTI2MTFiMjU1NzYiLCJlbWFpbCI6Im1hc21oZG1hc0BnbWFpbC5jb20iLCJpYXQiOjE3NzQ1ODQ5NzYsImV4cCI6MTc3NDU4NTU3Nn0.Av8bc5WzOLzpYEX6Vq6DltaVR3fRbxJZB4nPkqCp7UM
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OWM2MDQ4ZTMwNDBlYTI2MTFiMjU1NzYiLCJlbWFpbCI6Im1hc21oZG1hc0BnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc3NDU4NTAxOSwiZXhwIjoxNzc3MTc3MDE5fQ.okOP2S4VccfOTBi47JilXpezv42jjAZDsAyuhO8UKD4

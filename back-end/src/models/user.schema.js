@@ -12,12 +12,12 @@ const userSchema = new mongoose.Schema({
         profilePicture:String,
         coverPicture:String,
         birthDate:String,
+        address:String,
     },
     
     contactInfo:{
         phoneNumber:String,
-        address:String,
-        email:{type:String, required:true, unique:true, index:true},
+        email:{type:String, required:true},
     },
 
     account:{
@@ -48,9 +48,7 @@ userSchema.methods.checkPassword = async function (password) {
     return await bcrypt.compare(password, this.account.password)
 }
 
-userSchema.index({"createdAt":-1})
-userSchema.index({"account.status":1})
-userSchema.index({"verification.expiresAt":1}, {expireAfterSeconds:0})
+userSchema.index({"contactInfo.email":1,"createdAt":-1})
 
 const Users = mongoose.model('user', userSchema)
 export default Users

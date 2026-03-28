@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import {verifyEmailMSG} from '../config/emailMessages.js';
 import asyncHandler from "../middlewares/wrapperMD.js";
 import Sessions from "../models/userSessions.model.js";
+import { ACCOUNT_STATUS } from "../config/constants.js";
 
 dotenv.config()
 
@@ -18,17 +19,20 @@ dotenv.config()
 export const SignUp = asyncHandler(async (req, res) => {
 
     // check if user has an acound or not 
-    const user = await Users.findOne({"contactInfo.email":req.body.contactInfo.email})
+    const user = await Users
+        .findOne({"contactInfo.email":req.body.contactInfo.email})
+        .sort({createdAt:-1})
+        
     if(user) {
-        if(user.account.status === "Blocked"){
+        if(user.account.status === ACCOUNT_STATUS.BLOCKED){
             return res.status(400).json({status:"fail", message:"This email is blocked"})
         }
-        else if(user.account.status === "Active"){
+        else if(user.account.status === ACCOUNT_STATUS.ACTIVE){
             return res.status(400).json({status:"fail", message:"This email is already connected with an account"})
         }
         // check if verification time expired or not
-        else if(user.account.status === "Unverified" && user.verification.expiresAt > Date.now()){
-            return res.status(400).json({status:"fail", message:"This email is already connected with another account, please login and verify this email"})
+        else if(user.account.status === ACCOUNT_STATUS.UNVERIFIED && user.verification.expiresAt > Date.now()){
+            return res.status(400).json({status:"fail", message:"This email is already connected with another account, please login and verify this email or wait for 10 minutes to try again"})
         }
     }
 
@@ -43,7 +47,7 @@ export const SignUp = asyncHandler(async (req, res) => {
             from:process.env.EMAIL_FROM,
             to:req.body.contactInfo.email,
             subject:"Verify Your Account",
-            html:verifyEmailMSG(newUser.personalInfo.firstName, verifyCode)
+            html:verifyEmailMSG(`${newUser.personalInfo.firstName} ${newUser.personalInfo.lastName}`, verifyCode)
         })
     }catch(error){
         console.log(error)
@@ -67,7 +71,7 @@ export const SignUp = asyncHandler(async (req, res) => {
     await Sessions.create({user:newUser._id, token, ip:req.ip, expiresAt: new Date(Date.now() + 1000 * 60 * 10)})
 
     // response
-    res.status(201).json({status:"success",message:"successful registration, check your email"})
+    res.status(201).json({status:"success", message:"successful registration, check your email"})
 })
 
 
@@ -85,14 +89,14 @@ export const VerifyEmail = asyncHandler(async (req, res) => {
     }
 
     // check if user in dataBase or varification time expired or not
-    const user = await Users.findOne({"contactInfo.email": email})
+    const user = await Users.findOne({"contactInfo.email": email}).sort({createdAt:-1})
     if(!user) {
         return res.status(404).json({status:"fail", message:"User not found. Please check your email or create a new account.", data:null})
     }
 
     // check if user is verified
-    if(user.account.status !== "Unverified") {
-        return res.status(400).json({status:"fail", message:"User is already verified", data:null})
+    if(user.account.status !== ACCOUNT_STATUS.UNVERIFIED) {
+        return res.status(400).json({status:"fail", message:"This email verified before", data:null})
     }
 
     // check if code is correct
@@ -105,22 +109,23 @@ export const VerifyEmail = asyncHandler(async (req, res) => {
         return res.status(401).json({status:"fail", message:"Verification time expired", data:null})
     }
         
-    // token and ip
+    // token
     const token = jwt.sign({_id:user._id, email:user.contactInfo.email, role:user.role}, process.env.JWT_SECRET, {expiresIn:"30d"})
     
-    // delete old sessions
-    await Sessions.deleteMany({user:user._id})
-    res.clearCookie("MASproAuth") // remove old cookie
+    // delete old cookie
+    res.clearCookie("MASproAuth")
 
     // create new session
-    await Sessions.create({user:user._id, token, ip:req.ip, expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30)})
+    await Sessions.create({
+        user:user._id, 
+        token, 
+        ip:req.ip, 
+        expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30)
+    })
 
     // update DB
-    user.account.status = "Active"
-    user.verification = {
-        verifyCode:null,
-        expiresAt: null,
-    }
+    user.account.status = ACCOUNT_STATUS.ACTIVE
+    user.verification = {verifyCode:null, expiresAt: null}
     await user.save()
     
 
@@ -141,46 +146,51 @@ export const VerifyEmail = asyncHandler(async (req, res) => {
 
 
 export const SignIn = asyncHandler(async (req, res) => {
-    // check if user in dataBase or not
+    
     const { email, password } = req.body
-    const user = await Users.findOne({"personalInfo.email": email}).select("+personalInfo.password")
-    if(!user) return res.status(404).json({message:"User not found. check that your email is correct or create a new account."})
+
+    // check if user in dataBase or not
+    const user = await Users
+        .findOne({"contactInfo.email": email}).sort({createdAt:-1}).select("+account.password")
+    
+    // check if user not found
+    if(!user){
+        return res.status(404).json({status:"fail", message:"User not found"})
+    }
+
+    // check if user is active or unverified
+    const userStatus = user.account.status
+    if(userStatus !== ACCOUNT_STATUS.ACTIVE && userStatus !== ACCOUNT_STATUS.UNVERIFIED){
+        return res.status(400).json({status:"fail", message:`This email is ${userStatus}.`})
+    }
 
     // check password
     if(! await user.checkPassword(password)){
-        return res.status(401).json({message:"The password you entered is incorrect."})
+        return res.status(401).json({status:"fail", message:"The password you entered is incorrect."})
     }
-        
 
     // have user verified his email ?
-    if(user.verifyUser.isVerified == false) {
-        return res.status(401).json(
-            {message:"Account not verified. A verification code has been sent to your email.", order:"verifyEmail"}
-        )
+    if(userStatus === ACCOUNT_STATUS.UNVERIFIED) {
+        return res.status(401).json({
+            action:"Navigate_to_verify_email_page",
+            message:"Account not verified. A verification code has been sent to your email.", 
+        })
     }
 
     // token and ip
     const token = jwt.sign({_id:user._id, email:user.personalInfo.email, role:user.role}, process.env.JWT_SECRET)
-    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.connection.remoteAddress
 
-    // update user
-    const userSession = await Sessions.findOne({user:user._id})
-    console.log(userSession)
-    if(userSession){
-        await Sessions.updateOne({ user: user._id },
-            {
-                // $set: { emailVerificationExpires: null },
-                $push: { sessions: { token, ip } },
-            }
-        );
-
-    }else{
-        await Sessions.create({user:user._id, sessions:[{token, ip}]})
-    }
-        
+    // create session
+    await Sessions.create({
+        user:user._id, 
+        token, 
+        ip:req.ip, 
+        expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30)
+    })
+    
     // response
-    const userData = {...user.personalInfo, isVerified:user.verifyUser.isVerified}
-    return res.status(200).json({ message: "successful login", user:userData, token});
+    const userData = {_id:user._id, role:user.role, status:user.account.status}
+    return res.status(200).json({status:"success", message: "successful login", data:{user:userData}});
         
 })
     

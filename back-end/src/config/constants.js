@@ -12,3 +12,10 @@ export const NOTIFICATIONT_TYPE = {
     ACCEPT_FRIEND_REQUEST:"ACCEPT_FRIEND_REQUEST",
     FOLLOW:"FOLLOW",
 }
+
+export const ACCOUNT_STATUS = {
+    ACTIVE:"Active",
+    BLOCKED:"Blocked",
+    UNVERIFIED:"Unverified",
+    DELETED:"Deleted",
+}

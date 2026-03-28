@@ -17,7 +17,7 @@ const registerSchecma = {
         .notEmpty().withMessage("gender is required")
         .isString().withMessage("gender must be string"),
 
-    address: body("contactInfo.address")
+    address: body("personalInfo.address")
         .notEmpty().withMessage("address is required")
         .isString().withMessage("address must be string")
         .isLength({min:2}).withMessage("address must be at least 2 characters"),

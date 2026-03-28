@@ -1,6 +1,5 @@
 import {BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom'
 import Home from './pages/home/Page'
-import SignIn from './pages/SignIn'
 import ProfilePage from './pages/profile/Page'
 import { useEffect, useState } from 'react'
 import { useUserContext } from './hooks/useUserContext'
@@ -20,6 +19,7 @@ import FriendRequests from './pages/friends/Requestes'
 import AuthLayout from './pages/auth/AuthLayout'
 import Signup from './pages/auth/signup/Signup'
 import VerifyEmail from './pages/auth/signup/VeifyEmail'
+import Signin from './pages/auth/signup/Signin'
 
 
 
@@ -53,7 +53,7 @@ const AppRoutes = () => {
         {/* auth */}
         <Route element={<AuthLayout/>}>
             <Route path='/auth/signup' element={<Signup/>}/>
-            <Route path='/auth/signin' element={<SignIn/>}/>
+            <Route path='/auth/signin' element={<Signin/>}/>
             <Route path='/auth/verify-email' element={<VerifyEmail/>}/>
         </Route>
 

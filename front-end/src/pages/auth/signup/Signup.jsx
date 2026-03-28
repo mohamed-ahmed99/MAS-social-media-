@@ -61,12 +61,12 @@ const SignUp = () => {
                 personalInfo: {
                     firstName: data.firstName,
                     lastName: data.lastName,
-                    gender: data.gender
+                    gender: data.gender,
+                    address: data.address
                 },
                 contactInfo: {
                     email: data.email,
                     phoneNumber: data.phoneNumber,
-                    address: data.address
                 },
                 account: {
                     password: data.password
@@ -75,7 +75,7 @@ const SignUp = () => {
 
             // http://localhost:5150/api/auth/signup
             // https://masproback.vercel.app/api/auth/signup
-            await postData("https://masproback.vercel.app/api/auth/signup", {}, payload)
+            await postData(" https://masproback.vercel.app/api/auth/signup", {}, payload)
         }
 
     }
