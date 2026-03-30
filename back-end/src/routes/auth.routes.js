@@ -7,10 +7,27 @@ import {verifyToken} from '../middlewares/verifyToken.js'
 
 const authRoutes = Router()
 
+/**
+    * auth routes
+*/
+
+// sign up
 authRoutes.post('/signup', registerValidator, SignUp)
+
+
+// sign in
 authRoutes.post('/signin', signinValidator, SignIn)
+
+
+// verify email
 authRoutes.post('/verify-email',verifyToken("MASproAuth"), VerifyEmail)
-authRoutes.get('/verify-me', checkAuth(), VerifyMe)
+
+
+// verify me
+authRoutes.get('/verify-me', verifyToken("MASproAuth"), VerifyMe)
+
+
+// get user key
 authRoutes.get('/getuser/key', checkAuth(), VerifyMe)
 
 export default authRoutes

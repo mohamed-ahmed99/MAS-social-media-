@@ -9,20 +9,25 @@ export const useGetMethod = () => {
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
 
-    const token = localStorage.getItem("MASproAuth")
+
 
 
         const getData = async (url) =>{
 
             if (!url) throw new Error("No URL to Get Data")
+
+            // clear previous data
+            setData(null);
+            setMessage("");
+            setStatus("idle");
             setLoading(true);
 
+            // fetch data
             try{
                 const response = await fetch(url, {
                     method:"GET",
                     headers:{
                         "Content-Type":"application/json",
-                        authorization: `Bearer ${token}`
                     },
                     credentials:"include",
                 });

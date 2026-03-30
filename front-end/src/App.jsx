@@ -1,8 +1,7 @@
-import {BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom'
+import {BrowserRouter, Routes, Route, useNavigate, useLocation} from 'react-router-dom'
 import Home from './pages/home/Page'
 import ProfilePage from './pages/profile/Page'
-import { useEffect, useState } from 'react'
-import { useUserContext } from './hooks/useUserContext'
+import { useState, useEffect } from 'react'
 import PagesLayout from './components/layouts/PagesLayout'
 import AppLoading from './components/AppLoading'
 import All from './pages/profile/All'
@@ -15,7 +14,7 @@ import Pendings from './pages/friends/Pendings'
 import FriendRequests from './pages/friends/Requestes'
 
 
-// auth
+// auth pages
 import AuthLayout from './pages/auth/AuthLayout'
 import Signup from './pages/auth/signup/Signup'
 import VerifyEmail from './pages/auth/signup/VeifyEmail'
@@ -30,6 +29,9 @@ import AllUserPage from './pages/users/All'
 // notications
 import Notification from './pages/notifications/page'
 
+// my hooks
+import { useGetMethod } from './hooks/useGetMethod'
+
 
 function App() {
   return (
@@ -39,12 +41,43 @@ function App() {
 }
 
 const AppRoutes = () => {
-    const {userData, setUserData} = useUserContext()
-   
 
-    const [loading, setIsLoading] = useState(false)
+  const navigate = useNavigate()
+  const { getData, status_g, message_g, data_g, loading_g } = useGetMethod()
+  const [isVerifying, setIsVerifying] = useState(true)
+
+
+  // check if user is logged in
+  useEffect(() => {
+    const verifyMe = async () => {
+      try {
+        await getData("http://localhost:5150/api/auth/verify-me")
+      } finally {
+        setIsVerifying(false)
+      }
+    }
+    verifyMe()
+  }, [])
+
+  const location = useLocation()
+
+  // handle response
+  useEffect(() => {
+    if(status_g === "fail" && !location.pathname.startsWith("/auth")) {
+      navigate("/auth/signin")
+    }
+  }, [status_g, navigate, location])
     
 
+
+  // loading when server check the token or user not logged in
+  if (isVerifying || (status_g === "fail" && !location.pathname.startsWith("/auth"))) {
+    return (
+      <div className='fixed inset-0 flex items-center justify-center z-[9999] bg-white'>
+        <AppLoading loading={true} />
+      </div>
+    )
+  }
 
     return (
     <>
@@ -56,6 +89,7 @@ const AppRoutes = () => {
             <Route path='/auth/signin' element={<Signin/>}/>
             <Route path='/auth/verify-email' element={<VerifyEmail/>}/>
         </Route>
+
 
         {/* pages */}
         <Route element={<PagesLayout/>}>
@@ -97,12 +131,6 @@ const AppRoutes = () => {
         <Route path='*' element={<NotFound/>}/>
       </Routes>
 
-
-      {/* loading when server check the token */}
-      {loading && <div className='fixed inset-0 flex items-center justify-center z-[9999]'>
-                <AppLoading loading={loading}/>
-       </div>
-      }
     </>
   )
   

@@ -83,8 +83,10 @@ export const VerifyEmail = asyncHandler(async (req, res) => {
     const email = req.user.email
     if(!code) return res.status(400).json({status:"fail", message:"code is required"})
 
+    // check if email exist
     if(!email){
         res.clearCookie("MASproAuth")
+        console.log("No email")
         return res.status(401).json({status:"fail", message:"Unauthorized"})
     }
 
@@ -178,7 +180,7 @@ export const SignIn = asyncHandler(async (req, res) => {
     }
 
     // token and ip
-    const token = jwt.sign({_id:user._id, email:user.personalInfo.email, role:user.role}, process.env.JWT_SECRET)
+    const token = jwt.sign({_id:user._id, email:user.contactInfo.email, role:user.role}, process.env.JWT_SECRET)
 
     // create session
     await Sessions.create({
@@ -186,6 +188,16 @@ export const SignIn = asyncHandler(async (req, res) => {
         token, 
         ip:req.ip, 
         expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30)
+    })
+
+    // cookies
+    const isProduction = process.env.NODE_ENV === "production";
+    res.cookie("MASproAuth", token, {
+        httpOnly:true,
+        secure:isProduction,
+        sameSite:isProduction ? "none" : "lax",
+        path:"/",
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
     })
     
     // response
@@ -199,11 +211,11 @@ export const SignIn = asyncHandler(async (req, res) => {
 // verify-me 
 export const VerifyMe = asyncHandler(async (req, res) =>{
     // 
-    if (!req.decoded?._id) return res.status(401).json({ message: "Unauthorized" });
+    if (!req.user?._id) return res.status(401).json({status:"fail", message: "Unauthorized", data:null });
 
-    const user = await Users.findById(req.decoded._id)
-    if (!user) return res.status(404).json({ message: "User not found" });
+    const user = await Users.findById(req.user._id)
+    if (!user) return res.status(404).json({status:"fail", message: "User not found", data:null });
 
-    const userData = {...user.personalInfo, isVerified: user.verifyUser.isVerified, _id: user._id};
-    return res.status(200).json({ message: "User verified successfully", data:{user: userData} });        
+    const userData = {_id:user._id, role:user.role, status:user.account.status, email:user.contactInfo.email};
+    return res.status(200).json({status:"success", message: "User verified successfully", data:{user: userData} });        
 })

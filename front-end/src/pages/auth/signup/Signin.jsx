@@ -51,7 +51,7 @@ const SignIn = () => {
 
         //  call api if no errors
         if (!Object.values(errors).some(v => v != "")) {
-            await postData(" https://masproback.vercel.app/api/auth/signin", {}, data)
+            await postData("http://localhost:5150/api/auth/signin", {}, data)
         }
 
     }
@@ -149,8 +149,8 @@ const SignIn = () => {
                     >
                         <GeneralBtn
                             type="submit"
-                            loading={loading}
-                            disabled={loading}
+                            loading={loading_p}
+                            disabled={loading_p}
                             text="Sign In"
                             className="w-full"
                             variant="black"

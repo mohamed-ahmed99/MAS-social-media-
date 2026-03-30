@@ -12,8 +12,12 @@ export const verifyToken = (cookieName) => (async(req, res, next) => {
     if(!token) return res.status(401).json({status:"fail", message: "No token provided" })
 
     // verify token
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
-    if(!decodedToken) return res.status(401).json({status:"fail", message: "Invalid token" })
+    let decodedToken
+    try {
+        decodedToken = jwt.verify(token, process.env.JWT_SECRET)
+    } catch (error) {
+        return res.status(401).json({status:"fail", message: "Invalid token" })
+    }
 
     // check if token exist in DB
     const userSession = await Sessions.find({user:decodedToken._id})
@@ -27,6 +31,7 @@ export const verifyToken = (cookieName) => (async(req, res, next) => {
 
     // attach user to request
     req.user = decodedToken
+    console.log(req.user)
     next()
     
 })
