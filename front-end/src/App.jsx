@@ -51,7 +51,10 @@ const AppRoutes = () => {
   useEffect(() => {
     const verifyMe = async () => {
       try {
-        await getData("http://localhost:5150/api/auth/verify-me")
+        // url
+        // http://localhost:5150/api/auth/verify-me
+        // https://masproback.vercel.app/api/auth/verify-me
+        await getData("https://masproback.vercel.app/api/auth/verify-me")
       } finally {
         setIsVerifying(false)
       }
