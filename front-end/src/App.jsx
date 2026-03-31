@@ -1,4 +1,4 @@
-import {BrowserRouter, Routes, Route, useNavigate, useLocation} from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 import Home from './pages/home/Page'
 import ProfilePage from './pages/profile/Page'
 import { useState, useEffect } from 'react'
@@ -35,7 +35,7 @@ import { useGetMethod } from './hooks/useGetMethod'
 
 function App() {
   return (
-    <BrowserRouter>  <AppRoutes/>  </BrowserRouter>
+    <BrowserRouter>  <AppRoutes />  </BrowserRouter>
   )
 
 }
@@ -44,20 +44,18 @@ const AppRoutes = () => {
 
   const navigate = useNavigate()
   const { getData, status_g, message_g, data_g, loading_g } = useGetMethod()
-  const [isVerifying, setIsVerifying] = useState(true)
 
 
   // check if user is logged in
   useEffect(() => {
     const verifyMe = async () => {
-      try {
-        // url
-        // http://localhost:5150/api/auth/verify-me
-        // https://masproback.vercel.app/api/auth/verify-me
-        await getData("https://masproback.vercel.app/api/auth/verify-me")
-      } finally {
-        setIsVerifying(false)
-      }
+      
+      // url
+      // http://localhost:5150/api/auth/verify-me
+      // https://masproback.vercel.app/api/auth/verify-me
+      console.log("status_g", status_g)
+      await getData("https://masproback.vercel.app/api/auth/verify-me")
+      
     }
     verifyMe()
   }, [])
@@ -66,15 +64,17 @@ const AppRoutes = () => {
 
   // handle response
   useEffect(() => {
-    if(status_g === "fail" && !location.pathname.startsWith("/auth")) {
+    // Only redirect to signin if we are finished verifying, have no user data, AND are not already on an auth page
+    if (status_g === "fail" && !location.pathname.startsWith("/auth")) {
+      console.log("status_g", status_g)
       navigate("/auth/signin")
     }
   }, [status_g, navigate, location])
-    
+
 
 
   // loading when server check the token or user not logged in
-  if (isVerifying || (status_g === "fail" && !location.pathname.startsWith("/auth"))) {
+  if (loading_g) {
     return (
       <div className='fixed inset-0 flex items-center justify-center z-[9999] bg-white'>
         <AppLoading loading={true} />
@@ -82,61 +82,61 @@ const AppRoutes = () => {
     )
   }
 
-    return (
+  return (
     <>
       <Routes>
 
         {/* auth */}
-        <Route element={<AuthLayout/>}>
-            <Route path='/auth/signup' element={<Signup/>}/>
-            <Route path='/auth/signin' element={<Signin/>}/>
-            <Route path='/auth/verify-email' element={<VerifyEmail/>}/>
+        <Route element={<AuthLayout />}>
+          <Route path='/auth/signup' element={<Signup />} />
+          <Route path='/auth/signin' element={<Signin />} />
+          <Route path='/auth/verify-email' element={<VerifyEmail />} />
         </Route>
 
 
         {/* pages */}
-        <Route element={<PagesLayout/>}>
-          <Route path='/' element={<Home/>}/>
+        <Route element={<PagesLayout />}>
+          <Route path='/' element={<Home />} />
 
           {/* profile */}
-          <Route path='/profile' element={<ProfilePage/>}>
-            <Route index element={<All/>}/>
-            <Route path='friends' element={<AllFriends/>}/>
+          <Route path='/profile' element={<ProfilePage />}>
+            <Route index element={<All />} />
+            <Route path='friends' element={<AllFriends />} />
 
           </Route>
 
 
 
           {/* friends */}
-          <Route path='/friends' element={<FriendsPage/>}>
-            <Route index element={<Friends/>}/>
-            <Route path='friends_requests' element={<FriendRequests/>}/>
-            <Route path='friends_suggestions' element={<Suggestions/>}/>
-            <Route path='pendings' element={<Pendings/>}/>
+          <Route path='/friends' element={<FriendsPage />}>
+            <Route index element={<Friends />} />
+            <Route path='friends_requests' element={<FriendRequests />} />
+            <Route path='friends_suggestions' element={<Suggestions />} />
+            <Route path='pendings' element={<Pendings />} />
           </Route>
 
           {/* userPage */}
-          <Route path='/user/:username' element={<UserPage/>}>
-              <Route index element={<AllUserPage/>}/>
+          <Route path='/user/:username' element={<UserPage />}>
+            <Route index element={<AllUserPage />} />
           </Route>
-          
 
-          <Route path='/notifications' element={<Notification/>}/>
+
+          <Route path='/notifications' element={<Notification />} />
 
 
           {/* other pages - not implemented yet */}
-          <Route path='/photos' element={<NotFound/>}/>
-          <Route path='/settings' element={<NotFound/>}/>
-          <Route path='/chat' element={<NotFound/>}/>
-           
+          <Route path='/photos' element={<NotFound />} />
+          <Route path='/settings' element={<NotFound />} />
+          <Route path='/chat' element={<NotFound />} />
+
         </Route>
 
-        <Route path='*' element={<NotFound/>}/>
+        <Route path='*' element={<NotFound />} />
       </Routes>
 
     </>
   )
-  
+
 }
 
 export default App

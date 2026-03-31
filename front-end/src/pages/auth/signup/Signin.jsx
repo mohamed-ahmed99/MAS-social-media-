@@ -60,12 +60,12 @@ const SignIn = () => {
     useEffect(() => {
 
         // if there is a message from back-end and it's not a success message
-        if (message_p && status_p !== "success") {
+        if (message_p && status_p === "fail") {
             setMessage(message_p)
         }
 
         // if validation
-        if (status_p === "validation") {
+        else if (status_p === "validation") {
             const newValidation = {};
             for (const key in data_p?.errors) {
                 const shortKey = key.split('.').pop(); // get last part of the key
@@ -75,12 +75,9 @@ const SignIn = () => {
         }
 
         // if successful
-        if (status_p === "success") {
+        else if (status_p === "success") {
             navigate("/")
         }
-
-
-        console.log({ status_p, message_p, data_p, loading_p })
 
     }, [status_p])
 
