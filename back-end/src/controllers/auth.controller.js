@@ -172,10 +172,10 @@ export const SignIn = asyncHandler(async (req, res) => {
     }
 
     // have user verified his email ?
-    if(userStatus === ACCOUNT_STATUS.UNVERIFIED) {
+    if (userStatus === ACCOUNT_STATUS.UNVERIFIED) {
         return res.status(401).json({
-            action:"Navigate_to_verify_email_page",
-            message:"Account not verified. A verification code has been sent to your email.", 
+            action: "Navigate_to_verify_email_page",
+            message: "Account not verified. A verification code has been sent to your email.",
         })
     }
 

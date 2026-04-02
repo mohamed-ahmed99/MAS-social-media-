@@ -8,6 +8,7 @@ export const useGetMethod = () => {
     const [status, setStatus] = useState("idle");
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
+    const [action, setAction] = useState(null);
 
 
 
@@ -21,6 +22,7 @@ export const useGetMethod = () => {
             setMessage("");
             setStatus("idle");
             setLoading(true);
+            setAction(null);
 
             // fetch data
             try{
@@ -36,9 +38,11 @@ export const useGetMethod = () => {
                 if(!response.ok){
                     setStatus("fail");
                     setData(null);
+                    setAction(result.action);
                     setMessage(result.message || "Failed to fetch data.");
                 }else{
                     setStatus("success");
+                    setAction(result.action);
                     setData(result.data);
                     setMessage(result.message || "Data fetched successfully.");
                 }
@@ -55,5 +59,5 @@ export const useGetMethod = () => {
         }
         
 
-    return {getData, status_g:status, message_g:message, data_g:data, loading_g:loading};
+    return {getData, status_g:status, message_g:message, data_g:data, loading_g:loading, action_g:action};
 }

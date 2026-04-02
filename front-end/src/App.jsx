@@ -15,22 +15,23 @@ import FriendRequests from './pages/friends/Requestes'
 
 
 // auth pages
-import AuthLayout from './pages/auth/AuthLayout'
-import Signup from './pages/auth/signup/Signup'
-import VerifyEmail from './pages/auth/signup/VeifyEmail'
-import Signin from './pages/auth/signup/Signin'
+import AuthLayout from './pages/auth/AuthLayout' // auth layout
+import Signup from './pages/auth/signup/Signup' // signup page
+import VerifyEmail from './pages/auth/signup/VeifyEmail' // verify email page
+import Signin from './pages/auth/signup/Signin' // signin page
 
 
 
 // User Page 
-import UserPage from './pages/users/page'
-import AllUserPage from './pages/users/All'
+import UserPage from './pages/users/page' // user page
+import AllUserPage from './pages/users/All' // all user page
 
 // notications
-import Notification from './pages/notifications/page'
+import Notification from './pages/notifications/page' // notification page
 
 // my hooks
-import { useGetMethod } from './hooks/useGetMethod'
+import { useGetMethod } from './hooks/useGetMethod' // get method
+import { useGlobalData } from './hooks/useStore' // global data
 
 
 function App() {
@@ -42,45 +43,91 @@ function App() {
 
 const AppRoutes = () => {
 
-  const navigate = useNavigate()
-  const { getData, status_g, message_g, data_g, loading_g } = useGetMethod()
+  console.log("app routes")
 
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  const { getData, status_g, message_g, data_g, loading_g, action_g } = useGetMethod()
+  const [store, setGlobalData] = useGlobalData()
+  console.log(store)
 
   // check if user is logged in
   useEffect(() => {
     const verifyMe = async () => {
-      
       // url
       // http://localhost:5150/api/auth/verify-me
       // https://masproback.vercel.app/api/auth/verify-me
-      console.log("status_g", status_g)
       await getData("https://masproback.vercel.app/api/auth/verify-me")
-      
     }
     verifyMe()
   }, [])
 
-  const location = useLocation()
 
-  // handle response
   useEffect(() => {
-    // Only redirect to signin if we are finished verifying, have no user data, AND are not already on an auth page
-    if (status_g === "fail" && !location.pathname.startsWith("/auth")) {
-      console.log("status_g", status_g)
-      navigate("/auth/signin")
+    if (status_g === "success") {
+      const userStatus = data_g?.user?.status
+
+      // if user is not verified
+      if (userStatus === "Unverified") {
+        setGlobalData("authenticated", false)
+
+        // if user is not verified and not on verify email page, redirect to verify email page
+        if (location.pathname !== "/auth/verify-email") {
+          navigate("/auth/verify-email")
+        }
+      } else {
+        setGlobalData("authenticated", true)
+        setGlobalData("user", data_g.user)
+
+        // if user is already logged in and tries to go to auth pages, redirect to home
+        if (location.pathname.startsWith("/auth")) {
+          navigate("/")
+        }
+      }  
     }
-  }, [status_g, navigate, location])
+    
+    else if (status_g === "fail") {
+      // if user is not logged in
+      if (!store.authenticated) {
+        setGlobalData("authenticated", false)
+        // if user is not logged in and not on auth pages, redirect to signin
+        if (!location.pathname.startsWith("/auth")) {
+          navigate("/auth/signin")
+        }
+      }
+    }
+  }, [status_g, location.pathname, store.authenticated])
 
 
+  /// 1. loading state 
+  if (status_g === 'idle' || loading_g) return <AppLoading />
 
-  // loading when server check the token or user not logged in
-  if (loading_g) {
-    return (
-      <div className='fixed inset-0 flex items-center justify-center z-[9999] bg-white'>
-        <AppLoading loading={true} />
-      </div>
-    )
+  /// 2. if we are about to navigate, keep showing loading
+  const isAuthRoute = location.pathname.startsWith('/auth')
+  const isUnverified = status_g === 'success' && data_g?.user?.status === 'Unverified'
+
+  // if user is not logged in and not on auth pages
+  if (status_g === 'fail' && !store.authenticated && !isAuthRoute) {
+    return <AppLoading />
   }
+
+  // if user is not verified and not on verify email page
+  if (isUnverified && location.pathname !== '/auth/verify-email') {
+    return <AppLoading />
+  }
+
+  /// 3. if we are about to navigate, keep showing loading
+  const isAuthenticated = status_g === 'success' && data_g?.user?.status === 'Active'
+  if (isAuthenticated && location.pathname.startsWith('/auth')) {
+    return <AppLoading />
+  }
+
+
+
+
+
+
 
   return (
     <>

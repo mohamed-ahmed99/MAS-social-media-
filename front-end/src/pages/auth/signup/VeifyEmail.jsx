@@ -4,13 +4,16 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import GeneralBtn from '../../../components/btns/GeneralBtn';
 import {usePostMethod} from '../../../hooks/usePostMethod'
 import Message from '../../../components/Message';
+import { useGlobalData } from '../../../hooks/useStore';
 
 export default function VerifyEmail() {
-    // 
-    const {postData, status_p, message_p, data_p, loading_p} = usePostMethod()
-    const inputsRefs = useRef([]) // refs for input fields
 
+    // my hooks
+    const [store, setGlobalData] = useGlobalData()
+    const {postData, status_p, message_p, data_p, loading_p} = usePostMethod()
+    
     // hooks
+    const inputsRefs = useRef([]) // refs for input fields
     const navigate = useNavigate()
     const location = useLocation()
 
@@ -89,9 +92,11 @@ export default function VerifyEmail() {
 
     useEffect(() => {
         if (status_p === "success") {
+            setGlobalData("authenticated", true)
+            setGlobalData("user", { ...data_p })
             navigate("/")
         }
-        if (status_p === "fail") {
+        else if (status_p === "fail") {
             setServerMessage(message_p)
         }
     }, [status_p, data_p, message_p])

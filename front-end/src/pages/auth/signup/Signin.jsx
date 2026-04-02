@@ -6,12 +6,14 @@ import GeneralBtn from '../../../components/btns/GeneralBtn';
 import { validateSignin } from './validation';
 import { usePostMethod } from '../../../hooks/usePostMethod';
 import Message from '../../../components/Message';
+import { useGlobalData } from '../../../hooks/useStore';
 
 
 const SignIn = () => {
 
     // my hooks
-    const { postData, status_p, message_p, data_p, loading_p } = usePostMethod()
+    const [store, setGlobalData] = useGlobalData()
+    const { postData, status_p, message_p, data_p, loading_p, action_p } = usePostMethod()
 
     // hooks
     const navigate = useNavigate()
@@ -56,15 +58,17 @@ const SignIn = () => {
 
     }
 
-    // handle api response
+    //////////////////// handle api response
     useEffect(() => {
+        console.log(action_p)
 
-        // if there is a message from back-end and it's not a success message
-        if (message_p && status_p === "fail") {
-            setMessage(message_p)
+        // 1. if user is unverified
+        if (action_p === "Navigate_to_verify_email_page") {
+            setGlobalData("authenticated", false)
+            navigate("/auth/verify-email")
         }
 
-        // if validation
+        // 2. Handle validation errors
         else if (status_p === "validation") {
             const newValidation = {};
             for (const key in data_p?.errors) {
@@ -74,12 +78,19 @@ const SignIn = () => {
             setValidation(newValidation);
         }
 
-        // if successful
+        // 3. Failures
+        else if (message_p && status_p === "fail") {
+            setMessage(message_p)
+        }
+
+        // 4. Success
         else if (status_p === "success") {
+            setGlobalData("authenticated", true)
+            setGlobalData("user", { ...data_p })
             navigate("/")
         }
 
-    }, [status_p])
+    }, [status_p, data_p, navigate, action_p])
 
 
 
@@ -132,11 +143,6 @@ const SignIn = () => {
                             onChange={handleChange}
                         />
                     </motion.div>
-
-                    {/* <button type='submit' disabled={loading} 
-                        className='bg-black text-white w-full p-3 rounded-md font-semibold 
-                        hover:opacity-80 cursor-pointer'>Sign In
-                    </button> */}
 
                     {/* sign in btn */}
                     <motion.div

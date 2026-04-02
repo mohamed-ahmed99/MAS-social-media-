@@ -8,13 +8,17 @@ export const usePostMethod = () => {
     const [status, setStatus] = useState("idle");
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
+    const [action, setAction] = useState(null);
 
 
     const postData = async (url, options = {}, body) => {
+
         if (!body) return null
         setLoading(true);
         setMessage("");
         setStatus("idle");
+        setAction(null);
+
         try {
             const response = await fetch(url, {
                 method: "POST",
@@ -31,14 +35,17 @@ export const usePostMethod = () => {
                 if(result.status === "validation") {
                     setStatus("validation")
                     setData(result.data)
+                    setAction(result.action || null)
                     setMessage(result.message)
                     return
                 }
                 setStatus("fail");
                 setData(null);
+                setAction(result.action || null)
                 setMessage(result.message || "Failed to fetch data.");
             } else {
                 setStatus("success");
+                setAction(result.action || null)
                 setData(result.data);
                 setMessage(result.message || "Data fetched successfully.");
             }
@@ -55,5 +62,12 @@ export const usePostMethod = () => {
     }
 
 
-    return { postData, status_p: status, message_p: message, data_p: data, loading_p: loading };
+    return { 
+        postData, 
+        status_p: status, 
+        message_p: message, 
+        data_p: data, 
+        action_p: action, 
+        loading_p: loading 
+    };
 }

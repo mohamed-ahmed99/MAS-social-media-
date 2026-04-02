@@ -5,20 +5,24 @@ import './App.css'
 import App from './App.jsx'
 import {AppProvider} from './hooks/useMyStore.jsx'
 import {UserProvider} from './hooks/useUserContext.jsx'
+import { GlobalProvider } from './hooks/useStore.jsx'
 
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
 
-    <UserProvider> {/* it has the data of user from the server */}
+    <GlobalProvider> {/**/}
 
-      <AppProvider> {/* it has data I need it instead of sending in props*/}
+      <UserProvider> {/* it has the data of user from the server */}
+
+        <AppProvider> {/* it has data I need it instead of sending in props*/}
 
           <App />
 
-      </AppProvider>
+        </AppProvider>
 
-    </UserProvider>
-    
+      </UserProvider>
+      
+    </GlobalProvider>    
   </StrictMode>
 )
