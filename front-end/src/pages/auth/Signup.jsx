@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import Input from '../../../components/Input'
+import Input from '../../components/Input'
 import {motion} from 'framer-motion'
 import { useNavigate } from 'react-router-dom';
 import { validateSignup } from './validation';
-import {usePostMethod} from "../../../hooks/usePostMethod"
-import List from '../../../components/List';
-import GeneralBtn from '../../../components/btns/GeneralBtn';
-import Message from '../../../components/Message';
+import {usePostMethod} from "../../hooks/usePostMethod"
+import List from '../../components/List';
+import GeneralBtn from '../../components/btns/GeneralBtn';
+import Message from '../../components/Message';
 
 const SignUp = () => {
 

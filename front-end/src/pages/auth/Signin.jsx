@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import Input from '../../../components/Input'
+import Input from '../../components/Input'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom';
-import GeneralBtn from '../../../components/btns/GeneralBtn';
+import GeneralBtn from '../../components/btns/GeneralBtn';
 import { validateSignin } from './validation';
-import { usePostMethod } from '../../../hooks/usePostMethod';
-import Message from '../../../components/Message';
-import { useGlobalData } from '../../../hooks/useStore';
+import { usePostMethod } from '../../hooks/usePostMethod';
+import Message from '../../components/Message';
+import { useGlobalData } from '../../hooks/useStore';
 
 
 const SignIn = () => {

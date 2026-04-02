@@ -10,6 +10,8 @@ const Input = ({
     error,
     className = "",
     containerClassName = "",
+    onFocus,
+    onBlur,
 }) => {
     return (
         <div
@@ -27,6 +29,8 @@ const Input = ({
                 value={value}
                 onChange={onChange}
                 placeholder={placeholder}
+                onFocus={onFocus}
+                onBlur={onBlur}
                 className={`w-full border p-2.5 block outline-none transition-colors rounded-lg bg-zinc-50 text-black placeholder-zinc-400
                     ${error
                         ? 'border-red-500 bg-red-50 focus:border-red-600'

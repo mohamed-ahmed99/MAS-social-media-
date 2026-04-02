@@ -16,9 +16,9 @@ import FriendRequests from './pages/friends/Requestes'
 
 // auth pages
 import AuthLayout from './pages/auth/AuthLayout' // auth layout
-import Signup from './pages/auth/signup/Signup' // signup page
-import VerifyEmail from './pages/auth/signup/VeifyEmail' // verify email page
-import Signin from './pages/auth/signup/Signin' // signin page
+import Signup from './pages/auth/Signup' // signup page
+import VerifyEmail from './pages/auth/VeifyEmail.jsx' // verify email page
+import Signin from './pages/auth/Signin' // signin page
 
 
 
@@ -33,6 +33,9 @@ import Notification from './pages/notifications/page' // notification page
 import { useGetMethod } from './hooks/useGetMethod' // get method
 import { useGlobalData } from './hooks/useStore' // global data
 
+
+// app.js
+import { handleUserStatus } from './app.js'
 
 function App() {
   return (
@@ -64,46 +67,17 @@ const AppRoutes = () => {
   }, [])
 
 
+  // handle user status
   useEffect(() => {
-    if (status_g === "success") {
-      const userStatus = data_g?.user?.status
-
-      // if user is not verified
-      if (userStatus === "Unverified") {
-        setGlobalData("authenticated", false)
-
-        // if user is not verified and not on verify email page, redirect to verify email page
-        if (location.pathname !== "/auth/verify-email") {
-          navigate("/auth/verify-email")
-        }
-      } else {
-        setGlobalData("authenticated", true)
-        setGlobalData("user", data_g.user)
-
-        // if user is already logged in and tries to go to auth pages, redirect to home
-        if (location.pathname.startsWith("/auth")) {
-          navigate("/")
-        }
-      }  
-    }
-    
-    else if (status_g === "fail") {
-      // if user is not logged in
-      if (!store.authenticated) {
-        setGlobalData("authenticated", false)
-        // if user is not logged in and not on auth pages, redirect to signin
-        if (!location.pathname.startsWith("/auth")) {
-          navigate("/auth/signin")
-        }
-      }
-    }
+    handleUserStatus(status_g, data_g, store, navigate, location, setGlobalData)
   }, [status_g, location.pathname, store.authenticated])
 
 
-  /// 1. loading state 
+  /////////////// handle loading state //////////////////
+  // loading
   if (status_g === 'idle' || loading_g) return <AppLoading />
 
-  /// 2. if we are about to navigate, keep showing loading
+  // if we are about to navigate, keep showing loading
   const isAuthRoute = location.pathname.startsWith('/auth')
   const isUnverified = status_g === 'success' && data_g?.user?.status === 'Unverified'
 
@@ -169,6 +143,7 @@ const AppRoutes = () => {
 
 
           <Route path='/notifications' element={<Notification />} />
+          <Route path='/chat' element={<NotFound />} />
 
 
           {/* other pages - not implemented yet */}

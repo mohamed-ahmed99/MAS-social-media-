@@ -13,7 +13,9 @@ import { useRef } from 'react';
 import { HiMiniBars3BottomRight } from "react-icons/hi2";
 
 // notification
-import Dropdown from '../pages/notifications/Dropdown';
+import Dropdown from '../../pages/notifications/Dropdown';
+import DisktopNavbar from './DisktopNavbar';
+import MobileNavbar from './MobileNavbar';
 
 
 
@@ -70,6 +72,7 @@ export default function Navbar() {
         {href:"/", icon: <IoHomeOutline fontSize={25} /> },
         {href:"/friends", icon: <MdOutlinePeopleAlt fontSize={25} /> },
         {href:"/profile", icon: <FaRegUserCircle fontSize={25} /> },
+        {href:"/chat", icon: <FaFacebookMessenger fontSize={25} /> },
     ]
 
 
@@ -77,77 +80,20 @@ export default function Navbar() {
 
 if(screenWidth >= 900)
     return (
-        <div className='sticky top-0 z-[888] shadow shadow-gray-300/40 bg-white' >
-            <nav className=' bg-white w-full h-[60px] flex  md:px-2 lg:px-4 items-center justify-between 2xl:container'>
-                {/* logo & input */}
-                <div className='flex items-center gap-1'>
-                    {/* logo */}
-                    <div className='w-14 h-14 overflow-hidden'>
-                        <img  className='w-full h-full'
-                            src="/logo.png" alt="" 
-                        />
-                    </div>
-                    
-                    {/* input */}
-                    <div 
-                        className='flex bg-gray-200 rounded-full px-2 py-[6px]  items-center gap-2 border h-fit hover:opacity-70 '>
-
-                        <IoMdSearch
-                        fontSize={20} className='cursor-pointer'
-                        />
-                        <input type="text" 
-                            placeholder='Search'
-                            className='outline-none bg-transparent'
-                        />
-                    </div>
-                </div>
-
-                
-                {/* links */}
-                <div className='navResLG flex items-center justify-between h-full  gap-3  -translate-x-16'>
-                    {middleLinks.map((link, index) => {
-                        return (
-                            <NavLink
-                                to={link.href}
-                                key={index}
-                                className={({isActive}) => `hover:opacity-85 transition-colors py-2 md:px-6 lg:px-8 xl:px-10  h-full flex items-center  border-b-2 
-                                            ${isActive ? "border-blue-600 text-blue-600" : "border-transparent text-black/85"}`}
-                                >
-                                {link.icon}
-                                
-                            </NavLink>
-                        )
-                    })}
-                    
-                </div>
-
-
-                {/* some linkes like notifications, massenges, settings */}
-                <div className='flex items-center justify-between md:gap-3 lg:gap-5'>
-
-                    <button onClick={() => setOpenChat(prev => !prev)} ref={chatRef}
-                        className={`p-2 rounded-full hover:bg-opacity-80 ${openChat ? "bg-blue-200" : "bg-gray-200"}`}> 
-                        <FaFacebookMessenger fontSize={20}/> 
-                    </button>
-
-                    <button onClick={() => setOpenNot(prev => !prev)} ref={notRef}
-                        className={`p-2 rounded-full hover:bg-opacity-80 ${openNot ? "bg-blue-200" : "bg-gray-200"}`}> 
-                        <IoNotifications fontSize={20}/> 
-                    </button>
-
-                    {/* user */}
-                    <button onClick={() => handleOpenNotifications()} ref={settingRef}
-                        className='w-[35px] h-[35px] rounded-full overflow-hidden -ml-2 cursor-pointer'>
-                        <img className='w-full h-full' src="/user.jpg" alt="" />
-                    </button>
-                </div>
-            </nav>
-
-            <div ref={notificationList}>
-                {openNot && <Dropdown /> }
-            </div>
-            
-        </div>
+       <DisktopNavbar
+        chatRef={chatRef}
+        notRef={notRef}
+        settingRef={settingRef}
+        notificationList={notificationList}
+        openChat={openChat}
+        openNot={openNot}
+        openSettings={openSettings}
+        setOpenChat={setOpenChat}
+        setOpenNot={setOpenNot}
+        setOpenSettings={setOpenSettings}
+        handleOpenNotifications={handleOpenNotifications}
+        middleLinks={middleLinks}
+       />
     )
 
 

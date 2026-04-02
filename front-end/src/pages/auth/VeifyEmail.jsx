@@ -1,17 +1,17 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useLocation, useNavigate } from 'react-router-dom'
-import GeneralBtn from '../../../components/btns/GeneralBtn';
-import {usePostMethod} from '../../../hooks/usePostMethod'
-import Message from '../../../components/Message';
-import { useGlobalData } from '../../../hooks/useStore';
+import GeneralBtn from '../../components/btns/GeneralBtn';
+import { usePostMethod } from '../../hooks/usePostMethod'
+import Message from '../../components/Message';
+import { useGlobalData } from '../../hooks/useStore';
 
 export default function VerifyEmail() {
 
     // my hooks
     const [store, setGlobalData] = useGlobalData()
-    const {postData, status_p, message_p, data_p, loading_p} = usePostMethod()
-    
+    const { postData, status_p, message_p, data_p, loading_p } = usePostMethod()
+
     // hooks
     const inputsRefs = useRef([]) // refs for input fields
     const navigate = useNavigate()
@@ -20,7 +20,7 @@ export default function VerifyEmail() {
     // states
     const [validation, setValidation] = useState("")
     const [serverMessage, setServerMessage] = useState(message_p ? message_p : "")
-    
+
 
     // clear messages after 5 seconds
     useEffect(() => {
@@ -83,7 +83,7 @@ export default function VerifyEmail() {
         // http://localhost:5150/api/auth/verify-email
 
         if (getCode.length === 6) {
-            await postData("https://masproback.vercel.app/api/auth/verify-email", {}, {code: getCode })
+            await postData("https://masproback.vercel.app/api/auth/verify-email", {}, { code: getCode })
         } else {
             setValidation("Missing email or code.")
         }
@@ -108,32 +108,32 @@ export default function VerifyEmail() {
             opacity: 1,
             scale: 1,
             y: 0,
-            transition: { 
-                duration: 0.4, 
-                type: "spring", 
-                stiffness: 120, 
-                damping: 20, 
-                staggerChildren: 0.08 
+            transition: {
+                duration: 0.4,
+                type: "spring",
+                stiffness: 120,
+                damping: 20,
+                staggerChildren: 0.08
             }
         }
     };
 
     const itemVariants = {
         hidden: { opacity: 0, y: 15 },
-        visible: { 
-            opacity: 1, 
-            y: 0, 
-            transition: { type: "spring", stiffness: 300, damping: 24 } 
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { type: "spring", stiffness: 300, damping: 24 }
         }
     };
 
     const inputVariants = {
         hidden: { opacity: 0, y: 20, scale: 0.8 },
-        visible: { 
-            opacity: 1, 
-            y: 0, 
+        visible: {
+            opacity: 1,
+            y: 0,
             scale: 1,
-            transition: { type: "spring", stiffness: 300, damping: 20 } 
+            transition: { type: "spring", stiffness: 300, damping: 20 }
         }
     };
 
@@ -155,8 +155,8 @@ export default function VerifyEmail() {
         <div className="bg-gray-100 min-h-screen flex items-center justify-center p-4">
 
             {/* message */}
-            <Message 
-                message={serverMessage} 
+            <Message
+                message={serverMessage}
                 setMessage={setServerMessage}
                 duration={5000}
             />
