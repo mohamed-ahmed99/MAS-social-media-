@@ -1,26 +1,14 @@
 import { Link, NavLink } from 'react-router-dom';
 import { IoNotifications } from "react-icons/io5";
 import { MdOutlineSettings } from "react-icons/md";
+import Dropdown from '../../pages/notifications/Dropdown';
 
 // components
 import SearchInput from "./SearchInput";
 import Logo from "./Logo";
 
 
-export default function DisktopNavbar({
-    chatRef,
-    notRef,
-    settingRef,
-    notificationList,
-    openChat,
-    openNot,
-    openSettings,
-    setOpenChat,
-    setOpenNot,
-    setOpenSettings,
-    handleOpenNotifications,
-    middleLinks
-}) {
+export default function DisktopNavbar({ notRef, notificationList, openNot, setOpenNot, desktopLinks }) {
   return (
      <div className='sticky top-0 z-[888] shadow shadow-gray-300/40 bg-white' >
             <nav className=' bg-white w-full h-[60px] flex  md:px-2 lg:px-4 items-center justify-between 2xl:container'>
@@ -37,7 +25,7 @@ export default function DisktopNavbar({
                 
                 {/* links */}
                 <div className='navResLG flex items-center justify-between h-full  gap-3  -translate-x-16'>
-                    {middleLinks.map((link, index) => {
+                    {desktopLinks.map((link, index) => {
                         return (
                             <NavLink
                                 to={link.href}
