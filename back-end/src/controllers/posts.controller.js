@@ -1,6 +1,9 @@
 import wrapperMD from "../middlewares/wrapperMD.js"
 import Posts from "../models/post.schema.js"
 import { asyncHandler } from "../middlewares/wrapperMD.js"
+import Users from "../models/user.schema.js"
+import { ROLES } from "../config/constants.js"
+import Relationships from "../models/relationships.schema.js"
 
 
 export const addPost = asyncHandler( async(req, res) => {
@@ -41,40 +44,72 @@ export const deletePost = asyncHandler( async(req, res) => {
 
 // edit post
 export const editPost = asyncHandler( async(req, res) => {
-    // vaidate content
-    if(!req.body.text && !req.body.visibility){
-        return res.status(400).json({message:"Post content is required to update"})
-    }
-
     // validate postId
     const postId = req.params.postId
     if(!postId){
-        return res.status(400).json({message:"Post ID is required"})
+        return res.status(400).json({status:"fail", message:"Post ID is required"})
     }
-    // find post
+
+    // vaidate content
+    if(!req.body.content.text && !req.body.content.fileUrl && !req.body.visibility){
+        return res.status(400).json({status:"fail", message:"Post content is required to update"})
+    }
+
+    // search post
     const post = await Posts.findById(postId)
     if(!post){
-        return res.status(404).json({message:"Post not found"})
+        return res.status(404).json({status:"fail", message:"Post not found"})
+    }else if(post.status === "deleted" || post.status === "pinned"){
+        return res.status(404).json({status:"fail", message:"Post is not active"})
     }
+
     // check author
-    if(post.author.toString() !== req.decoded._id){
-        return res.status(403).json({message:"You are not authorized to edit this post"})
+    if(post.author.toString() !== req.user._id){
+        return res.status(403).json({status:"fail", message:"You are not authorized to edit this post"})
     }
     // update post
-    post.content.text = req.body.text || post.content.text
+    post.content = {...post.content, ...req.body.content}
     post.visibility = req.body.visibility || post.visibility
-    post.isEdited = true
+    post.status = "edited"
     await post.save()
     // response
-    res.status(200).json({message:"Post edited successfully", data:{post}})
+    res.status(200).json({status:"success", message:"Post edited successfully", data:{post}})
 })
 
 
 // get posts
 export const getPosts = asyncHandler( async (req, res ) => {
     const {limit, page} = req.query
-    const posts = await Posts.find().sort({createdAt: -1}).limit(limit)
-        .skip((page - 1) * limit).populate('author', 'personalInfo.firstName personalInfo.lastName').lean()
+
+    // get my friends and following
+    const myFriends = await Relationships.find({
+        $or: [{from: req.user._id}, {to: req.user._id}], 
+        type: {$in: ["friend", "follow"]}, 
+        status: "accepted"
+    }).select("from to") 
+
+    // get my friends and following ids
+    const myFriendsIds = myFriends.map(friend => {
+        return friend.from.toString() === req.user._id ? friend.to : friend.from
+    })
+
+    // handle visibility
+    const handleVisibility = {
+        $or: [
+            {visibility: "public"},
+            {visibility: "friends", author: {$in: myFriendsIds}},
+            {author: req.user._id}
+        ]
+    }
+    
+
+    const posts = await Posts
+        .find({status:{$in: ["active", "edited"]}, ...handleVisibility })
+        .sort({createdAt: -1})
+        .limit(limit)
+        .skip((page - 1) * limit)
+        .populate('author', 'personalInfo')
+        .lean()
 
 
     res.status(200).json({status:"success", message:"Posts fetched successfully", data:{posts}})

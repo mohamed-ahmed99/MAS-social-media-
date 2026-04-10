@@ -5,7 +5,7 @@ const postSchema = new mongoose.Schema(
     // author
     author: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "users",
+      ref: "user",
       required: true,
     },
 
@@ -35,6 +35,7 @@ const postSchema = new mongoose.Schema(
 
 postSchema.index({author: 1, createdAt: -1})
 postSchema.index({author: 1, visibility: 1, createdAt: -1})
+postSchema.index({status: 1, visibility: 1, createdAt: -1})
 
 const Posts = mongoose.model("posts", postSchema);
 export default Posts;
