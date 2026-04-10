@@ -1,5 +1,5 @@
 
-export default function CircularImage({src, alt="user photo", size = 50, firstName="U", lastName="N"}) {
+export default function CircularImage({src, alt="photo", size = 50, firstName="U", lastName="N"}) {
   return (
     <div className="bg-black w-fit h-fit rounded-full overflow-hidden">
 

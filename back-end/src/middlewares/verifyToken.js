@@ -5,7 +5,7 @@ import Sessions from '../models/userSessions.model.js'
 dotenv.config()
 
 
-export const verifyToken = (cookieName) => (async(req, res, next) => {
+export const verifyToken = (cookieName, ...allowedRoles) => (async(req, res, next) => {
 
     // get token
     const token = req.cookies[cookieName]
@@ -19,6 +19,11 @@ export const verifyToken = (cookieName) => (async(req, res, next) => {
         decodedToken = jwt.verify(token, process.env.JWT_SECRET)
     } catch (error) {
         return res.status(401).json({status:"fail", message: "Invalid token" })
+    }
+
+    // check if user has allowed role
+    if(allowedRoles.length > 0 && !allowedRoles.includes(decodedToken.role)) {
+        return res.status(403).json({status:"fail", message: "You don't have permission to access this resource" })
     }
 
     // check if token exist in DB

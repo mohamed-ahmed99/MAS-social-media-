@@ -12,67 +12,15 @@ const postSchema = new mongoose.Schema(
     //content
     content: {
       text: {type: String, trim: true },
+      fileType: {type: String, enum: ["image", "video"]},
+      fileUrl: {type: String},
     },
 
-    // reactions
-    reactions: [
-      {
-        user: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "users",
-          required: true
-        },
-        type: {
-          type: String,
-          enum: ["like", "love", "haha", "wow", "sad", "angry"],
-          required: true
-        }
-      }
-    ],
-
-    // comments
-    comments: [
-      {
-        user: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "users",
-          required: true,
-        },
-        text: {
-          type: String,
-          required: true,
-          trim: true,
-          maxlength: 1000,
-        },
-        createdAt: {
-          type: Date,
-          default: Date.now,
-        },
-      },
-    ],
-    // shares
-    shares: [
-      {
-        user: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "users",
-          required: true,
-        },
-        createdAt: {
-          type: Date,
-          default: Date.now,
-        },
-      },
-    ],
-
-    // is deleted
-    isDeleted: {
-      type: Boolean,
-      default: false,
-    },
-    isEdited: {
-      type: Boolean,
-      default: false,
+    // status
+    status: {
+      type: String,
+      enum: ["active", "deleted", "edited", "pinned"],
+      default: "active",
     },
 
     // visibility
@@ -84,6 +32,9 @@ const postSchema = new mongoose.Schema(
 
   },{timestamps: true,}
 );
+
+postSchema.index({author: 1, createdAt: -1})
+postSchema.index({author: 1, visibility: 1, createdAt: -1})
 
 const Posts = mongoose.model("posts", postSchema);
 export default Posts;

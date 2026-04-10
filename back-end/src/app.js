@@ -53,12 +53,12 @@ app.get('/', (req, res) => {
     res.status(200).json({message:"hello user"})
 })
 
-// auth routes
-app.use('/api/auth', authRoutes)
-app.use('/api/posts', postRoute)
-app.use('/api/users', usersRouter)
-app.use('/api', relationshipsRouter)
-app.use('/api/notifications', notificationRoutes)
+// routes
+app.use('/api/auth', authRoutes) // auth routes
+app.use('/api/posts', postRoute) // post routes
+app.use('/api/users', usersRouter) // user routes
+app.use('/api', relationshipsRouter) // relationship routes
+app.use('/api/notifications', notificationRoutes) // notification routes
 
 // not found routes
 app.use((req, res) => {
