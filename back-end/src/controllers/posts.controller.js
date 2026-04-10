@@ -2,7 +2,7 @@ import wrapperMD from "../middlewares/wrapperMD.js"
 import Posts from "../models/post.schema.js"
 import { asyncHandler } from "../middlewares/wrapperMD.js"
 import Users from "../models/user.schema.js"
-import { ROLES } from "../config/constants.js"
+import { ACCOUNT_STATUS } from "../config/constants.js"
 import Relationships from "../models/relationships.schema.js"
 
 
@@ -103,6 +103,7 @@ export const getPosts = asyncHandler( async (req, res ) => {
     }
     
 
+    // get posts
     const posts = await Posts
         .find({status:{$in: ["active", "edited"]}, ...handleVisibility })
         .sort({createdAt: -1})
@@ -111,25 +112,48 @@ export const getPosts = asyncHandler( async (req, res ) => {
         .populate('author', 'personalInfo')
         .lean()
 
-
+    // response
     res.status(200).json({status:"success", message:"Posts fetched successfully", data:{posts}})
 })
 
 
 // get user posts
 export const getUserPosts = asyncHandler( async (req, res ) => {
-    const {userId, limit, page} = req.query
+    const {userId} = req.params
+    const {limit, page} = req.query
+    
+    // validate userId
     if(!userId){
-        return res.status(400).json({message:"User ID is required"})
+        return res.status(400).json({status:"fail", message:"User ID is required"})
     }
+    // validate limit and page
     if(!limit || !page){
-        return res.status(400).json({message:"Limit and page are required"})
+        return res.status(400).json({status:"fail", message:"Limit and page are required"})
     }
 
-    const posts = await Posts.find({$or: [{author: userId}, {"shares.user": userId}]}).sort({createdAt: -1})
-        .limit(limit).skip((page - 1) * limit).populate('author', 'personalInfo.firstName personalInfo.lastName').lean()
+    // get user
+    const user = await Users.findById(userId).select("personalInfo account.status")
+    if(!user){
+        return res.status(404).json({status:"fail", message:"User not found"})
+    } 
+    if(user.account.status !== ACCOUNT_STATUS.ACTIVE){
+        return res.status(404).json({status:"fail", message:"User is not active or deleted"})
+    }
 
-    res.status(200).json({status:"success", message:"User posts fetched successfully", data:{posts}})
+    // get user posts
+    const posts = await Posts.find({author: userId, status:{$in: ["active", "edited"]}})
+        .sort({createdAt: -1})
+        .limit(limit)
+        .skip((page - 1) * limit)
+        .lean()
+
+    // response
+    res.status(200).json({
+        status:"success", 
+        message:"User posts fetched successfully", 
+        postsCount: posts.length,
+        data:{user, posts}
+    })
 })
 
 

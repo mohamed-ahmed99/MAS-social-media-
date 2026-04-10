@@ -1,7 +1,6 @@
 import {Router} from 'express'
 import { verifyToken } from '../middlewares/verifyToken.js'
 import { addPost, deletePost, editPost, getPosts, getUserPosts} from '../controllers/posts.controller.js'
-import { ROLES } from '../config/constants.js'
 
 const postRoute = Router()
 
@@ -18,7 +17,7 @@ postRoute.patch("/edit/:postId", verifyToken("MASproAuth"), editPost)
 postRoute.get("/get", verifyToken("MASproAuth"), getPosts)
 
 // get user posts
-postRoute.get("/get/user", verifyToken("MASproAuth"), getUserPosts)
+postRoute.get("/get/user/:userId", verifyToken("MASproAuth"), getUserPosts)
 
 
 
