@@ -13,25 +13,33 @@ import { useEffect } from 'react';
 import EndOfPosts from '../../components/post/EndOfPosts.jsx';
 import { End_Of_Posts_Message } from '../../messages'
 import PostLoading from '../../components/post/PostLoading.jsx';
+import { useGetMethod } from '../../hooks/useGetMethod.js';
 
 export default memo( function Home () {
 
-    const {userData, setUserData} = useUserContext() 
-    const [query, setQuery] = useState({limit:10, page:1})
+    // hook to get data from server
+    const {getData, status_g, message_g, data_g, loading_g, action_g} = useGetMethod()
 
-    const [createPost, setCreatePost] = useState(false)
+    // states
+    const [query, setQuery] = useState({limit:10, page:1}) // limit and page for pagination
+    const [createPost, setCreatePost] = useState(false) // to open create post modal
+    const [allPosts, setAllPosts] = useState([]) // all posts
+    
 
-    // http://localhost:5150/api/posts/get?limit=${query.limit}&page=${query.page}
-    // https://masproback.vercel.app/api/posts/get?limit=${query.limit}&page=${query.page}
-    const url = `https://masproback.vercel.app/api/posts/get?limit=${query.limit}&page=${query.page}`
-    const token = localStorage.getItem("MASproAuth")
-    const {status, message, data, loading} = useGetFromServer(url, {headers:{authorization:`Bearer ${token}`}})
-    const [allPosts, setAllPosts] = useState([])
+    // get posts
     useEffect(() => {
-        if(data?.posts && data?.posts?.length > 0){
-            setAllPosts(prev => query.page === 1 ? data.posts : [...prev, ...data.posts]);
+        // http://localhost:5150/api/posts/get?limit=${query.limit}&page=${query.page}
+        // https://masproback.vercel.app/api/posts/get?limit=${query.limit}&page=${query.page}
+        const url = `https://masproback.vercel.app/api/posts/get?limit=${query.limit}&page=${query.page}`
+        getData(url)
+    },[query.page])
+            
+    // handle posts data
+    useEffect(() => {
+        if(data_g?.posts && data_g?.posts?.length > 0){
+            setAllPosts(prev => query.page === 1 ? data_g.posts : [...prev, ...data_g.posts]);
         }
-    },[data])
+    },[data_g])
     
 
 
@@ -50,7 +58,7 @@ export default memo( function Home () {
                 </div>
 
                 {/* FIRST LOAD LOADING */}
-                {loading && query.page === 1 && (
+                {loading_g && query.page === 1 && (
                 <div className='space-y-2 mt-2'>
                     <PostLoading />
                     <PostLoading />
@@ -61,17 +69,17 @@ export default memo( function Home () {
                 )}
 
                 {/* NO MORE POSTS */}
-                {!loading && data?.posts && data?.posts?.length < query.limit && (
+                {!loading_g && data_g?.posts && data_g?.posts?.length < query.limit && (
                     <EndOfPosts text={End_Of_Posts_Message.noPosts}/>
                 )}
 
                 {/* SEE MORE BUTTON (after first load) */}
-                {!loading && data && data?.posts?.length >= query.limit && (
-                    <SeeMoreBtn setQuery={setQuery} loading={loading} />
+                {!loading_g && data_g && data_g?.posts?.length >= query.limit && (
+                    <SeeMoreBtn setQuery={setQuery} loading={loading_g} />
                 )}
 
-                {loading && query.page > 1 && (
-                    <SeeMoreBtn setQuery={setQuery} loading={loading} />
+                {loading_g && query.page > 1 && (
+                    <SeeMoreBtn setQuery={setQuery} loading={loading_g} />
                 )}
 
             </div>
