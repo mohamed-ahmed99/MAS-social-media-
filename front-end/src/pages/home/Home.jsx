@@ -41,6 +41,7 @@ export default memo( function Home () {
         }
     },[data_g])
     
+    console.log(allPosts)
 
 
     return(
@@ -53,7 +54,10 @@ export default memo( function Home () {
                 <div className='flex flex-col gap-1 lg:gap-2 bg-gray-200'>
                     {/* <Post img={"./cover.jpg"} /> */}
                     {allPosts.map((post, index) => (
-                        <Post key={index} data={post} />
+                        <Post 
+                            key={index} 
+                            data={post} 
+                        />
                     ))}
                 </div>
 
