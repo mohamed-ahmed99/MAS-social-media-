@@ -3,6 +3,8 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { MdOutlineClose } from "react-icons/md";
 import CircularImage from '../../../CircularImage'
 import { Link } from 'react-router-dom';
+import Top from './Top';
+import CreateCommentsFromData from './CreateComments';
 
 
 export default function Comments({ openComments, setOpenComments, data = "" }) {
@@ -17,26 +19,6 @@ export default function Comments({ openComments, setOpenComments, data = "" }) {
     }
 
 
-    const CreateCommentsFromData = () => {
-        return data.comments.map((comment, index) => (
-            <div key={index} className="flex items-start gap-2">
-                <Link
-                    to={'/profile'}
-                    className="bg-gray-200 rounded-full w-8 h-8 flex items-center justify-center"
-                >
-                    <CircularImage src={comment.img} firstName='Mohamed' lastName='Ahmed' />
-                </Link>
-                <div className="flex-1">
-                    <Link
-                        to={'/profile'}
-                        className="font-semibold text-sm">{comment.author}
-                    </Link>
-                    <p className="text-gray-700 text-sm">{comment.content}</p>
-                </div>
-            </div>
-        ));
-    }
-
 
 
     return (
@@ -50,19 +32,16 @@ export default function Comments({ openComments, setOpenComments, data = "" }) {
                     className="mt-2 px-4 border-t "
                 >
                     {/* top section */}
-                    <div className="flex sticky top-0 items-center justify-between py-2 border-b">
-                        <h3 className=" ">Comments ({data.commentCount})</h3>
-                        <button
-                            onClick={() => setOpenComments(false)}
-                            className="p-1 rounded-full hover:bg-gray-100"
-                        >
-                            <MdOutlineClose size={20} />
-                        </button>
-                    </div>
+                    <Top 
+                        data={data}
+                        setOpenComments={setOpenComments}
+                    />
 
                     {/* comments list */}
                     <div className="py-4 overflow-y-auto flex flex-col gap-4">
-                        <CreateCommentsFromData />
+                        <CreateCommentsFromData  
+                            comments={data?.comments}
+                        />
                     </div>
                 </motion.div>
             )}
