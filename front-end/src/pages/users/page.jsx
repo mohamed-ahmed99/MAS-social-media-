@@ -1,13 +1,12 @@
 import { useLocation } from 'react-router-dom'
-import CoverPhoto from "../profile/CoverPhoto";
-import ProfileCard from "../profile/ProfileCard";
-import NavOfAcountComponents from "./NavOfAcountComponents";
+import CoverPhoto from "../oldProfile/CoverPhoto";
+import ProfileCard from "../oldProfile/ProfileCard";
+import NavOfAcountComponents from "../oldProfile/NavOfAcountComponents";
 import { Outlet } from "react-router-dom";
 import { useEffect } from 'react';
 
 // my hooks
 import {pageTop} from '../../hooks/someFunctions'
-import {useGetFromServer} from '../../hooks/getFromServer'
 import {useGetMethod} from '../../hooks/useGetMethod'
 
 export default function UserPage() {

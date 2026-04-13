@@ -16,8 +16,9 @@ export default function CreateCommentsFromData({ comments }) {
                 >
                     <CircularImage
                         src={comment.img}
-                        firstName='Mohamed'
-                        lastName='Ahmed'
+                        firstName='M'
+                        lastName='A'
+                        size={32}
                     />
                 </Link>
 

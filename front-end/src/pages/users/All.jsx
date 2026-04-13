@@ -1,14 +1,14 @@
 import React from 'react'
 
-import PersonalDetails from "../profile/PersonalDetails";
-import PostEditor from "../profile/PostEditor";
-import PostView from "../profile/PostView";
-import Friends from "../profile/Friends";
-import Posts from "../profile/Posts";
+// import PersonalDetails from "../profile/PersonalDetails";
+import PersonalDetails from "../oldProfile/PersonalDetails";
+import PostEditor from "../oldProfile/PostEditor";
+import PostView from "../oldProfile/PostView";
+import Friends from "../oldProfile/Friends";
+import Posts from "../oldProfile/Posts";
 import {useLocation} from 'react-router-dom';
 
 // my hooks 
-import {useUserContext} from '../../hooks/useUserContext'
 import {pageTop} from '../../hooks/someFunctions'
 
 

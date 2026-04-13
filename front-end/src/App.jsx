@@ -1,12 +1,9 @@
 import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 import Home from './pages/home/Page'
-import ProfilePage from './pages/profile/Page'
 import { useState, useEffect } from 'react'
 import PagesLayout from './components/layouts/PagesLayout'
 import AppLoading from './components/AppLoading'
-import All from './pages/profile/All'
 import NotFound from './pages/NotFound'
-import AllFriends from './pages/profile/AllFriends'
 import FriendsPage from './pages/friends/Page'
 import Friends from './pages/friends/Friends'
 import Suggestions from './pages/friends/Suggestions'
@@ -34,8 +31,14 @@ import { useGetMethod } from './hooks/useGetMethod' // get method
 import { useGlobalData } from './hooks/useStore' // global data
 
 
+// my profile
+import MyProfile from './pages/profiles/myProfile/Page.jsx'
+
+
 // app.js
 import { handleUserStatus } from './app.js'
+
+
 
 function App() {
   return (
@@ -120,9 +123,8 @@ const AppRoutes = () => {
           <Route path='/' element={<Home />} />
 
           {/* profile */}
-          <Route path='/profile' element={<ProfilePage />}>
-            <Route index element={<All />} />
-            <Route path='friends' element={<AllFriends />} />
+          <Route path='/profile' element={<MyProfile />}>
+            
 
           </Route>
 

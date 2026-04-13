@@ -1,11 +1,6 @@
 
 
 
-// icons
-import { FaPen } from "react-icons/fa";
-import { FaPlus } from "react-icons/fa";
-import { FaUserCheck } from "react-icons/fa";
-import { FaFacebookMessenger } from "react-icons/fa";
 import UserCardBtns from "./UserCardBtns";
 
 
