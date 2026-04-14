@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useState } from "react";
 
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const usePostMethod = () => {
 
@@ -11,7 +12,7 @@ export const usePostMethod = () => {
     const [action, setAction] = useState(null);
 
 
-    const postData = async (url, options = {}, body) => {
+    const postData = async (endPoint, options = {}, body) => {
 
         if (!body) return null
         setLoading(true);
@@ -20,7 +21,7 @@ export const usePostMethod = () => {
         setAction(null);
 
         try {
-            const response = await fetch(url, {
+            const response = await fetch(`${API_URL}${endPoint}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

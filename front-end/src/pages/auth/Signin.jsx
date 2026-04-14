@@ -47,13 +47,9 @@ const SignIn = () => {
 
         setValidation(errors) // validation messages
 
-        // api url
-        // http://localhost:5150/api/auth/signin
-        // https://masproback.vercel.app/api/auth/signin
-
-        //  call api if no errors
+        // call api if no errors
         if (!Object.values(errors).some(v => v != "")) {
-            await postData("https://masproback.vercel.app/api/auth/signin", {}, data)
+            await postData("/api/auth/signin", {}, data) 
         }
 
     }

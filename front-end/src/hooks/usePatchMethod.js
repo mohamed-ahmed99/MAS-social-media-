@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const usePathMethod = () => {
     
@@ -9,11 +10,11 @@ export const usePathMethod = () => {
     const [loading, setLoading] = useState(false);
 
     
-        const editData = async (url, body) =>{
+        const editData = async (endPoint, body) =>{
             const token = localStorage.getItem("MASproAuth")
             setLoading(true);
             try{
-                const response = await fetch(url, {
+                const response = await fetch(`${API_URL}${endPoint}`, {
                     method:"PATCH",
                     headers:{
                         "Content-Type":"application/json",

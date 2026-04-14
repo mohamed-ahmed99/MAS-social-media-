@@ -78,12 +78,9 @@ export default function VerifyEmail() {
             return
         }
 
-        // api url
-        // https://masproback.vercel.app/api/auth/verify-email
-        // http://localhost:5150/api/auth/verify-email
-
         if (getCode.length === 6) {
-            await postData("https://masproback.vercel.app/api/auth/verify-email", {}, { code: getCode })
+            // call api
+            await postData("/api/auth/verify-email", {}, { code: getCode })
         } else {
             setValidation("Missing email or code.")
         }

@@ -12,9 +12,8 @@ export function useNotifications(limit = 5) {
     // get data   
     useEffect(() => {
         const fetchData = async () => {
-          // https://masproback.vercel.app
-          // http://localhost:5150/api/notifications/get?limit=${limit}&page=${page}`
-            await getData(`https://masproback.vercel.app/api/notifications/get?limit=${limit}&page=${page}`);
+          // end point for get all notifications
+            await getData(`/api/notifications/get?limit=${limit}&page=${page}`);
             fetchDataRef.current = false
         };
         if(fetchDataRef?.current){

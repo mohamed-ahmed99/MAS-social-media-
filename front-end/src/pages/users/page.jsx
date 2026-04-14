@@ -19,13 +19,12 @@ export default function UserPage() {
   const userId = location.pathname.split('-').pop();
 
 
-  // http://localhost:5150/api/users/getuser/${userId}
-  // https://masproback.vercel.app/api/users/getuser/${userId}
-  const url = `https://masproback.vercel.app/api/users/getuser/${userId}`
+  // end point for get user data
+  const endPoint = `/api/users/getuser/${userId}`
 
   useEffect(() => {
-    getData(url)
-  }, [url])
+    getData(endPoint)
+  }, [endPoint])
 
   console.log("user data",data_g)
 

@@ -14,7 +14,6 @@ export default function NavOfAcountComponents() {
         }
         return last.replace(last[0], last[0].toUpperCase())
     })
-    console.log(activeCategory)
 
     const handleNavigation = (pathname) => {
         if(pathname.toLowerCase() != 'all'){

@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import { useState } from "react";
 
+const API_URL = import.meta.env.VITE_API_URL;
 
-export const useGetFromServer = (url, options = {}) => {
+export const useGetFromServer = (endPoint, options = {}) => {
     
     const [data, setData] = useState(null);
     const [status, setStatus] = useState("idle");
@@ -14,7 +15,7 @@ export const useGetFromServer = (url, options = {}) => {
         const fetchData = async() =>{
             setLoading(true);
             try{
-                const response = await fetch(url, {
+                const response = await fetch(`${API_URL}${endPoint}`, {
                     method:"GET",
                     headers:{
                         "Content-Type":"application/json",
@@ -44,7 +45,7 @@ export const useGetFromServer = (url, options = {}) => {
                 setLoading(false);
             }
         }
-        if(url){
+        if(endPoint){
             fetchData();
         }else{
             setStatus("idle");
@@ -52,6 +53,6 @@ export const useGetFromServer = (url, options = {}) => {
             setMessage("");
         }
 
-    },[url]);
+    },[endPoint]);
     return {status, message, data, loading};
 }

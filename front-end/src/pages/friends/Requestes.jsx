@@ -12,8 +12,9 @@ export default function FriendRequests() {
     const token = localStorage.getItem("MASproAuth")
     const [query, setQuery] = useState({limit:20, page:1})
 
-    const url = `https://masproback.vercel.app/api/relationship/users?type=friend&limit=${query.limit}&page=${query.page}&status=pending`
-    const {status, message, data, loading} = useGetFromServer(url, {headers:{authorization:`Bearer ${token}`}})
+    // end point for get all friend requests
+    const endPoint = `/api/relationship/users?type=friend&limit=${query.limit}&page=${query.page}&status=pending`
+    const {status, message, data, loading} = useGetFromServer(endPoint, {headers:{authorization:`Bearer ${token}`}})
   
     const [allUsers, setAllUsers] = useState([])
 

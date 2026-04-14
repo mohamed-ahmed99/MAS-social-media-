@@ -28,10 +28,9 @@ export default memo( function Home () {
 
     // get posts
     useEffect(() => {
-        // http://localhost:5150/api/posts/get?limit=${query.limit}&page=${query.page}
-        // https://masproback.vercel.app/api/posts/get?limit=${query.limit}&page=${query.page}
-        const url = `https://masproback.vercel.app/api/posts/get?limit=${query.limit}&page=${query.page}`
-        getData(url)
+        // end point for get all posts
+        const endPoint = `/api/posts/get?limit=${query.limit}&page=${query.page}`
+        getData(endPoint)
     },[query.page])
             
     // handle posts data

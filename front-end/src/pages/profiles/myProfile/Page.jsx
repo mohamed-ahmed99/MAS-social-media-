@@ -26,9 +26,8 @@ export default function Page() {
   // get user data
   const { getData, status_g, message_g, data_g, loading_g, action_g } = useGetMethod()
   useEffect(() => {
-    // http://localhost:5150/api/auth/verify-me
-    // https://masproback.vercel.app/api/auth/verify-me
-    getData("http://localhost:5150/api/users/me/profile")
+    // end point for get user data
+    getData("/api/users/me/profile")
   }, [])
 
   console.log('my profile', { status_g, message_g, data_g, loading_g, action_g })

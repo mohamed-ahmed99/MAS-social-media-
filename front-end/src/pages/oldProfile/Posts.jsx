@@ -15,18 +15,17 @@ export default function Posts({memberId=null}) {
   
 
 
-  // http://localhost:5150/api/posts/get/user?limit=${query.limit}&page=${query.page}&userId=${userData?.user?._id}
-  // https://masproback.vercel.app/api/posts/get/user?limit=${query.limit}&page=${query.page}&userId=${userData?.user?._id}
+  // end point for get all posts
   const [query, setQuery] = useState({limit: 10, page: 1,});
 
   // user id
   const userId = memberId || userData?.user?._id;
-  const url = userId ? 
-  `https://masproback.vercel.app/api/posts/get/user?limit=${query.limit}&page=${query.page}&userId=${userId}` : null;
+  const endPoint = userId ? 
+  `/api/posts/get/user?limit=${query.limit}&page=${query.page}&userId=${userId}` : null;
 
   // get posts data
   const {status, message, data, loading} = 
-    useGetFromServer(url,{headers:{"Authorization": `Bearer ${localStorage.getItem("MASproAuth")}`}}, [query, userData]);
+    useGetFromServer(endPoint,{headers:{"Authorization": `Bearer ${localStorage.getItem("MASproAuth")}`}}, [query, userData]);
 
 
   const [allPosts, setAllPosts] = useState([])

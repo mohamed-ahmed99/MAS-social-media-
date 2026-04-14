@@ -43,12 +43,12 @@ export default function FriendCards({userData,  blueBtn, grayBtn}) {
       const text = e.target.innerHTML
 
       // http://localhost:5150/api/relationship/accept-friend?from=${userData?._id}
-      const url = `https://masproback.vercel.app/api/relationship/accept-friend?from=${userData?._id}`
+      const endPoint = `/api/relationship/accept-friend?from=${userData?._id}`
       if(text == "confirmed"){
         e.target.style.background = '#6B7280'
         return null
       }
-      await editData(url,null)
+      await editData(endPoint,null)
     }
 
 
@@ -58,13 +58,13 @@ export default function FriendCards({userData,  blueBtn, grayBtn}) {
       e.stopPropagation();
       const text = e.target.innerHTML
 
-      const url = `https://masproback.vercel.app/api/relationship?type=friend`
+      const endPoint = `/api/relationship?type=friend`
       if(text === "pending"){
         e.target.style.background = '#6B7280'
         return null
       }
       const body = {to:userData?._id}
-      await postData(url, {headers:{authorization:`Bearer ${token}`}}, body)
+      await postData(endPoint, {headers:{authorization:`Bearer ${token}`}}, body)
     }
 
 
@@ -80,16 +80,16 @@ export default function FriendCards({userData,  blueBtn, grayBtn}) {
 
       const text = e.target.innerText || undefined
       console.log(text)
-      let url
+      let endPoint
 
       if(text.toLowerCase() === "delete"){
-        url = `https://masproback.vercel.app/api/relationship/me/${userData?._id}?type=friend&status=accepted`
+        endPoint = `/api/relationship/me/${userData?._id}?type=friend&status=accepted`
       }
       else if (text.toLowerCase() === "cancel" || text.toLowerCase() === "reject"){
-        url = `https://masproback.vercel.app/api/relationship/me/${userData?._id}?type=friend&status=pending`
+        endPoint = `/api/relationship/me/${userData?._id}?type=friend&status=pending`
       }
 
-      await deleteData(url)
+      await deleteData(endPoint)
     }
 
     console.log({status_d, message_d, data_d, loading_d})

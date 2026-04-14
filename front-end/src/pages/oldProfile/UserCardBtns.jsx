@@ -9,7 +9,7 @@ export default function UserCardBtns({ edit, setCreatePost, relationshipWithYou 
         setCreatePost(true)
     }
 
-    // إذا كان البروفايل الخاص بي
+    // if the profile is mine
     if (edit) {
         return (
             <>
@@ -28,7 +28,7 @@ export default function UserCardBtns({ edit, setCreatePost, relationshipWithYou 
         )
     }
 
-    // إذا كان المستخدم صديقاً
+    // if the user is a friend
     if (relationshipWithYou === "friend") {
         return (
             <>
@@ -44,7 +44,7 @@ export default function UserCardBtns({ edit, setCreatePost, relationshipWithYou 
         )
     }
 
-    // إذا لم يكن صديقاً
+    // if the user is not a friend
     return (
         <button className="col-span-2 flex flex-grow items-center justify-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">
             <FaPlus fontSize={14} />

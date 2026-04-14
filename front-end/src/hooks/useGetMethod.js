@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useState } from "react";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 
 export const useGetMethod = () => {
     
@@ -13,9 +15,9 @@ export const useGetMethod = () => {
 
 
 
-        const getData = async (url) =>{
+        const getData = async (endPoint) =>{
 
-            if (!url) throw new Error("No URL to Get Data")
+            if (!endPoint) throw new Error("No URL to Get Data")
 
             // clear previous data
             setData(null);
@@ -26,7 +28,7 @@ export const useGetMethod = () => {
 
             // fetch data
             try{
-                const response = await fetch(url, {
+                const response = await fetch(`${API_URL}${endPoint}`, {
                     method:"GET",
                     headers:{
                         "Content-Type":"application/json",

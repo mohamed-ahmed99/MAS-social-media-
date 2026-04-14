@@ -52,16 +52,13 @@ const AppRoutes = () => {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const { getData, status_g, message_g, data_g, loading_g, action_g } = useGetMethod()
+  const { getData, status_g, data_g, loading_g } = useGetMethod()
   const [store, setGlobalData] = useGlobalData()
 
   // check if user is logged in
   useEffect(() => {
     const verifyMe = async () => {
-      // url
-      // http://localhost:5150/api/auth/verify-me
-      // https://masproback.vercel.app/api/auth/verify-me
-      await getData("https://masproback.vercel.app/api/auth/verify-me")
+      await getData("/api/auth/verify-me") // call api to verify user
     }
     verifyMe()
   }, [])

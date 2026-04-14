@@ -10,11 +10,10 @@ export default function RightSide() {
 
   const token = localStorage.getItem("MASproAuth")
 
-  // http://localhost:5150/api/users/get-users?limit=10&page=1
-  // https://masproback.vercel.app/api/users/get-users?limit=10&page=1
-  const url = `https://masproback.vercel.app/api/users/get-users?limit=10&page=1`
+  // end point for get all users
+  const endPoint = `/api/users/get-users?limit=10&page=1`
 
-  const {status, message, data, loading} = useGetFromServer(url, {headers:{authorization:`Bearer ${token}`}})
+  const {status, message, data, loading} = useGetFromServer(endPoint, {headers:{authorization:`Bearer ${token}`}})
 
 
 

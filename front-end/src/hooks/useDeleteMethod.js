@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 
 export const useDeleteMethod = () => {
     
@@ -9,11 +11,11 @@ export const useDeleteMethod = () => {
     const [loading, setLoading] = useState(false);
 
     
-        const deleteData = async (url, options) =>{
+        const deleteData = async (endPoint, options) =>{
             const token = localStorage.getItem("MASproAuth")
             setLoading(true);
             try{
-                const response = await fetch(url, {
+                const response = await fetch(`${API_URL}${endPoint}`, {
                     method:"DELETE",
                     headers:{
                         "Content-Type":"application/json",
