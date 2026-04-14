@@ -27,8 +27,6 @@ authRoutes.post('/verify-email',verifyToken("MASproAuth"), VerifyEmail)
 authRoutes.get('/verify-me', verifyToken("MASproAuth"), VerifyMe)
 
 
-// get user key
-authRoutes.get('/getuser/key', checkAuth(), VerifyMe)
 
 export default authRoutes
 

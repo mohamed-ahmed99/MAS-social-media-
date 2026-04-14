@@ -1,23 +1,28 @@
 import { Router } from "express";
-import {getUserKey, getUsers, suggestFriends, getUser} from '../controllers/users.controller.js';
-import { checkAuth } from "../middlewares/checkAuth.js";
+import {getMyProfile, getUserKey, getUsers, suggestFriends, getUser} from '../controllers/users.controller.js';
+import { verifyToken } from "../middlewares/verifyToken.js";
 
 const usersRouter = Router();
 
 
-usersRouter.get('/user-key', checkAuth(), getUserKey) // one key of user
-usersRouter.get('/get-users', checkAuth(), getUsers) // I'll remove this later
-// usersRouter.get('/me/relationships', checkAuth(), getUsers)
+// get my profile
+usersRouter.get('/me/profile', verifyToken("MASproAuth"), getMyProfile)
 
 
-usersRouter.get('/get', checkAuth(), suggestFriends) // suggest friends
-
-usersRouter.get('/getuser/:userId', checkAuth(), getUser) // get one user
-
+// get one key of user
+usersRouter.get('/user-key', verifyToken("MASproAuth"), getUserKey) 
 
 
+// get all users
+usersRouter.get('/get-users', verifyToken("MASproAuth"), getUsers) 
 
 
+// suggest friends
+usersRouter.get('/get', verifyToken("MASproAuth"), suggestFriends) 
+
+
+// get one user
+usersRouter.get('/getuser/:userId', verifyToken("MASproAuth"), getUser) 
 
 
 

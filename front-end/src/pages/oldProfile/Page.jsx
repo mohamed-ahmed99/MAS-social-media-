@@ -46,13 +46,3 @@ export default function ProfilePage() {
     </div>
   )
 }
-
-
-
-
-// {show === 'friends' && 
-//           <div className="lg:max-w-[900px] bg-white m-auto rounded-xl p-4 lg:shadow ">
-//             <AllFriends/>
-//           </div>
-        
-//         } 

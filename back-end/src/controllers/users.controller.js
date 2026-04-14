@@ -1,7 +1,8 @@
 import wrapperMD from '../middlewares/wrapperMD.js'
 import Users from '../models/user.schema.js';
 import Relationships from '../models/relationships.schema.js';
-
+import { asyncHandler } from '../middlewares/wrapperMD.js';
+import { ACCOUNT_STATUS } from '../config/constants.js';
 
 // get keys of user posts
 export const getUserKey = wrapperMD(async (req, res) => {
@@ -65,17 +66,20 @@ export const suggestFriends = wrapperMD(async (req, res) => {
 
 
 export const getUser = wrapperMD(async (req, res) => {
-    const { userId } = req.params
+    const { userId } = req.params // this is the id of the user I want to get
 
+    // check if id is valid
     if (!userId) {
         return res.status(400).send({ status: "fail", message: "id is required.", data: null })
     }
 
+    // get user
     const user = await Users.findOne({ _id: userId }).lean()
     if (!user) {
         return res.status(400).send({ status: "fail", message: "user not found", data: null })
     }
 
+    // check relationship between me and this user
     const relationship = await Relationships.findOne({ $or: [{ from: req.decoded._id, to: userId }, { from: userId, to: req.decoded._id }] })
     if (relationship) {
         user.relationshipWithYou = relationship.type
@@ -84,5 +88,28 @@ export const getUser = wrapperMD(async (req, res) => {
     }
 
     res.status(200).json({ status: "success", message: `user data has sent successfully`, data: { user } })
+})
+
+
+
+// get my profile
+export const getMyProfile = asyncHandler(async (req, res) => {
+
+    // get user
+    const user = await Users.findOne({ _id: req.user._id })
+    if (!user) {
+        return res.status(400).send({ status: "fail", message: "user not found", data: null })
+    }
+
+    // check if user is active
+    if (user.account.status !== ACCOUNT_STATUS.ACTIVE) {
+        return res.status(400).send({ status: "fail", message: "user is not active", data: null })
+    }
+    // send user data
+    res.status(200).json({
+        status: "success",
+        message: `user data has sent successfully`,
+        data: { user }
+    })
 })
 

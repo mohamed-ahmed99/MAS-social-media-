@@ -49,14 +49,11 @@ function App() {
 
 const AppRoutes = () => {
 
-  console.log("app routes")
-
   const navigate = useNavigate()
   const location = useLocation()
 
   const { getData, status_g, message_g, data_g, loading_g, action_g } = useGetMethod()
   const [store, setGlobalData] = useGlobalData()
-  console.log(store)
 
   // check if user is logged in
   useEffect(() => {
@@ -124,7 +121,7 @@ const AppRoutes = () => {
 
           {/* profile */}
           <Route path='/profile' element={<MyProfile />}>
-            
+
 
           </Route>
 

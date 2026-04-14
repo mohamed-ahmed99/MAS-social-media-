@@ -6,7 +6,7 @@ dotenv.config()
 
 
 export const verifyToken = (cookieName, ...allowedRoles) => (async(req, res, next) => {
-
+    console.log(req.cookies)
     // get token
     const token = req.cookies[cookieName]
     if(!token) {
