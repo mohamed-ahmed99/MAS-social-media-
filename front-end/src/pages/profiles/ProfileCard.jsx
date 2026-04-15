@@ -2,7 +2,7 @@ import UserCardBtns from "./UserCardBtns";
 import CircularImage from "../../components/CircularImage";
 
 
-export default function ProfileCard({ loading, setCreatePost, edit, userData }) {
+export default function ProfileCard({ setCreatePost, edit, userData }) {
     console.log(userData)
 
 

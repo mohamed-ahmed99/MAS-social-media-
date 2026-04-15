@@ -7,6 +7,7 @@ import { Outlet } from "react-router-dom";
 import CoverPhoto from "../CoverPhoto.jsx";
 import ProfileCard from "../ProfileCard.jsx";
 import CreatePostAlert from "../../../components/createPostAlert/CreatePostAlert.jsx";
+import LoadingProfileCard from "../LoadingProfileCard.jsx";
 
 
 // my hooks
@@ -59,17 +60,20 @@ export default function Page() {
 
           {/* profile card */}
           <div>
-            <ProfileCard 
-              loading={loading_g}
-              setCreatePost={setCreatePost}
-              edit={true}
-              userData={data_g?.user}
-            />
+            {loading_g ? (
+              <LoadingProfileCard />
+            ) : (
+              <ProfileCard 
+                setCreatePost={setCreatePost}
+                edit={true}
+                userData={data_g?.user}
+              />
+            )}
           </div>
         </div>
 
 
-
+       
     
       </div>
 
