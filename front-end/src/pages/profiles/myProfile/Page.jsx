@@ -4,9 +4,8 @@ import { Outlet } from "react-router-dom";
 
 
 // components
-import CoverPhoto from "../../oldProfile/CoverPhoto";
-import ProfileCard from "../../oldProfile/ProfileCard";
-import NavOfAcountComponents from "../../oldProfile/NavOfAcountComponents";
+import CoverPhoto from "../CoverPhoto.jsx";
+import ProfileCard from "../ProfileCard.jsx";
 import CreatePostAlert from "../../../components/createPostAlert/CreatePostAlert.jsx";
 
 
@@ -25,6 +24,14 @@ export default function Page() {
 
   // get user data
   const { getData, status_g, message_g, data_g, loading_g, action_g } = useGetMethod()
+
+
+  // states
+  const [createPost, setCreatePost] = useState(false)
+
+
+
+  // call server to get data of my profile
   useEffect(() => {
     // end point for get user data
     getData("/api/users/me/profile")
@@ -34,21 +41,37 @@ export default function Page() {
 
 
 
+
+
   return (
     <div className="min-h-screen relative space-y-0 lg:space-y-4 bg-gray-100 pb-4">
-      {/* {createPost && <CreatePostAlert setCreatePost={setCreatePost}/>}
+      {createPost && <CreatePostAlert setCreatePost={setCreatePost}/>}
             
       <div className="bg-gradient-to-b from-[#999]/40 from-3% to-white shadow space-y-5">
     
+        {/* cover and profile card container */}
         <div className=" w-full lg:max-w-[900px] m-auto space-y-6" >
-          <CoverPhoto img={'/cover.jpg'} edit={true}/>
+          {/* cover photo */}
+          <CoverPhoto 
+            img={'/cover.jpg'} 
+            edit={true}
+          />
+
+          {/* profile card */}
           <div>
-            <ProfileCard userData={userData.user} edit={true} setCreatePost={setCreatePost}/>
-            <NavOfAcountComponents />
+            <ProfileCard 
+              loading={loading_g}
+              setCreatePost={setCreatePost}
+              edit={true}
+              userData={data_g?.user}
+            />
           </div>
         </div>
+
+
+
     
-      </div> */}
+      </div>
 
     </div>
   )
