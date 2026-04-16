@@ -11,17 +11,14 @@ import Pendings from './pages/friends/Pendings'
 import FriendRequests from './pages/friends/Requestes'
 
 
+/////////////////////////////// pages ////////////////////////////////
+
 // auth pages
 import AuthLayout from './pages/auth/AuthLayout' // auth layout
 import Signup from './pages/auth/Signup' // signup page
 import VerifyEmail from './pages/auth/VeifyEmail.jsx' // verify email page
 import Signin from './pages/auth/Signin' // signin page
 
-
-
-// User Page 
-import UserPage from './pages/users/page' // user page
-import AllUserPage from './pages/users/All' // all user page
 
 // notications
 import Notification from './pages/notifications/page' // notification page
@@ -31,12 +28,12 @@ import { useGetMethod } from './hooks/useGetMethod' // get method
 import { useGlobalData } from './hooks/useStore' // global data
 
 
-// my profile
-import MyProfile from './pages/profiles/myProfile/Page.jsx'
+// profile
+import MyProfile from './pages/profiles/myProfile/Page.jsx' // my profile page
 
 
 // app.js
-import { handleUserStatus } from './app.js'
+import { handleUserStatus } from './app.js' // handle user status
 
 
 
@@ -133,9 +130,7 @@ const AppRoutes = () => {
           </Route>
 
           {/* userPage */}
-          <Route path='/user/:username' element={<UserPage />}>
-            <Route index element={<AllUserPage />} />
-          </Route>
+          
 
 
           <Route path='/notifications' element={<Notification />} />

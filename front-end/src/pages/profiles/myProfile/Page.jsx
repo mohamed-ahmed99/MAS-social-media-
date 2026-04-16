@@ -8,6 +8,7 @@ import CoverPhoto from "../CoverPhoto.jsx";
 import ProfileCard from "../ProfileCard.jsx";
 import CreatePostAlert from "../../../components/createPostAlert/CreatePostAlert.jsx";
 import LoadingProfileCard from "../LoadingProfileCard.jsx";
+import ProfileContent from "../ProfileContent.jsx";
 
 
 // my hooks
@@ -15,15 +16,7 @@ import { useGetMethod } from "../../../hooks/useGetMethod";
 
 
 export default function Page() {
-
-
-  // page title and scroll to top
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    document.title = "Profile - MAS Social Media"
-  }, [])
-
-  // get user data
+  // hook to get data from server
   const { getData, status_g, message_g, data_g, loading_g, action_g } = useGetMethod()
 
 
@@ -42,6 +35,12 @@ export default function Page() {
 
 
 
+
+  // page title and scroll to top
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    document.title = "Profile - MAS Social Media"
+  }, [])
 
 
   return (
@@ -71,11 +70,17 @@ export default function Page() {
             )}
           </div>
         </div>
-
-
-       
-    
       </div>
+
+       {/* personal info & friends & posts */}
+        <div className="pb-8">
+            <ProfileContent 
+                userData={data_g?.user} 
+                posts={data_g?.posts} 
+                edit={true} 
+                setCreatePost={setCreatePost}
+            />
+        </div>
 
     </div>
   )
