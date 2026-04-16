@@ -17,16 +17,21 @@ export default function Friends() {
         <div className="space-y-1">
             <div className="flex items-center justify-between">
                 <p className="text-xl font-bold text-black">Friends</p>
+                {/* go to friends page */}
                 <Link 
-                    to="/profile?tab=friends"
+                    to="/friends"
                     className="text-gray-500 hover:bg-gray-100 px-2 py-1 rounded transition-colors text-sm font-medium"
-                >See all friends</Link>
+                >
+                    See all friends
+                </Link>
             </div>
 
-            <div className="text-gray-500 text-sm font-medium">{`${FriendsData.length} friends`}</div>
+            <div className="text-gray-500 text-sm font-medium">
+                {`${FriendsData.length} friends`}
+            </div>
         </div>
 
-
+        {/* friends container */}
         <div className="grid grid-cols-3 gap-3">
             {FriendsData.map((friend, index) => (
                 <Link 
@@ -40,7 +45,9 @@ export default function Friends() {
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                     </div>
-                    <p className="text-xs font-bold text-black group-hover:underline truncate">{friend.name}</p>
+                    <p className="text-xs font-bold text-black group-hover:underline truncate">
+                        {friend.name}
+                    </p>
                 </Link>
             ))}
         </div>

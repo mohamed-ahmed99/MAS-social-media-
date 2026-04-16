@@ -44,13 +44,13 @@ export default function Page() {
 
 
   return (
-    <div className="min-h-screen relative space-y-0 lg:space-y-4 bg-gray-100 pb-4">
+    <div className="min-h-screen relative space-y-0 lg:space-y-4 bg-gray-100 ">
       {createPost && <CreatePostAlert setCreatePost={setCreatePost}/>}
             
       <div className="bg-gradient-to-b from-[#999]/40 from-3% to-white shadow space-y-5">
     
         {/* cover and profile card container */}
-        <div className=" w-full lg:max-w-[900px] m-auto space-y-6" >
+        <div className=" w-full lg:max-w-[900px] m-auto space-y-6 " >
           {/* cover photo */}
           <CoverPhoto 
             img={'/cover.jpg'} 
@@ -73,7 +73,7 @@ export default function Page() {
       </div>
 
        {/* personal info & friends & posts */}
-        <div className="pb-8">
+        <div className="">
             <ProfileContent 
                 userData={data_g?.user} 
                 posts={data_g?.posts} 

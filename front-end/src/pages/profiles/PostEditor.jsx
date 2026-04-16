@@ -8,7 +8,7 @@ import { BsImages } from "react-icons/bs";
  * PostEditor Component
  * A Facebook-style post composer trigger.
  */
-export default function PostEditor({placeholder="What's on your mind?", me=false, onClick}) {
+export default function PostEditor({placeholder="What's on your mind?", edit=false, createPost}) {
     
     const LinksComponents =[
       {icon:<BsImages />, href:"/profile", text:"photo"},
@@ -16,11 +16,21 @@ export default function PostEditor({placeholder="What's on your mind?", me=false
       {icon:<RiMemoriesLine />, href:"/profile", text:"memories"},
     ] 
 
+    const onClick = () => {
+      window.scrollTo(0, 0)
+      createPost(true)
+    }
+
   return (
-    <div className="bg-white p-4 space-y-4">
+    <div className="bg-white p-4 space-y-4 lg:rounded-xl lg:shadow-sm">
 
         <div className="flex items-center gap-3">
-            <CircularImage src="/user.jpg" alt="Profile" size={40} />
+            {/* profile image */}
+            <div className="w-10 h-10 rounded-full overflow-hidden">
+              <CircularImage src="/user.jpg" alt="Profile" size={40} />
+            </div>
+
+            {/* input */}
             <button 
               onClick={onClick}
               className="flex-grow text-left px-4 py-2.5 text-gray-500 text-base bg-gray-100 hover:bg-gray-200 rounded-full transition-colors font-medium focus:outline-none"
@@ -31,7 +41,7 @@ export default function PostEditor({placeholder="What's on your mind?", me=false
 
         <div className='flex items-center pt-3 gap-2 border-t border-gray-100'>
             {LinksComponents.map((link, index) => {
-              if(!me && index == 1) {
+              if(!edit && index == 1) {
                 return null
               }
               return (

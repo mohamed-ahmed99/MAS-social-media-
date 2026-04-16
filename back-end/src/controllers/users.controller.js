@@ -11,7 +11,7 @@ export const getUserKey = wrapperMD(async (req, res) => {
         return res.status(400).json({ status: "fail", message: "Key is required" })
     }
 
-    const targetKey = await Users.findOne({ _id: req.decoded._id }, { [key]: true, _id: false })
+    const targetKey = await Users.findOne({ _id: req.user._id }, { [key]: true, _id: false })
 
     if (!targetKey) {
         return res.status(404).json({ status: "fail", message: "User not found" })
@@ -31,7 +31,7 @@ export const getUsers = wrapperMD(async (req, res) => {
     const { page = 1, limit = 20 } = req.query;
     const skip = (page - 1) * limit;
 
-    const users = await Users.find({ $nor: [{ _id: req.decoded._id }] }).sort({ createdAt: -1 })
+    const users = await Users.find({ $nor: [{ _id: req.user._id }] }).sort({ createdAt: -1 })
         .select('personalInfo.firstName personalInfo.lastName personalInfo.profilePicture').skip(skip).limit(limit).lean()
 
 
@@ -49,13 +49,13 @@ export const suggestFriends = wrapperMD(async (req, res) => {
 
     const myFriends = await Relationships.find({
         $or: [
-            { from: req.decoded._id },
-            { to: req.decoded._id }
+            { from: req.user._id },
+            { to: req.user._id }
         ]
     }).select("from to -_id")
 
-    const friendsIDs = myFriends.map(f => (req.decoded._id === f.from.toString() ? f.to : f.from))
-    friendsIDs.push(req.decoded._id) // I don't wanna get the user
+    const friendsIDs = myFriends.map(f => (req.user._id === f.from.toString() ? f.to : f.from))
+    friendsIDs.push(req.user._id) // I don't wanna get the user
 
     // get user that not my friends
     const suggestions = await Users.find({ _id: { '$nin': friendsIDs } }).limit(limit).skip(skip).sort({ createdAt: -1 })
@@ -80,7 +80,7 @@ export const getUser = wrapperMD(async (req, res) => {
     }
 
     // check relationship between me and this user
-    const relationship = await Relationships.findOne({ $or: [{ from: req.decoded._id, to: userId }, { from: userId, to: req.decoded._id }] })
+    const relationship = await Relationships.findOne({ $or: [{ from: req.user._id, to: userId }, { from: userId, to: req.user._id }] })
     if (relationship) {
         user.relationshipWithYou = relationship.type
     } else {
