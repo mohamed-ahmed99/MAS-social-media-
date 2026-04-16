@@ -2,14 +2,13 @@ import React from 'react';
 import PersonalDetails from './PersonalDetails';
 import Friends from './Friends';
 import PostEditor from './PostEditor';
-import Post from '../../components/post/Post';
-import NoPostsYet from './NoPostsYet';
+import Posts from './Posts';
 
 /*
   - 
 */ 
 
-export default function ProfileContent({ userData, posts, edit, setCreatePost }) {
+export default function ProfileContent({ userData, edit, setCreatePost }) {
   return (
     <div className="w-full lg:max-w-[1000px] mx-auto px-0 sm:px-4">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-6">
@@ -40,18 +39,7 @@ export default function ProfileContent({ userData, posts, edit, setCreatePost })
 
           {/* Posts Feed */}
           <div className="">
-            {posts && posts.length > 0 ? (
-              posts.map((post) => (
-                <div key={post._id} className="bg-white lg:rounded-xl shadow-sm overflow-hidden border border-gray-100/50">
-                   <Post data={post} />
-                </div>
-              ))
-            ) : ( 
-              <NoPostsYet 
-                edit={edit} 
-                setCreatePost={setCreatePost} 
-              />
-            )}
+            <Posts userId={userData?._id} />
           </div>
         </div>
 

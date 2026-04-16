@@ -28,7 +28,7 @@ import Comments from "./PostComponent/commentComponents/Comments.jsx";
 
 
 
-export default function Post({ data, img, profile = false }) {
+export default function Post({ data, canEdit = false }) {
     const { userData, serUserData } = useUserContext()
 
     // states

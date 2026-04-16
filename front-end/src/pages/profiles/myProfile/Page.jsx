@@ -44,7 +44,7 @@ export default function Page() {
 
 
   return (
-    <div className="min-h-screen relative space-y-0 lg:space-y-4 bg-gray-100 ">
+    <div className="min-h-screen relative space-y-0 lg:space-y-4 bg-gray-100 pb-4">
       {createPost && <CreatePostAlert setCreatePost={setCreatePost}/>}
             
       <div className="bg-gradient-to-b from-[#999]/40 from-3% to-white shadow space-y-5">
@@ -76,7 +76,6 @@ export default function Page() {
         <div className="">
             <ProfileContent 
                 userData={data_g?.user} 
-                posts={data_g?.posts} 
                 edit={true} 
                 setCreatePost={setCreatePost}
             />
