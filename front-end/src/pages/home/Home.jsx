@@ -14,6 +14,8 @@ import EndOfPosts from '../../components/post/EndOfPosts.jsx';
 import { End_Of_Posts_Message } from '../../messages'
 import PostLoading from '../../components/post/PostLoading.jsx';
 import { useGetMethod } from '../../hooks/useGetMethod.js';
+import SystemPost from '../../components/post/SystemPost.jsx';
+import {FaRegFaceSadTear} from 'react-icons/fa6'
 
 export default memo( function Home () {
 
@@ -73,7 +75,10 @@ export default memo( function Home () {
 
                 {/* NO MORE POSTS */}
                 {!loading_g && data_g?.posts && data_g?.posts?.length < query.limit && (
-                    <EndOfPosts text={End_Of_Posts_Message.noPosts}/>
+                    <SystemPost 
+                        text={End_Of_Posts_Message.noPosts} 
+                        icon={<FaRegFaceSadTear size={24} className='text-gray-400'/>}
+                    />
                 )}
 
                 {/* SEE MORE BUTTON (after first load) */}

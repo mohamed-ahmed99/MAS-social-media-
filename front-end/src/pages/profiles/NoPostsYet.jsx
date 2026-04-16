@@ -1,6 +1,14 @@
 import React from 'react'
 
 export default function NoPostsYet({edit, setCreatePost}) {
+
+
+    const handleCreatePost = () => {
+        window.scrollTo({top: 0})
+        setCreatePost(true)
+    }
+
+
   return (
     <div className="bg-white p-12 lg:rounded-xl shadow-sm text-center border border-gray-100/50 flex flex-col items-center justify-center space-y-3">
         <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center">
@@ -13,7 +21,7 @@ export default function NoPostsYet({edit, setCreatePost}) {
         <p className="text-gray-400 font-medium text-lg">No posts yet</p>
         {edit && (
             <button 
-                onClick={() => setCreatePost(true)}
+                onClick={() => handleCreatePost()}
                 className="text-black hover:underline font-semibold"
             >
                 Share your first post
