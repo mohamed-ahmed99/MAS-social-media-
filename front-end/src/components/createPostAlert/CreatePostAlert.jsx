@@ -67,7 +67,7 @@ export default function CreatePostAlert({ setCreatePost }) {
 
     // set data as server wants
     const newPost = {
-      content: { text, fileUrl: mediaUrl },
+      content: { text, fileUrl: mediaUrl, fileType: mediaType },
       visibility: selectionBtn,
     }
 

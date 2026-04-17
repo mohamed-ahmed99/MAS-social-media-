@@ -1,23 +1,15 @@
-
+import PostImage from './PostImage.jsx';
+import PostVideo from './PostVideo.jsx';
 
 export default function File({fileUrl, fileType, setFullScreen}) {
+    console.log(fileUrl, fileType);
   return (
     <div className="mt-2">
         {fileType === "image" && (
-            <img 
-                src={fileUrl} 
-                alt="post" 
-                onClick={() => setFullScreen(true)}
-                className="w-full max-h-[400px] 500:max-h-[500px]  lg:max-h-[600px] xl:max-h-[450px] 2xl:max-h-[600px] object-cover"
-            />
+            <PostImage url={fileUrl} setFullScreen={setFullScreen} />
         )}
         {fileType === "video" && (
-            <video 
-                src={fileUrl} 
-                alt="post" 
-                controls
-                className="w-full max-h-[400px] 500:max-h-[500px]  lg:max-h-[600px] xl:max-h-[450px] 2xl:max-h-[600px] object-cover"
-            />
+            <PostVideo url={fileUrl} />
         )}
     </div>
   )
