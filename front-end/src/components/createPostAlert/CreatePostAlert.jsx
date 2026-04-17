@@ -5,23 +5,35 @@ import GeneralBtn from '../btns/GeneralBtn.jsx'
 import { PuffLoader } from 'react-spinners'
 
 // components
-import { addPost } from './addPost.js';
 import PostHeader from './PostHeader.jsx';
 import PostUserInfo from './PostUserInfo.jsx';
-import PostMediaDisplay from './PostMediaDisplay.jsx';
+import PostImageDisplay from './PostImageDisplay.jsx';
+import PostVideoDisplay from './PostVideoDisplay.jsx';
 import PostActionsList from './PostActionsList.jsx';
 
+
+import { useGetMethod } from '../../hooks/useGetMethod.js';
+
+
+
 export default function CreatePostAlert({ setCreatePost }) {
+  // get method
+  const { getData, status_g, data_g, loading_g} = useGetMethod();
+
   // refs
   const textRef = useRef(null);
 
-  // states
+  //  user data
   const [user] = useGlobalData("user");
-  const [selectionBtn, setSelectionBtn] = useState("public");
-  const [validation, setValidation] = useState("");
-  const [loading, setIsLoading] = useState(false);
-  const [showMediaInput, setShowMediaInput] = useState(false);
-  const [mediaUrl, setMediaUrl] = useState("");
+  
+  // states
+  const [selectionBtn, setSelectionBtn] = useState("public"); // public, friends or only me
+  const [validation, setValidation] = useState(""); // validation message
+  const [loading, setIsLoading] = useState(false); // loading state
+  const [showMediaInput, setShowMediaInput] = useState(false); // show media input
+  const [mediaUrl, setMediaUrl] = useState(""); // media url
+  const [mediaType, setMediaType] = useState("image"); // image or video
+
 
   // prevent scrolling
   useEffect(() => {
@@ -30,6 +42,16 @@ export default function CreatePostAlert({ setCreatePost }) {
       document.body.style.overflow = 'auto';
     };
   }, [])
+
+  // hiding validation after 5s
+  useEffect(() => {
+    if (validation) {
+      const timer = setTimeout(() => {
+        setValidation("");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [validation]);
 
   const handlePost = async () => {
     const text = textRef.current.value.trim();
@@ -61,7 +83,7 @@ export default function CreatePostAlert({ setCreatePost }) {
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: "100%", opacity: 0 }}
         transition={{ type: "spring", damping: 25, stiffness: 200 }}
-        className='bg-white w-full h-full sm:h-[500px] sm:max-w-[550px] sm:rounded-2xl border border-gray-100 shadow-2xl flex flex-col overflow-auth'
+        className='bg-white w-full h-full sm:h-[500px] sm:max-w-[700px] sm:rounded-2xl border border-gray-100 shadow-2xl flex flex-col overflow-y-auto'
       >
         <div className="flex flex-col h-full p-4 sm:p-5">
 
@@ -80,6 +102,7 @@ export default function CreatePostAlert({ setCreatePost }) {
               className='w-full resize-none outline-none border-none text-lg text-zinc-800 placeholder-gray-400 transition-all duration-300 flex-grow sm:flex-none min-h-[120px] sm:h-[150px]'
             ></textarea>
 
+            {/* media input */}
             <AnimatePresence>
               {showMediaInput && (
                 <motion.div
@@ -92,18 +115,45 @@ export default function CreatePostAlert({ setCreatePost }) {
                     type="text"
                     value={mediaUrl}
                     onChange={(e) => setMediaUrl(e.target.value)}
-                    placeholder="Paste image or video URL here..."
+                    placeholder={mediaType === "image" ? "Paste photo URL here..." : "Paste video or YouTube URL here..."}
                     className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-black transition-colors text-sm"
                   />
                 </motion.div>
               )}
             </AnimatePresence>
 
-            
-          </div>
+            {/* media display */}
+            <AnimatePresence mode='wait'>
+              {mediaUrl && (
+                mediaType === "image" ? (
+                  <PostImageDisplay 
+                    url={mediaUrl} 
+                    onClear={() => setMediaUrl("")} 
+                  />
+                ) : (
+                  <PostVideoDisplay 
+                    url={mediaUrl} 
+                    onClear={() => setMediaUrl("")} 
+                  />
+                )
+              )}
+            </AnimatePresence>
+            </div>
+          
+          {/* post actions list */}
+          <PostActionsList 
+            activeType={showMediaInput ? mediaType : null}
+            onToggleMedia={(type) => {
+              if (showMediaInput && mediaType === type) {
+                setShowMediaInput(false);
+              } else {
+                setShowMediaInput(true);
+                setMediaType(type);
+              }
+            }} 
+          />
 
-          <PostActionsList onToggleMedia={() => setShowMediaInput(!showMediaInput)} />
-
+          {/* validation */}
           <AnimatePresence>
             {validation && (
               <motion.p
@@ -116,6 +166,7 @@ export default function CreatePostAlert({ setCreatePost }) {
             )}
           </AnimatePresence>
 
+          {/* post button */}
           <div className="mt-4">
             <GeneralBtn
               text="Post"
