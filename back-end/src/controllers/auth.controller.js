@@ -230,7 +230,15 @@ export const VerifyMe = asyncHandler(async (req, res) =>{
     }
 
     // response
-    const userData = {_id:user._id, role:user.role, status:user.account.status, email:user.contactInfo.email};
+    const userData = {
+        _id:user._id, 
+        role:user.role, 
+        status:user.account.status, 
+        email:user.contactInfo.email,
+        userName: `${user.personalInfo.firstName} ${user.personalInfo.lastName}`,
+        profilePicture: user.profilePicture || null
+    };
+    
     return res.status(200).json({
         status:"success", 
         message: "User verified successfully", 

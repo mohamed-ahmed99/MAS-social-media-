@@ -6,7 +6,7 @@ export default function CircularImage({
   fontSize=20,
   }) {
   return (
-    <div className="bg-black w-fit h-fit w-full h-full rounded-full overflow-hidden">
+    <div className="bg-black w-full h-full rounded-full overflow-hidden">
 
       {src ? (
         <img  

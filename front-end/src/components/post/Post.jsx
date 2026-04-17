@@ -1,14 +1,8 @@
-import { Link } from "react-router-dom"
-import { useEffect } from "react";
-import { FullScreenImage } from "../FullScreenImage";
-import { motion, AnimatePresence } from "framer-motion"
 
-import { FiMoreHorizontal } from "react-icons/fi";
-import { MdOutlineClose } from "react-icons/md";
+// icons
+import { motion, AnimatePresence } from "framer-motion"
 import { FaHeart } from "react-icons/fa";
-import { FaRegComment, FaComment } from "react-icons/fa";
-import { PiShareFatFill, PiShareFat } from "react-icons/pi";
-import { AiFillLike, AiOutlineLike } from "react-icons/ai";
+import { AiFillLike } from "react-icons/ai";
 
 
 import { useState } from "react";

@@ -1,23 +1,29 @@
-import { useRef, useState } from 'react'
-import { useEffect } from 'react'
-import CircularImage from '../../components/CircularImage.jsx';
-import {motion, AnimatePresence} from 'framer-motion'
-import ButtonList from './ButtonList.jsx';
-import {PuffLoader } from 'react-spinners'
+import { useRef, useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useGlobalData } from '../../hooks/useStore.jsx'
+import GeneralBtn from '../btns/GeneralBtn.jsx'
+import { PuffLoader } from 'react-spinners'
+
+// components
 import { addPost } from './addPost.js';
-import Alert from '../Alert.jsx'
+import PostHeader from './PostHeader.jsx';
+import PostUserInfo from './PostUserInfo.jsx';
+import PostMediaDisplay from './PostMediaDisplay.jsx';
+import PostActionsList from './PostActionsList.jsx';
 
-// icons
-import { IoMdPhotos } from "react-icons/io";
-import { IoClose } from "react-icons/io5";
-import { FaUserTag } from "react-icons/fa";
-import { MdEmojiEmotions } from "react-icons/md";
-import { FaTrash } from "react-icons/fa";
-
-export default function CreatePostAlert({setCreatePost}) {
+export default function CreatePostAlert({ setCreatePost }) {
+  // refs
   const textRef = useRef(null);
-  const closeBtnRef = useRef(null);
 
+  // states
+  const [user] = useGlobalData("user");
+  const [selectionBtn, setSelectionBtn] = useState("public");
+  const [validation, setValidation] = useState("");
+  const [loading, setIsLoading] = useState(false);
+  const [showMediaInput, setShowMediaInput] = useState(false);
+  const [mediaUrl, setMediaUrl] = useState("");
+
+  // prevent scrolling
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => {
@@ -25,133 +31,104 @@ export default function CreatePostAlert({setCreatePost}) {
     };
   }, [])
 
-  
-  
-  // get type of post "public" , "freinds" or "only me"
-  const [selectionBtn, setSelectionBtn] = useState("public")
-  
-
-  // validation message
-  const [validation, setValidation] = useState("")
-  const [loading, setIsLoading] = useState(false);
-
-
   const handlePost = async () => {
-    if(!textRef.current?.value) {
-      setValidation("no content to post")
+    const text = textRef.current.value.trim();
+
+    if (!text && !mediaUrl) {
+      setValidation("Please enter some text or a media link");
       return;
     }
-    else setValidation("")
 
-    // proceed to post creation
-    const response = await addPost(textRef.current?.value, selectionBtn, setIsLoading);
-    if(response.success){
-      closeBtnRef.current.click();
+    setValidation("");
+    const result = await addPost(text, selectionBtn, mediaUrl, setIsLoading);
+
+    if (result.success) {
+      setCreatePost(false);
+      window.location.reload();
+    } else {
+      setValidation(result.message || "Something went wrong");
     }
-    console.log(response);
-  }
-
-
-  // message of validation
-  useEffect(() => {
-    if(validation) setTimeout(() => setValidation(""), 5000);
-  },[validation])
+  };
 
   return (
-    <AnimatePresence>
-      <div 
-        onClick={() => setCreatePost(false)}
-        className="absolute top-0 left-0 -translate-y-[100px] lg:-translate-y-[80px] h-[calc(100vh+200px)] lg:h-[calc(100vh+80px)] w-full bg-white/70 flex items-center justify-center z-[9999]"
-        >
-          
-          <motion.div 
-            onClick={(e) => e.stopPropagation() }
-            initial={{scale:window.innerWidth > 900? 0.5 : 1, opacity:0, y: window.innerWidth > 900? 0: 300}}
-            animate={{scale:1, opacity:1, y:0}}
-            exit={{scale:0.8, opacity:0, y:200}}
-            transition={{duration:0.4}}
-            className='lg:-translate-y-10 shadow-xl h-screen lg:h-[400px] overflow-y-scroll shadow-black/50 bg-white rounded-lg p-2 sm:p-4 border-[1.5px] border-gray-300 max-w-full lg:max-w-[800px] w-full lg:mx-2'
-          >
-            {/* loading */}
-            {loading &&  <div className='absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center z-10'>
-                      <PuffLoader color="#000" size={100}/>
-            </div>}
+    <div
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-0 sm:p-4 bg-white/80 backdrop-blur-md"
+      onClick={() => setCreatePost(false)}
+    >
+      <motion.div
+        onClick={(e) => e.stopPropagation()}
+        initial={{ y: "100%", opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: "100%", opacity: 0 }}
+        transition={{ type: "spring", damping: 25, stiffness: 200 }}
+        className='bg-white w-full h-full sm:h-[500px] sm:max-w-[550px] sm:rounded-2xl border border-gray-100 shadow-2xl flex flex-col overflow-auth'
+      >
+        <div className="flex flex-col h-full p-4 sm:p-5">
 
+          {/* header */}
+          <PostHeader onClose={() => setCreatePost(false)} />
 
-              
-              {/* top */}
-              <div className='flex relative'>
-                  <h2 className="text-xl font-semibold mb-2 text-center w-full">Create Post</h2>
+          <div className="flex-grow overflow-y-auto pr-1 flex flex-col">
 
-                  <button 
-                    ref={closeBtnRef}
-                    onClick={() => setCreatePost(false)}
-                    className='absolute top-1/3 -translate-y-1/2 right-2 bg-gray-200 p-1 rounded-full hover:bg-gray-300 transition-colors'>
-                      <IoClose fontSize={25}/>
-                  </button>
-              </div>
+            {/* user info */}
+            <PostUserInfo user={user} setSelectionBtn={setSelectionBtn} />
 
-              {/* user info */}
-              <div className='flex items-center gap-2 mt-4'>
-                  <CircularImage src={'/user.jpg'} size={50} firstName="Mohamed" lastName="Ahmed"/>
-                  <div>
-                      <h3 className="font-semibold">Mohamed Ahmed</h3>
-                      <ButtonList setSelectionBtn={setSelectionBtn}/>
-                  </div>
-              </div>
+            {/* text area */}
+            <textarea
+              ref={textRef}
+              placeholder={`What's on your mind, ${user?.userName?.split(" ")[0]}?`}
+              className='w-full resize-none outline-none border-none text-lg text-zinc-800 placeholder-gray-400 transition-all duration-300 flex-grow sm:flex-none min-h-[120px] sm:h-[150px]'
+            ></textarea>
 
-              {/* post content */}
-              <div className='mt-4'>
-                  <textarea 
-                    ref={textRef}
-                    placeholder="What's on your mind, Mohamed?"
-                    className='w-full min-h-[80px] sm:min-h-[130px] resize-none outline-none border-none text-sm sm:text-lg ' 
-                  ></textarea>
+            <AnimatePresence>
+              {showMediaInput && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  className="mb-4"
+                >
+                  <input
+                    type="text"
+                    value={mediaUrl}
+                    onChange={(e) => setMediaUrl(e.target.value)}
+                    placeholder="Paste image or video URL here..."
+                    className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-black transition-colors text-sm"
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
 
-                  
-              </div>
+            
+          </div>
 
-              {/* add to your post */}
-              <div className='mt-4 flex items-center justify-between'>
-                  <h4 className='font-semibold mb-2'>Add to your post</h4>
-                  
-                  <div className='flex gap-3'>
+          <PostActionsList onToggleMedia={() => setShowMediaInput(!showMediaInput)} />
 
-                      <button className='bg-green-100 text-green-600 px-3 py-2 rounded-lg hover:bg-green-200 transition-colors'>
-                          <FaUserTag className='block sm:hidden'/>
-                          <span className='hidden sm:block'>Tag Friends</span>
-                          
-                      </button>
-                  </div>
-              </div>
+          <AnimatePresence>
+            {validation && (
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className='text-center text-red-500 text-xs mt-3 font-semibold'
+              >
+                {validation}
+              </motion.p>
+            )}
+          </AnimatePresence>
 
-              {/* data handling message*/}
-              <AnimatePresence>
-                {validation && 
-                <motion.p
-                  initial={{scale:0}}
-                  animate={{scale:1}}
-                  exit={{scale:0}}
-                  transition={{duration:.3}}
-                  className='text-center text-red-600 mt-2'
-                > {validation}
-                </motion.p>
-                } 
-              </AnimatePresence>
+          <div className="mt-4">
+            <GeneralBtn
+              text="Post"
+              onClick={handlePost}
+              loading={loading}
+              loadingIcon={<PuffLoader color="#fff" size={20} />}
+              variant="black"
+              className='w-full rounded-xl font-bold uppercase tracking-widest shadow-lg shadow-black/5 hover:scale-[1.02] active:scale-95 transition-all'
+            />
+          </div>
 
-
-              {/* post button */}
-              <button 
-                onClick={() => handlePost()}
-                className='mt-2 w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors'>
-                  Post
-              </button>
-          </motion.div>
-      </div>
-
-      
-    </AnimatePresence>
-  )
+        </div>
+      </motion.div>
+    </div>
+  );
 }
-  
-
