@@ -66,7 +66,7 @@ export default function ProfileCard({ setCreatePost, edit, userData }) {
 
             {/* bio */}
             <div className="w-full">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illo repellat impedit quo aspernatur laborum iusto architecto aperiam neque non nobis numquam ipsam praesentium quos sapiente molestiae at, sequi quis labore.
+                {userData?.personalInfo?.bio || "hello"}
             </div>
 
             <div className="grid grid-cols-2 lg:hidden gap-2">

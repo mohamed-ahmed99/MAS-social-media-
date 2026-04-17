@@ -43,6 +43,7 @@ export default function ProfileContent({ userData, edit, setCreatePost }) {
               userId={userData?._id} 
               joinDate={userData?.createdAt} 
               setCreatePost={setCreatePost} 
+              edit={edit}
             />
           </div>
         </div>

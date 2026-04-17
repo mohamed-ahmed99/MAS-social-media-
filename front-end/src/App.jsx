@@ -30,7 +30,7 @@ import { useGlobalData } from './hooks/useStore' // global data
 
 // profile
 import MyProfile from './pages/profiles/myProfile/Page.jsx' // my profile page
-
+import OtherProfile from './pages/profiles/otherUserProfile/Page.jsx' // other profile page
 
 // app.js
 import { handleUserStatus } from './app.js' // handle user status
@@ -114,10 +114,8 @@ const AppRoutes = () => {
           <Route path='/' element={<Home />} />
 
           {/* profile */}
-          <Route path='/profile' element={<MyProfile />}>
-
-
-          </Route>
+          <Route path='/profile' element={<MyProfile />}/>
+          <Route path='/user/:username' element={<OtherProfile />}/>
 
 
 

@@ -11,7 +11,7 @@ import { useGetMethod } from "../../hooks/useGetMethod.js";
 
 
 
-export default function Posts({userId, joinDate, setCreatePost}) {
+export default function Posts({userId, joinDate, setCreatePost, edit}) {
     const { getData, status_g, message_g, data_g, loading_g, action_g } = useGetMethod()
     const [query, setQuery] = React.useState({limit: 20, page: 1})
 
@@ -50,14 +50,13 @@ export default function Posts({userId, joinDate, setCreatePost}) {
 
 
       {/* no posts yet */}
-      {!loading_g && data_g?.posts?.length === 0 && query.page === 1 && (
-        <NoPostsYet edit={true} setCreatePost={setCreatePost}/>
+      {!loading_g && data_g?.posts?.length === 0 && query.page === 1 &&(
+        <NoPostsYet edit={edit} setCreatePost={setCreatePost}/>
       )}
 
 
       {/* postes ended */}
-      {!loading_g && data_g?.posts?.length > 0 && 
-        query.page > 1 &&
+      {!loading_g &&
         data_g?.posts?.length < query.limit && (
         <SystemPost 
           text={`you joined on ${new Date(joinDate).toLocaleDateString("en-GB", {day: "numeric", month: "long", year: "numeric"})}`}
