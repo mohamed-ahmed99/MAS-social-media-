@@ -7,25 +7,16 @@ export default function PostActionsList({ onToggleMedia, activeType }) {
       id: "image",
       icon: <FaImage size={20} />,
       text: "Photo",
-      activeColor: "text-green-600",
-      activeBg: "bg-green-50",
-      defaultColor: "text-gray-600"
     },
     {
       id: "video",
       icon: <FaVideo size={20} />,
       text: "Video",
-      activeColor: "text-red-600",
-      activeBg: "bg-red-50",
-      defaultColor: "text-gray-600"
     },
     {
       id: "tag",
       icon: <FaUserTag size={20} />,
       text: "Tag",
-      activeColor: "text-blue-600",
-      activeBg: "bg-blue-50",
-      defaultColor: "text-gray-600"
     },
   ];
 
@@ -42,13 +33,13 @@ export default function PostActionsList({ onToggleMedia, activeType }) {
             onClick={() => button.id !== 'tag' && onToggleMedia(button.id)}
             className={`p-2 rounded-lg transition-all duration-300 flex items-center gap-2 ${
               isActive 
-                ? `${button.activeBg} ${button.activeColor} ring-1 ring-inset ring-current/20` 
-                : `hover:bg-gray-50 ${button.defaultColor}`
+                ? `bg-gray-100 text-gray-600 ring-1 ring-inset ring-gray-200` 
+                : `hover:bg-gray-50 text-gray-400`
             }`}
             title={button.text}
           >
             {button.icon}
-            <span className={`hidden sm:inline text-xs font-bold ${isActive ? button.activeColor : 'text-gray-600'}`}>
+            <span className={`hidden sm:inline text-xs font-bold ${isActive ? 'text-gray-600' : 'text-gray-400'}`}>
               {button.text}
             </span>
           </button>

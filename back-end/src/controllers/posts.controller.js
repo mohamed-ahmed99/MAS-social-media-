@@ -6,20 +6,25 @@ import { ACCOUNT_STATUS } from "../config/constants.js"
 import Relationships from "../models/relationships.schema.js"
 
 
+/*
+
+*/ 
+
+// add post
 export const addPost = asyncHandler( async(req, res) => {
     // validate content
     if(!req.body.content.text && !req.body.content.fileUrl){
-        return res.status(400).json({status:"fail", message:"Post content is required"})
+        return res.status(400).json({status:"fail", message:"Post content is required", data:null})
     }
 
     // create new post
     const newPost = new Posts({ author: req.user._id, ...req.body })
     await newPost.save()
-
+    
     // response
-    res.status(201).json({message:"Post created successfully", post: newPost})
+    res.status(201).json({status:"success", message:"Post created successfully", data:{post: newPost}})
 })
-
+    
 
 // delete post
 export const deletePost = asyncHandler( async(req, res) => {

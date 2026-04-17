@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useGlobalData } from '../../hooks/useStore.jsx'
 import GeneralBtn from '../btns/GeneralBtn.jsx'
 import { PuffLoader } from 'react-spinners'
+import { useNavigate } from 'react-router-dom'
 
 // components
 import PostHeader from './PostHeader.jsx';
@@ -12,16 +13,17 @@ import PostVideoDisplay from './PostVideoDisplay.jsx';
 import PostActionsList from './PostActionsList.jsx';
 
 
-import { useGetMethod } from '../../hooks/useGetMethod.js';
+import { usePostMethod } from '../../hooks/usePostMethod.js';
 
 
 
 export default function CreatePostAlert({ setCreatePost }) {
-  // get method
-  const { getData, status_g, data_g, loading_g} = useGetMethod();
+  // post method
+  const { postData, status_p, data_p, loading_p} = usePostMethod();
 
   // refs
   const textRef = useRef(null);
+  const navigate = useNavigate();
 
   //  user data
   const [user] = useGlobalData("user");
@@ -53,24 +55,34 @@ export default function CreatePostAlert({ setCreatePost }) {
     }
   }, [validation]);
 
+
+  // handle post
   const handlePost = async () => {
     const text = textRef.current.value.trim();
 
-    if (!text && !mediaUrl) {
-      setValidation("Please enter some text or a media link");
-      return;
+    // validate content
+    if(!text && !mediaUrl){
+      return setValidation("You must add text or media to your post");
     }
 
-    setValidation("");
-    const result = await addPost(text, selectionBtn, mediaUrl, setIsLoading);
-
-    if (result.success) {
-      setCreatePost(false);
-      window.location.reload();
-    } else {
-      setValidation(result.message || "Something went wrong");
+    // set data as server wants
+    const newPost = {
+      content: { text, fileUrl: mediaUrl },
+      visibility: selectionBtn,
     }
+
+    await postData("/api/posts/add", {}, newPost);
   };
+
+  // handle response
+  useEffect(() => {
+    if(status_p === "success"){
+      setCreatePost(false);
+      navigate('/');
+    }
+  }, [status_p]);
+
+  console.log(status_p, data_p, loading_p);
 
   return (
     <div
@@ -146,7 +158,9 @@ export default function CreatePostAlert({ setCreatePost }) {
             onToggleMedia={(type) => {
               if (showMediaInput && mediaType === type) {
                 setShowMediaInput(false);
+                setMediaUrl(""); 
               } else {
+                setMediaUrl(""); 
                 setShowMediaInput(true);
                 setMediaType(type);
               }
@@ -171,7 +185,7 @@ export default function CreatePostAlert({ setCreatePost }) {
             <GeneralBtn
               text="Post"
               onClick={handlePost}
-              loading={loading}
+              loading={loading_p}
               loadingIcon={<PuffLoader color="#fff" size={20} />}
               variant="black"
               className='w-full rounded-xl font-bold uppercase tracking-widest shadow-lg shadow-black/5 hover:scale-[1.02] active:scale-95 transition-all'
