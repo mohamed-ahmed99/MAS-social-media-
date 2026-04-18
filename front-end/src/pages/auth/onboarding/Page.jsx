@@ -35,9 +35,8 @@ const Page = () => {
     profileImage: '',
     coverImage: '',
     bio: '',
-    dateOfBirth: '', 
+    dateOfBirth: '',
   });
-  console.log(formData);
 
   // steps
   const steps = [

@@ -113,3 +113,24 @@ export const getMyProfile = asyncHandler(async (req, res) => {
     })
 })
 
+
+export const updateMyProfile = asyncHandler(async (req, res) => {
+    const { _id } = req.user
+    const data = req.body
+
+    // check if user exist and active
+    const user = await Users.findById(_id)
+    if (!user) {
+        return res.status(404).json({ status: "fail", message: "User not found", data: null })
+    }else if(user.account.status !== ACCOUNT_STATUS.ACTIVE){
+        return res.status(400).json({ status: "fail", message: "User is not active", data: null })
+    }
+
+    await Users.updateOne({ _id }, data) // update user and save
+
+    // send user data
+    res.status(200).json({ 
+        status: "success", 
+        message: "User updated successfully", 
+    })
+})  
