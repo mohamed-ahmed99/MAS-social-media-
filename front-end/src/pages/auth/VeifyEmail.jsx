@@ -90,8 +90,9 @@ export default function VerifyEmail() {
     useEffect(() => {
         if (status_p === "success") {
             setGlobalData("authenticated", true)
-            setGlobalData("user", { ...data_p })
-            navigate("/")
+            setGlobalData("user", { ...data_p.user })
+            setGlobalData("others.isOnboardingRouteOpend", data_p?.isOnboardingRouteOpend)
+            navigate("/auth/onboarding")
         }
         else if (status_p === "fail") {
             setServerMessage(message_p)

@@ -18,6 +18,10 @@ import AuthLayout from './pages/auth/AuthLayout' // auth layout
 import Signup from './pages/auth/Signup' // signup page
 import VerifyEmail from './pages/auth/VeifyEmail.jsx' // verify email page
 import Signin from './pages/auth/Signin' // signin page
+import Onboarding from './pages/auth/onboarding/Page.jsx' // onboarding page
+import Step1Profile from './pages/auth/onboarding/components/Step1Profile.jsx';
+import Step2Bio from './pages/auth/onboarding/components/Step2Bio.jsx';
+import Step3Birth from './pages/auth/onboarding/components/Step3Birth.jsx';
 
 
 // notications
@@ -69,7 +73,7 @@ const AppRoutes = () => {
 
   /////////////// handle loading state //////////////////
   // loading
-  if (status_g === 'idle' || loading_g) return <AppLoading />
+  if (status_g === 'idle' || loading_g) return <AppLoading loading={true} />
 
   // if we are about to navigate, keep showing loading
   const isAuthRoute = location.pathname.startsWith('/auth')
@@ -77,18 +81,18 @@ const AppRoutes = () => {
 
   // if user is not logged in and not on auth pages
   if (status_g === 'fail' && !store.authenticated && !isAuthRoute) {
-    return <AppLoading />
+    return <AppLoading loading={true} />
   }
 
   // if user is not verified and not on verify email page
   if (isUnverified && location.pathname !== '/auth/verify-email') {
-    return <AppLoading />
+    return <AppLoading loading={true} />
   }
 
   /// 3. if we are about to navigate, keep showing loading
   const isAuthenticated = status_g === 'success' && data_g?.user?.status === 'Active'
-  if (isAuthenticated && location.pathname.startsWith('/auth')) {
-    return <AppLoading />
+  if (isAuthenticated && location.pathname.startsWith('/auth') && !location.pathname.startsWith('/auth/onboarding')) {
+    return <AppLoading loading={true} />
   }
 
 
@@ -103,9 +107,16 @@ const AppRoutes = () => {
 
         {/* auth */}
         <Route element={<AuthLayout />}>
-          <Route path='/auth/signup' element={<Signup />} />
-          <Route path='/auth/signin' element={<Signin />} />
-          <Route path='/auth/verify-email' element={<VerifyEmail />} />
+          <Route path='/auth/signup' element={<Signup />} /> {/* signup page */}
+          <Route path='/auth/signin' element={<Signin />} /> {/* signin page */}
+          <Route path='/auth/verify-email' element={<VerifyEmail />} /> {/* verify email page */}
+
+          {/* onboarding */}
+          <Route path='/auth/onboarding' element={<Onboarding />}>
+            <Route path='profile' element={<Step1Profile />} /> {/* profile page */}
+            <Route path='bio' element={<Step2Bio />} /> {/* bio page */}
+            <Route path='birth' element={<Step3Birth />} /> {/* birth page */}
+          </Route>
         </Route>
 
 

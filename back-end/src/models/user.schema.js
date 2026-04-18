@@ -42,6 +42,10 @@ const userSchema = new mongoose.Schema({
         expiresAt: {type:Date, default: () => (Date.now() + 10 * 60 * 1000 )},
     },
 
+    // others
+    others:{
+        isOnboardingRouteOpend: {type:Boolean, default: false},
+    }
 }, {timestamps:true})
 
 userSchema.methods.checkPassword = async function (password) {

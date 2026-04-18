@@ -1,6 +1,4 @@
 
-
-
 /*
     @desc: handle user status
 */ 
@@ -18,13 +16,22 @@ export const handleUserStatus = (status_g, data_g, store, navigate, location, se
             if (location.pathname !== "/auth/verify-email") {
             navigate("/auth/verify-email")
             }
-        } else {
+        }
+        // account is verified "Active"
+        else {
             setGlobalData("authenticated", true)
             setGlobalData("user", data_g.user)
 
-            // if user is already logged in and tries to go to auth pages, redirect to home
+            // if user is already logged in and tries to go to auth pages
             if (location.pathname.startsWith("/auth")) {
-            navigate("/")
+                // if user's onboarding is completed or onboarding route is opened
+                if (store.others?.isOnboardingCompleted || data_g?.isOnboardingRouteOpend ) {
+                    navigate("/")
+                } 
+                // else redirect to onboarding page if not already in onboarding flow
+                else if (!location.pathname.startsWith("/auth/onboarding")) {
+                    navigate("/auth/onboarding")
+                }
             }
         }  
     }
@@ -35,7 +42,7 @@ export const handleUserStatus = (status_g, data_g, store, navigate, location, se
             setGlobalData("authenticated", false)
             // if user is not logged in and not on auth pages, redirect to signin
             if (!location.pathname.startsWith("/auth")) {
-            navigate("/auth/signin")
+                navigate("/auth/signin")
             }
         }
     }

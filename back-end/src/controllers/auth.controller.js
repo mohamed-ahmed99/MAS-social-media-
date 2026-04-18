@@ -142,8 +142,22 @@ export const VerifyEmail = asyncHandler(async (req, res) => {
     })
     
     // response
-    const userData = {_id:user._id, role:user.role, status:user.account.status}
-    return res.status(200).json({ status:"success", message: "Verified successfully", data:{user:userData}});
+    const userData = {
+        _id:user._id, 
+        role:user.role, 
+        status:user.account.status,
+        email:user.contactInfo.email,
+        userName: `${user.personalInfo.firstName} ${user.personalInfo.lastName}`,
+        profilePicture: user.profilePicture || null,
+    }
+    return res.status(200).json({ 
+        status:"success", 
+        message: "Verified successfully", 
+        data:{
+            user:userData,
+            isOnboardingRouteOpend: user.others.isOnboardingRouteOpend
+        }
+    });
 })
 
 
@@ -236,12 +250,15 @@ export const VerifyMe = asyncHandler(async (req, res) =>{
         status:user.account.status, 
         email:user.contactInfo.email,
         userName: `${user.personalInfo.firstName} ${user.personalInfo.lastName}`,
-        profilePicture: user.profilePicture || null
+        profilePicture: user.profilePicture || null,
     };
     
     return res.status(200).json({
         status:"success", 
         message: "User verified successfully", 
-        data:{user: userData} 
+        data:{
+            user: userData,
+            isOnboardingRouteOpend: user.others.isOnboardingRouteOpend
+        } 
     });        
 })
