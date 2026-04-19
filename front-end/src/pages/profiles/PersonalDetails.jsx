@@ -1,23 +1,26 @@
 
 // icons
 import { FaPen } from "react-icons/fa";
-import { FiHome } from "react-icons/fi";
 import { MdOutlineCake } from "react-icons/md";
-import { TbHeartSpark } from "react-icons/tb";
-import { MdOutlineTaskAlt } from "react-icons/md";
 import { GrLocation } from "react-icons/gr";
+import { TbGenderBigender } from "react-icons/tb";
 
 
-export default function PersonalDetails({ edit=false}) {
+export default function PersonalDetails({ edit=false, userData, loading}) {
+
+
+    const AnimationOfLoading = () => {
+        return (
+            <div className="animate-pulse bg-gray-300 rounded-full w-full h-6"/>
+        )
+    }
 
     const ListComponets = [
-        {icon:<GrLocation/>, value:"lives in minya, Egypt"},
-        {icon:<FiHome/>, value:"from minya, Egypt"},
-        {icon:<MdOutlineTaskAlt/>, value:"works as Freelancer"},
-        {icon:<MdOutlineCake/>, value:"january 18, 2009"},
-        {icon:<TbHeartSpark/>, value:"single"},
+        {icon:<GrLocation/>, value: loading ? <AnimationOfLoading/> : userData?.address},
+        {icon:<TbGenderBigender/>, value: loading ? <AnimationOfLoading/> : userData?.gender},
+        {icon:<MdOutlineCake/>, value: loading ? <AnimationOfLoading/> : userData?.dateOfBirth},
     ]
-
+    
 
 
   return (
@@ -42,8 +45,8 @@ export default function PersonalDetails({ edit=false}) {
                     key={index} 
                     className="flex items-center gap-4 text-gray-700 hover:text-black transition-colors group cursor-pointer"
                 >
-                    <span className='text-2xl text-gray-500 group-hover:text-black transition-colors'>{item.icon}</span>
-                    <span className='font-medium'>{item.value}</span>
+                    {item.value && <span className='text-2xl text-gray-500 group-hover:text-black transition-colors'>{item.icon}</span>}
+                    <div className='font-medium w-full'>{item.value}</div>
                 </li>
             ))}
         </ul>

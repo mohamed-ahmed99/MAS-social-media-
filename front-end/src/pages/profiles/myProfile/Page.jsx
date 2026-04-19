@@ -79,6 +79,7 @@ export default function Page() {
                 userData={data_g?.user} 
                 edit={true} 
                 setCreatePost={setCreatePost}
+                loading={loading_g}
             />
         </div>
 
