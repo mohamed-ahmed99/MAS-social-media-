@@ -15,10 +15,14 @@ export default function PersonalDetails({ edit=false, userData, loading}) {
         )
     }
 
+    // handle date
+    const dateHandled = new Date(userData?.dateOfBirth)
+        .toLocaleDateString("en-US", {month: "long", day: "numeric", year: "numeric"})
+
     const ListComponets = [
         {icon:<GrLocation/>, value: loading ? <AnimationOfLoading/> : userData?.address},
         {icon:<TbGenderBigender/>, value: loading ? <AnimationOfLoading/> : userData?.gender},
-        {icon:<MdOutlineCake/>, value: loading ? <AnimationOfLoading/> : userData?.dateOfBirth},
+        {icon:<MdOutlineCake/>, value: loading ? <AnimationOfLoading/> : dateHandled},
     ]
     
 

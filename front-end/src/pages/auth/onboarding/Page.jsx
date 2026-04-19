@@ -53,9 +53,11 @@ const Page = () => {
   const totalSteps = steps.length; // get total steps
 
   // Redirect to first step if at root /auth/onboarding
-  if (location.pathname === '/auth/onboarding' || location.pathname === '/auth/onboarding/') {
-    return <Navigate to="profile" replace />;
-  }
+  useEffect(() => {
+    if (location.pathname === '/auth/onboarding' || location.pathname === '/auth/onboarding/') {
+      navigate(steps[0].path);
+    }
+  }, [location.pathname])
 
   // handle next step
   const handleNext = () => {
