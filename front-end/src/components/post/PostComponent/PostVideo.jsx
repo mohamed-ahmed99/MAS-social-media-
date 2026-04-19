@@ -30,7 +30,7 @@ export default function PostVideo({ url }) {
 
   // return video
   return (
-    <div className="w-full aspect-video rounded-xl overflow-hidden border border-gray-100">
+    <div className="w-full aspect-video overflow-hidden border border-gray-100">
       <iframe
         src={getEmbedUrl(url)}
         title="post-video"

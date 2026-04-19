@@ -40,7 +40,14 @@ export default function ProfileContent({ userData, edit, setCreatePost }) {
           {/* Posts Feed */}
           <div className="">
             <Posts 
-              userId={userData?._id} 
+              author={{
+                _id: userData?._id,
+                personalInfo: {
+                  firstName: userData?.personalInfo?.firstName,
+                  lastName: userData?.personalInfo?.lastName,
+                  profilePicture: userData?.personalInfo?.profilePicture
+                }
+              }}
               joinDate={userData?.createdAt} 
               setCreatePost={setCreatePost} 
               edit={edit}

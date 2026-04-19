@@ -11,22 +11,24 @@ import { useGetMethod } from "../../hooks/useGetMethod.js";
 
 
 
-export default function Posts({userId, joinDate, setCreatePost, edit}) {
-    const { getData, status_g, message_g, data_g, loading_g, action_g } = useGetMethod()
+export default function Posts({author, joinDate, setCreatePost, edit}) {
+    const { getData, data_g, loading_g } = useGetMethod()
     const [query, setQuery] = React.useState({limit: 20, page: 1})
 
     const [posts, setPosts] = React.useState([])
 
+    // get user name
+    const userName = `${author?.personalInfo?.firstName} ${author?.personalInfo?.lastName}`
     
 
     // get user posts
     React.useEffect(() => {
-        if (userId) {
-            getData(`/api/posts/get/user/${userId}?limit=${query.limit}&page=${query.page}`)
+        if (author?._id) {
+            getData(`/api/posts/get/user/${author._id}?limit=${query.limit}&page=${query.page}`)
         }else{
             console.log("no user id")
         }
-    }, [query.page, query.limit, userId])
+    }, [query.page, query.limit, author?._id])
 
     // set posts
     React.useEffect(() => {
@@ -35,7 +37,6 @@ export default function Posts({userId, joinDate, setCreatePost, edit}) {
         }
     }, [data_g?.posts])
 
-    console.log('posts', { status_g, message_g, data_g, loading_g, action_g })
   return (
     <div className='space-y-2'>
       {loading_g ? (
@@ -43,7 +44,7 @@ export default function Posts({userId, joinDate, setCreatePost, edit}) {
       ) : (
         <div className='space-y-1 lg:space-y-2'>
             {posts?.map((post) => (
-                <Post data={post} canEdit={true} key={post._id}/>
+                <Post data={{...post, author: author}} canEdit={true} key={post._id} userName={userName}/>
             ))}
         </div>
       )}

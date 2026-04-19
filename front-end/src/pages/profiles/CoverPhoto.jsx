@@ -22,8 +22,8 @@ export default function CoverPhoto({img, edit=false, loading=false}) {
                 className="w-full h-52 sm:h-64 object-cover  lg:rounded-b-xl "
             />
         ) : (
-            <div className="w-full h-52 sm:h-64 bg-gray-700/40 flex items-center justify-center lg:rounded-b-xl ">
-                <p className="text-gray-500">No cover photo</p>
+            <div className="w-full h-52  sm:h-64 bg-gray-700/40 flex items-center justify-center lg:rounded-b-xl ">
+                <p className="text-gray-500 -translate-y-6 lg:-translate-y-0">No cover photo</p>
             </div>
         )}
         

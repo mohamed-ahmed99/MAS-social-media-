@@ -6,7 +6,7 @@ import { AiFillLike } from "react-icons/ai";
 
 
 import { useState } from "react";
-import { useUserContext } from "../../hooks/useUserContext.jsx"
+import { useGlobalData } from "../../hooks/useStore.jsx";
 
 
 // post component
@@ -23,8 +23,7 @@ import Comments from "./PostComponent/commentComponents/Comments.jsx";
 
 
 export default function Post({ data, canEdit = false }) {
-    const { userData, serUserData } = useUserContext()
-
+    const [ user, setUser ] = useGlobalData()
     // states
     const [openComments, setOpenComments] = useState(false) // to open comments
     const [fullScreen, setFullScreen] = useState(false) // to handle full screen
@@ -77,10 +76,11 @@ export default function Post({ data, canEdit = false }) {
     const authorUsername = `${data?.author?.personalInfo?.firstName} ${data?.author?.personalInfo?.lastName}`
 
 
-    const route = data?.author?._id === userData?.user?._id ?
+    const route = data?.author?._id === user?.user?._id ?
         `/profile` :
         `/user/${(authorUsername.replaceAll(' ', '_')).replaceAll('-', '_')}-${data?.author?._id}`
 
+    console.log('post', data )
 
     return (
         <>
