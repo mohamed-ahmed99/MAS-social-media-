@@ -42,8 +42,9 @@ function OtherProfile() {
             <div className=" w-full lg:max-w-[900px] m-auto space-y-6 " >
               {/* cover photo */}
               <CoverPhoto 
-                img={'/cover.jpg'} 
+                img={data_g?.user?.personalInfo?.coverPicture}
                 edit={false}
+                loading={loading_g}
               />
     
               {/* profile card */}

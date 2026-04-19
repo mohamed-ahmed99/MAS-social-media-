@@ -2,14 +2,30 @@ import React from 'react'
 import {motion} from 'framer-motion'
 import { IoIosCamera } from "react-icons/io";
 
-export default function CoverPhoto({img, edit=false}) {
+export default function CoverPhoto({img, edit=false, loading=false}) {
+
+    // loading state
+    if(loading){
+        return (
+           <div className="w-full h-52 sm:h-64 bg-gray-500/40 lg:rounded-b-xl ">
+                <div className="w-full h-full bg-gray-300 animate-pulse lg:rounded-b-xl"></div>
+            </div>
+        )
+    }
+
+
   return (
     <div className="relative">
-
-        <img 
-            src={img} alt="Cover"
-            className="w-full h-52 sm:h-64 object-cover  lg:rounded-b-xl "
-        />
+        {img ? (
+            <img 
+                src={img} alt="Cover"
+                className="w-full h-52 sm:h-64 object-cover  lg:rounded-b-xl "
+            />
+        ) : (
+            <div className="w-full h-52 sm:h-64 bg-gray-700/40 flex items-center justify-center lg:rounded-b-xl ">
+                <p className="text-gray-500">No cover photo</p>
+            </div>
+        )}
         
         {edit &&
             <motion.button 

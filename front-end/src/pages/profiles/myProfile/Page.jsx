@@ -53,8 +53,9 @@ export default function Page() {
         <div className=" w-full lg:max-w-[900px] m-auto space-y-6 " >
           {/* cover photo */}
           <CoverPhoto 
-            img={'/cover.jpg'} 
             edit={true}
+            img={data_g?.user?.personalInfo?.coverPicture}
+            loading={loading_g}
           />
 
           {/* profile card */}

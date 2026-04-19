@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Outlet, useNavigate, useLocation, Navigate } from 'react-router-dom';
 import ProfilePreview from './components/ProfilePreview';
 import Progress from './Progress';
 import NavigationControls from './NavigationControls';
+import { usePathMethod } from '../../../hooks/usePatchMethod';
 
 // avatars https://api.dicebear.com
 const avatars = [
@@ -29,7 +30,8 @@ const Page = () => {
   // hooks
   const navigate = useNavigate();
   const location = useLocation();
-  
+  const {editData, status_e, message_e, data_e, loading_e} = usePathMethod()
+
   // states
   const [formData, setFormData] = useState({
     profileImage: '',
@@ -81,6 +83,31 @@ const Page = () => {
     exit: { opacity: 0, x: -20 },
   };
 
+
+  // handle submit
+  const handleSubmit = async () => {
+    const body = {
+      personalInfo: {
+        profilePicture: formData.profileImage,
+        coverPicture: formData.coverImage,
+        bio: formData.bio,
+        dateOfBirth: formData.dateOfBirth,
+      },
+      others: {isOnboardingRouteOpend: true}
+    }
+    await editData("/api/users/me/update", body)
+  }
+  
+  // handle success
+  useEffect(() => {
+    if(status_e === "success"){
+      navigate("/")
+    }else if(status_e === "fail"){
+      alert(message_e)
+      navigate("/")
+    }
+  }, [status_e])
+
   // return
   return (
     <div className="min-h-[calc(100vh-80px)] bg-[#f5f5f5] flex items-center justify-center p-4 md:p-8 font-sans mt-[70px] md:mt-[100px]">
@@ -112,6 +139,7 @@ const Page = () => {
             totalSteps={totalSteps} 
             handleNext={handleNext} 
             handleBack={handleBack} 
+            handleSubmit={handleSubmit}
           />
         </div>
 

@@ -21,7 +21,7 @@ export default function ProfileCard({ setCreatePost, edit, userData }) {
                 {/*profile photo */}
                 <div className="relative lg:w-[180px] lg:h-[180px] w-[140px] h-[140px] shrink-0 bg-blue-600 rounded-full border-[3px] border-white ">
                     <CircularImage
-                        src={'/user.jpg'}
+                        src={userData?.personalInfo?.profilePicture}
                         firstName={userData?.personalInfo?.firstName}
                         lastName={userData?.personalInfo?.lastName}
                         fontSize={100}

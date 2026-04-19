@@ -1,7 +1,7 @@
 import { HiArrowRight, HiArrowLeft, HiCheck } from 'react-icons/hi';
 import GeneralBtn from '../../../components/btns/GeneralBtn';
 
-const NavigationControls = ({ step, totalSteps, handleNext, handleBack }) => {
+const NavigationControls = ({ step, totalSteps, handleNext, handleBack, handleSubmit }) => {
   return (
     <div className="flex items-center justify-between mt-12 pt-8 border-t border-gray-50">
             <button
@@ -40,7 +40,7 @@ const NavigationControls = ({ step, totalSteps, handleNext, handleBack }) => {
               ) : (
                 <div className="w-40">
                   <GeneralBtn
-                    onClick={() => alert('Onboarding Finished!')}
+                    onClick={handleSubmit}
                     variant="black"
                     className="bg-black text-white !p-2 text-sm h-11"
                   >
