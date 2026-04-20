@@ -1,13 +1,14 @@
 import { Router } from "express";
-import { makeRelationship, toMe, acceptFriend, fromMe, deleteRelationship} from "../controllers/relationship.controller.js"; 
+import { toMe, acceptFriend, fromMe, deleteRelationship} from "../controllers/relationship.controller.js"; 
 import { verifyToken } from "../middlewares/verifyToken.js";
+import buildRelationship from "../controllers/relationships/buildRelationship.js"
 
 const relationshipsRouter = Router();
 
 
 
 // build a relationship
-relationshipsRouter.post("/relationship/build", verifyToken("MASproAuth"), makeRelationship)
+relationshipsRouter.post("/relationship/build", verifyToken("MASproAuth"), buildRelationship)
 
 
 

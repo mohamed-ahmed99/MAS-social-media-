@@ -4,7 +4,7 @@ import { createNotification } from '../notifications/notifications.controller.js
 import {NOTIFICATIONT_TYPE} from '../../config/constants.js'
 import Users from '../../models/user.model.js'
 
-export const makeRelationship = asyncHandler(async (req, res) => {
+const buildRelationship = asyncHandler(async (req, res) => {
     const to = req.body.to
     const from = req.decoded._id
     const {type} = req.query
@@ -55,3 +55,4 @@ export const makeRelationship = asyncHandler(async (req, res) => {
     
 })
 
+export default buildRelationship
