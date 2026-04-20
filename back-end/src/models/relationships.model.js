@@ -22,7 +22,7 @@ const relationsSchema = new mongoose.Schema({
     },
     status:{
         type:String,
-        enum:["pending", "accepted", "rejected", "none"],
+        enum:["pending", "accepted", "rejected", "deleted", "none"],
         default:"none"
     },
     

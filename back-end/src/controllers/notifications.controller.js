@@ -1,26 +1,35 @@
 import {asyncHandler} from '../middlewares/asyncHandler.js'
 import Notifications from '../models/notifications.model.js'
+import {NOTIFICATIONT_TYPE} from '../config/constants.js'
 
 
 
 export const createNotification = async (data) => {
-    console.log(data)
-    const { to, from, title, type, fromName } = data
+    const { to, from, type, fromName } = data
 
-    if (!to || !from || !type || !title) {
+    // handle error
+    if (!to || !from || !type || !fromName) {
         throw new Error("Notification will not be sent to user")
     }
 
-    // 
-    const checkNotifications = await Notifications.findOne({ to, type, isRead: false })
-    if (checkNotifications) {
+    // check if notification is already created
+    const checkNotifications = await Notifications.find({ to, type, isRead: false }).sort({createdAt:-1})
+    
+    // set title
+    let title = ""
+    if (type == NOTIFICATIONT_TYPE.FRIEND_REQUEST) title = `${fromName} and ${checkNotifications.length} others sent you a friend request`
+    else if (type == NOTIFICATIONT_TYPE.FOLLOW) title = `${fromName} and ${checkNotifications.length} others started following you`
+    
+    // if notification is already created
+    if (checkNotifications.length > 0) {
+
         await Notifications.updateOne(
             { to, type, isRead: false },
-            { title: `${fromName} and others sent you a friend request` }
-        )
+            { title }
+        ).sort({createdAt:-1})
     }
     else {
-        await Notifications.create(data)
+        await Notifications.create({to, from, type, title})
     }
 }
 

@@ -8,7 +8,7 @@ const relationshipsRouter = Router();
 
 
 // build a relationship
-relationshipsRouter.post("/relationship/build", verifyToken("MASproAuth"), buildRelationship)
+relationshipsRouter.post("/relationship/build/:targetUserId", verifyToken("MASproAuth"), buildRelationship)
 
 
 

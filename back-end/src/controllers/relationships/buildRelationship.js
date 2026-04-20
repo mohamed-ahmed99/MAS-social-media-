@@ -4,54 +4,73 @@ import { createNotification } from '../notifications.controller.js'
 import {NOTIFICATIONT_TYPE} from '../../config/constants.js'
 import Users from '../../models/user.model.js'
 
+
+// build a relationship
+/*
+   1- check if to and type are provided
+   2- check if the relationship is created before 
+   3- set status
+   4- create relationship
+   5- create a notification
+   6- response 
+*/ 
 const buildRelationship = asyncHandler(async (req, res) => {
-    const to = req.body.to
-    const from = req.decoded._id
-    const {type} = req.query
 
+    // from , to , type
+    const from = req.user._id
+    const to = req.params.targetUserId
+    const {type} = req.body
+
+    // check if to and type are provided
     if(!to || !type){
-        return res.status(400).json({status:"fail", message:"'to' or 'type' is required in query.", data:null})
+        return res.status(400).json({status:"fail", message:"'to' or 'type' is required in query."})
     }
 
-    // users can't make a relationship with them selves
+    // users can't make a relationship with themselves
     if(to == from.toString()){
-        return res.status(400).json({status:"fail", message:"you can't make a relationship with your self", data:null})
+        return res.status(400).json({status:"fail", message:"you can't make a relationship with yourself"})
     }
 
-    // check if the relation ship is created before 
-    const relationship = await Relationships.find({from, to, type})
+    // check if the relationship is created before 
+    const relationship = await Relationships.findOne({
+        $or: [
+            { from, to, type },
+            { from: to, to: from, type }
+        ]
+    })
 
-    if(relationship.length > 0){
-        return res.status(409).json({status:"fail", message:"you have done this process before", data:null})
+    // if relationship is found
+    if(relationship){
+        return res.status(409).json({status:"fail", message:"relationship already exists"})
     }
 
+    // set status
     let status;
     if(type == "friend") status = "pending"
-    else status = null
+    else status = 'none'
 
     // create relationship
     await Relationships.create({from, to, type, status})
 
     // create a notification
-    const me = await Users.findById(from).select("personalInfo.firstName personalInfo.lastName")
+    const me = await Users.findOne({_id: from})
+    console.log(from)
+    console.log(me)
     const userName = `${me.personalInfo.firstName} ${me.personalInfo.lastName}` // userName
     
-    // Type of notification and title
+    // Type of notification
     let notificationType;
-    let notificationMessage;
     if (type == "friend"){
         notificationType = NOTIFICATIONT_TYPE.FRIEND_REQUEST
-        notificationMessage = `${userName} sent you a Friend request`
     }
     else if (type == "follow"){
         notificationType = NOTIFICATIONT_TYPE.FOLLOW
-        notificationMessage = `${userName} started following you`
     }
-    // notification    
-    await createNotification({from, to, type:notificationType,title: notificationMessage, fromName:userName})
+    // create notification    
+    await createNotification({from, to, type:notificationType, fromName:userName})
 
     // response 
-    res.status(201).json({status:"success", message:"friend request sended successfully", data:null})
+    res.status(201).json({status:"success", message:"relationship created successfully"})
     
 })
 
