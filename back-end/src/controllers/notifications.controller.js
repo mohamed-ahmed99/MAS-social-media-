@@ -4,6 +4,12 @@ import {NOTIFICATIONT_TYPE} from '../config/constants.js'
 
 
 
+// generate title
+const generateTitle = (fromName, othersCount, message) => {
+    const others = othersCount === 0 ? "" : othersCount === 1 ? "one other" : `${othersCount} others`
+    return `${fromName} ${others} ${message}`
+}
+
 export const createNotification = async (data) => {
     const { to, from, type, fromName } = data
 
@@ -17,16 +23,17 @@ export const createNotification = async (data) => {
     
     // set title
     let title = ""
-    if (type == NOTIFICATIONT_TYPE.FRIEND_REQUEST) title = `${fromName} and ${checkNotifications.length} others sent you a friend request`
-    else if (type == NOTIFICATIONT_TYPE.FOLLOW) title = `${fromName} and ${checkNotifications.length} others started following you`
+    if (type == NOTIFICATIONT_TYPE.FRIEND_REQUEST) title = generateTitle(fromName, checkNotifications.length, "sent you a friend request")
+    else if (type == NOTIFICATIONT_TYPE.FOLLOW) title = generateTitle(fromName, checkNotifications.length, "started following you")
+    else if (type == NOTIFICATIONT_TYPE.ACCEPT_FRIEND_REQUEST) title = generateTitle(fromName, checkNotifications.length, "accepted your friend request")
     
     // if notification is already created
     if (checkNotifications.length > 0) {
-
-        await Notifications.updateOne(
+        await Notifications.findOneAndUpdate(
             { to, type, isRead: false },
-            { title }
-        ).sort({createdAt:-1})
+            { title },
+            {sort: {createdAt: -1}}
+        )
     }
     else {
         await Notifications.create({to, from, type, title})
@@ -82,6 +89,3 @@ export const deleteNotification = async (data) => {
     }
     await Notifications.findOneAndDelete(filter)
 }
-
-
-

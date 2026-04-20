@@ -1,7 +1,8 @@
 import { Router } from "express";
-import { toMe, acceptFriend, fromMe, deleteRelationship} from "../controllers/relationship.controller.js"; 
+import { toMe, fromMe, deleteRelationship} from "../controllers/relationship.controller.js"; 
 import { verifyToken } from "../middlewares/verifyToken.js";
 import buildRelationship from "../controllers/relationships/buildRelationship.js"
+import acceptFriendRequest from "../controllers/relationships/acceptFriendRequest.js"
 
 const relationshipsRouter = Router();
 
@@ -10,12 +11,16 @@ const relationshipsRouter = Router();
 // build a relationship
 relationshipsRouter.post("/relationship/build/:targetUserId", verifyToken("MASproAuth"), buildRelationship)
 
+// accept friend request
+relationshipsRouter.patch(
+    "/relationship/accept-friend-request/:fromUserId", 
+    verifyToken("MASproAuth"), 
+    acceptFriendRequest
+)
 
 
 relationshipsRouter.get("/relationship/users", verifyToken("MASproAuth"), toMe)
-relationshipsRouter.patch("/relationship/accept-friend", verifyToken("MASproAuth"), acceptFriend)
 relationshipsRouter.get("/relationship/me", verifyToken("MASproAuth"), fromMe)
-
 relationshipsRouter.delete("/relationship/me/:targetUserId", verifyToken("MASproAuth"), deleteRelationship)
 
 

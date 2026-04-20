@@ -33,7 +33,7 @@ relationsSchema.index({ to: 1, type: 1, status: 1, createdAt: -1 })
 
 relationsSchema.index({ from: 1, to: 1 })
 relationsSchema.index({ to: 1, from: 1 })
-relationsSchema.index({ from: 1, to: 1, type: 1 }, { unique: true })
+relationsSchema.index({ from: 1, to: 1, type: 1, createdAt: -1 }, { unique: true })
 
 relationsSchema.index({ from: 1, createdAt: -1 })
 

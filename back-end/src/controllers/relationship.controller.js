@@ -28,44 +28,6 @@ export const toMe = asyncHandler(async (req, res) => {
 
 
 // 
-export const acceptFriend = asyncHandler(async (req, res) => {
-    const { from } = req.query
-    if (!from) {
-        return res.status(400).json({ status: "fail", message: "'from' is required in query.", data: null })
-    }
-
-    const relationship = await Relationships.findOne({ from, to: req.decoded._id, type: 'friend' })
-
-    if (!relationship) {
-        return res.status(400).json({ status: "fail", message: "relationship not found", data: null })
-    }
-
-    if (relationship.status === "accepted") {
-        return res.status(400).json({ status: "fail", message: "friend request has been accepted before ", data: null })
-    }
-
-    relationship.status = 'accepted'
-    await relationship.save()
-
-
-    // create notification 
-    const me = await Users.findById(req.decoded._id).select("personalInfo.firstName personalInfo.lastName")
-    const userName = `${me.personalInfo.firstName} ${me.personalInfo.lastName}` // userName
-
-    await createNotification({
-        from: req.decoded._id, to: from,
-        type: NOTIFICATIONT_TYPE.ACCEPT_FRIEND_REQUEST,
-        title: `${userName} accepted your Friend request`,
-        fromName: userName
-    })
-
-    return res.status(200).json({ status: "success", message: "accepted successfully ", data: null })
-
-})
-
-
-
-// 
 export const fromMe = asyncHandler(async (req, res) => {
     const { type, limit, page, status } = req.query
 
