@@ -89,14 +89,25 @@ const Page = () => {
   // handle submit
   const handleSubmit = async () => {
     const body = {
-      personalInfo: {
-        profilePicture: formData.profileImage,
-        coverPicture: formData.coverImage,
-        bio: formData.bio,
-        dateOfBirth: formData.dateOfBirth,
-      },
+      personalInfo: {},
       others: {isOnboardingRouteOpend: true}
     }
+
+    // add only if not empty
+    if(formData.profileImage){
+      body.personalInfo.profilePicture = formData.profileImage
+    }
+    if(formData.coverImage){
+      body.personalInfo.coverPicture = formData.coverImage
+    }
+    if(formData.bio){
+      body.personalInfo.bio = formData.bio
+    }
+    if(formData.dateOfBirth){
+      body.personalInfo.dateOfBirth = formData.dateOfBirth
+    }
+
+    // send request
     await editData("/api/users/me/update", body)
   }
   

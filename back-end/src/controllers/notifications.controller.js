@@ -1,75 +1,75 @@
-import wrapperMD from '../middlewares/wrapperMD.js'
+import {asyncHandler} from '../middlewares/asyncHandler.js'
 import Notifications from '../models/notifications.model.js'
 
 
 
 export const createNotification = async (data) => {
     console.log(data)
-    const {to, from, title, type, fromName} = data
+    const { to, from, title, type, fromName } = data
 
-    if (!to || !from || !type || !title){
+    if (!to || !from || !type || !title) {
         throw new Error("Notification will not be sent to user")
     }
 
     // 
-    const checkNotifications = await Notifications.findOne({to, type, isRead:false})
-    if(checkNotifications){
+    const checkNotifications = await Notifications.findOne({ to, type, isRead: false })
+    if (checkNotifications) {
         await Notifications.updateOne(
-            {to, type, isRead:false}, 
-            {title:`${fromName} and others sent you a friend request`}
+            { to, type, isRead: false },
+            { title: `${fromName} and others sent you a friend request` }
         )
     }
-    else{
+    else {
         await Notifications.create(data)
     }
 }
 
 
 //////// get notifications
-export const getNotifications = wrapperMD( async (req, res) => {
-    const {limit, page} = req.query
-    if(!limit || !page){
-        return res.status(400).json({status:"fail", message:"limit and page are required", data:null})
+export const getNotifications = asyncHandler(async (req, res) => {
+    const { limit, page } = req.query
+    if (!limit || !page) {
+        return res.status(400).json({ status: "fail", message: "limit and page are required", data: null })
     }
-    
+
 
     //
-    const notifications = await Notifications.find({to:req.decoded._id}).sort({createdAt:-1})
-        .limit(limit).skip((page-1) * limit).populate('from', "personalInfo.firstName personalInfo.lastName")
+    const notifications = await Notifications.find({ to: req.decoded._id }).sort({ createdAt: -1 })
+        .limit(limit).skip((page - 1) * limit).populate('from', "personalInfo.firstName personalInfo.lastName")
 
     const notRead = notifications.filter(n => (!n.isRead)).map(n => (n._id))
     console.log(notRead)
-    
-    if(notRead.length > 0){
+
+    if (notRead.length > 0) {
         await Notifications.updateMany(
-            {_id: {$in: notRead}},
-            {$set: {isRead: true}},
+            { _id: { $in: notRead } },
+            { $set: { isRead: true } },
         )
     }
 
 
     return res.status(200).send({
-        status:"success",
-        message:"",
-        data:{
-            notificationLength:notifications.length,
-            notifications, 
+        status: "success",
+        message: "",
+        data: {
+            notificationLength: notifications.length,
+            notifications,
         }
     })
 })
 
 
 export const deleteNotification = async (data) => {
-    const {to, from} = data
-    if (!to || !from){
+    const { to, from } = data
+    if (!to || !from) {
         throw new Error("Notification will not be deleted")
     }
-    
+
     const filter = {
-        $or:[
-            {from, to},
-            {from:to, to: from}
-        ]            
+        $or: [
+            { from, to },
+            { from: to, to: from }
+        ]
     }
     await Notifications.findOneAndDelete(filter)
 }

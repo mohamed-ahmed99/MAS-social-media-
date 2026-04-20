@@ -1,11 +1,10 @@
-import wrapperMD from '../middlewares/wrapperMD.js'
-import Users from '../models/user.schema.js';
-import Relationships from '../models/relationships.schema.js';
-import { asyncHandler } from '../middlewares/wrapperMD.js';
+import Users from '../models/user.model.js';
+import Relationships from '../models/relationships.model.js';
+import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { ACCOUNT_STATUS } from '../config/constants.js';
 
 // get keys of user posts
-export const getUserKey = wrapperMD(async (req, res) => {
+export const getUserKey = asyncHandler(async (req, res) => {
     const { key } = req.query;
     if (!key) {
         return res.status(400).json({ status: "fail", message: "Key is required" })
@@ -27,7 +26,7 @@ export const getUserKey = wrapperMD(async (req, res) => {
 
 
 // get users 
-export const getUsers = wrapperMD(async (req, res) => {
+export const getUsers = asyncHandler(async (req, res) => {
     const { page = 1, limit = 20 } = req.query;
     const skip = (page - 1) * limit;
 
@@ -39,7 +38,7 @@ export const getUsers = wrapperMD(async (req, res) => {
 })
 
 
-export const suggestFriends = wrapperMD(async (req, res) => {
+export const suggestFriends = asyncHandler(async (req, res) => {
     const { limit, page } = req.query
     const skip = (page - 1) * limit
 
@@ -65,7 +64,7 @@ export const suggestFriends = wrapperMD(async (req, res) => {
 })
 
 
-export const getUser = wrapperMD(async (req, res) => {
+export const getUser = asyncHandler(async (req, res) => {
     const { userId } = req.params // this is the id of the user I want to get
 
     // check if id is valid

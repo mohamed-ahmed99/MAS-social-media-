@@ -1,9 +1,8 @@
-import wrapperMD from "../middlewares/wrapperMD.js"
-import Posts from "../models/post.schema.js"
-import { asyncHandler } from "../middlewares/wrapperMD.js"
-import Users from "../models/user.schema.js"
+import Posts from "../models/post.model.js"
+import { asyncHandler } from "../middlewares/asyncHandler.js"
+import Users from "../models/user.model.js"
 import { ACCOUNT_STATUS } from "../config/constants.js"
-import Relationships from "../models/relationships.schema.js"
+import Relationships from "../models/relationships.model.js"
 
 
 /*

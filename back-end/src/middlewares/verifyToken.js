@@ -1,12 +1,12 @@
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 import Sessions from '../models/userSessions.model.js'
+import { asyncHandler } from './asyncHandler.js'
 
 dotenv.config()
 
 
-export const verifyToken = (cookieName, ...allowedRoles) => (async(req, res, next) => {
-    console.log(req.cookies)
+export const verifyToken = (cookieName, ...allowedRoles) => asyncHandler(async(req, res, next) => {
     // get token
     const token = req.cookies[cookieName]
     if(!token) {

@@ -4,6 +4,7 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import mongoose from 'mongoose'
 
+
 // routes
 import authRoutes from './routes/auth.routes.js'
 import postRoute from './routes/post.routes.js'

@@ -1,18 +1,21 @@
 import { Router } from "express";
-import { checkAuth } from "../middlewares/checkAuth.js";
 import { makeRelationship, toMe, acceptFriend, fromMe, deleteRelationship} from "../controllers/relationship.controller.js"; 
-
+import { verifyToken } from "../middlewares/verifyToken.js";
 
 const relationshipsRouter = Router();
 
 
 
-relationshipsRouter.post("/relationship", checkAuth(), makeRelationship)
-relationshipsRouter.get("/relationship/users", checkAuth(), toMe)
-relationshipsRouter.patch("/relationship/accept-friend", checkAuth(), acceptFriend)
-relationshipsRouter.get("/relationship/me", checkAuth(), fromMe)
+// build a relationship
+relationshipsRouter.post("/relationship/build", verifyToken("MASproAuth"), makeRelationship)
 
-relationshipsRouter.delete("/relationship/me/:targetUserId", checkAuth(), deleteRelationship)
+
+
+relationshipsRouter.get("/relationship/users", verifyToken("MASproAuth"), toMe)
+relationshipsRouter.patch("/relationship/accept-friend", verifyToken("MASproAuth"), acceptFriend)
+relationshipsRouter.get("/relationship/me", verifyToken("MASproAuth"), fromMe)
+
+relationshipsRouter.delete("/relationship/me/:targetUserId", verifyToken("MASproAuth"), deleteRelationship)
 
 
 export default relationshipsRouter;
