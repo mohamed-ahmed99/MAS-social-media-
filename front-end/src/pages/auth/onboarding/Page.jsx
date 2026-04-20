@@ -123,7 +123,7 @@ const Page = () => {
 
   // return
   return (
-    <div className="min-h-[calc(100vh-80px)] bg-[#f5f5f5] flex items-center justify-center p-4 md:p-8 font-sans mt-[70px] md:mt-[100px]">
+    <div className="min-h-[calc(100vh-72px)] bg-[#f5f5f5] flex items-center justify-center p-4 md:p-8 font-sans mt-[72px]">
       <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
         
         {/* Left Side: Form Content */}

@@ -19,7 +19,9 @@ export default function CreatePostBox({setCreatePost}) {
         </button>
 
         {/* photo post icon */}
-        <button className="p-2 rounded-xl hover:bg-gray-200 transition-colors">
+        <button 
+          onClick={() => setCreatePost(true)}
+          className="p-2 rounded-xl hover:bg-gray-200 transition-colors">
             <BsImages fontSize={25}/>
         </button>
     </div>

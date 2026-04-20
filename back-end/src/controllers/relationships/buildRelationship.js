@@ -1,6 +1,6 @@
-import {asyncHandler} from '../../middlewares/wrapperMD.js'
+import {asyncHandler} from '../../middlewares/asyncHandler.js'
 import Relationships from '../../models/relationships.model.js'
-import { createNotification } from '../notifications/notifications.controller.js'
+import { createNotification } from '../notifications.controller.js'
 import {NOTIFICATIONT_TYPE} from '../../config/constants.js'
 import Users from '../../models/user.model.js'
 

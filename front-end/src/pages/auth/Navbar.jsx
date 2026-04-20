@@ -15,7 +15,7 @@ export default function Navbar() {
             setLink({text:"Sign In", path:"/auth/signin"})
         }else if(location.pathname === "/auth/signin") {
             setLink({text:"Sign Up", path:"/auth/signup"})
-        }else if(location.pathname === "/auth/onboarding") {
+        }else if(location.pathname.includes("/onboarding")) {
             setLink({text:"Skip", path:"/"})
         }else{
             setLink({text:"Sign In", path:"/auth/signin"})
