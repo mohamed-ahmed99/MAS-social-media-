@@ -1,7 +1,7 @@
 import {asyncHandler} from '../../middlewares/asyncHandler.js'
 import Relationships from '../../models/relationships.model.js'
 import createNotification from '../notifications/createNotification.js'
-import {NOTIFICATIONT_TYPE} from '../../config/constants.js'
+import {NOTIFICATION_TYPE} from '../../config/constants.js'
 import Users from '../../models/user.model.js'
 
     
@@ -61,10 +61,10 @@ const buildRelationship = asyncHandler(async (req, res) => {
     // Type of notification
     let notificationType;
     if (type == "friend"){
-        notificationType = NOTIFICATIONT_TYPE.FRIEND_REQUEST
+        notificationType = NOTIFICATION_TYPE.FRIEND_REQUEST
     }
     else if (type == "follow"){
-        notificationType = NOTIFICATIONT_TYPE.FOLLOW
+        notificationType = NOTIFICATION_TYPE.FOLLOW
     }
     // create notification    
     await createNotification({from, to, type:notificationType, fromName:userName})

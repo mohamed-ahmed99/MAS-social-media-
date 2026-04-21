@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { deleteRelationship} from "../controllers/relationship.controller.js"; 
 import { verifyToken } from "../middlewares/verifyToken.js";
 import buildRelationship from "../controllers/relationships/buildRelationship.js"
 import acceptFriendRequest from "../controllers/relationships/acceptFriendRequest.js"
 import getRelationsToMe from "../controllers/relationships/getRelationsToMe.js"
 import getRelationsFromMe from "../controllers/relationships/getRelationsFromMe.js"
+import deleteRealtionship from "../controllers/relationships/deleteRealtionship.js"
 
 const relationshipsRouter = Router();
 
@@ -27,7 +27,7 @@ relationshipsRouter.get("/relationship/to-me", verifyToken("MASproAuth"), getRel
 relationshipsRouter.get("/relationship/from-me", verifyToken("MASproAuth"), getRelationsFromMe)
 
 
-relationshipsRouter.delete("/relationship/me/:targetUserId", verifyToken("MASproAuth"), deleteRelationship)
+relationshipsRouter.delete("/relationship/delete/:targetUserId", verifyToken("MASproAuth"), deleteRealtionship)
 
 
 export default relationshipsRouter;

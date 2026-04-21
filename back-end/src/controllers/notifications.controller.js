@@ -1,6 +1,6 @@
 import {asyncHandler} from '../middlewares/asyncHandler.js'
 import Notifications from '../models/notifications.model.js'
-import {NOTIFICATIONT_TYPE} from '../config/constants.js'
+import {NOTIFICATION_TYPE} from '../config/constants.js'
 
 
 

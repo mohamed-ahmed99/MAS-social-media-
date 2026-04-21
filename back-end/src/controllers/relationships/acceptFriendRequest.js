@@ -1,6 +1,6 @@
 import Relationships from '../../models/relationships.model.js'
 import createNotification from '../notifications/createNotification.js'
-import { NOTIFICATIONT_TYPE } from '../../config/constants.js'
+import { NOTIFICATION_TYPE } from '../../config/constants.js'
 import Users from '../../models/user.model.js'
 import { asyncHandler } from '../../middlewares/asyncHandler.js'
 
@@ -40,7 +40,7 @@ const acceptFriendRequest = asyncHandler(async (req, res) => {
     await createNotification({
         from: req.user._id, 
         to: from,
-        type: NOTIFICATIONT_TYPE.ACCEPT_FRIEND_REQUEST,
+        type: NOTIFICATION_TYPE.ACCEPT_FRIEND_REQUEST,
         fromName: userName
     })
 
