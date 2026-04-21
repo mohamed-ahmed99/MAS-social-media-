@@ -1,10 +1,18 @@
 import Relationships from '../../models/relationships.model.js'
-import { createNotification } from '../notifications.controller.js'
+import createNotification from '../notifications/createNotification.js'
 import { NOTIFICATIONT_TYPE } from '../../config/constants.js'
 import Users from '../../models/user.model.js'
 import { asyncHandler } from '../../middlewares/asyncHandler.js'
 
 
+/*
+    1- check if from is provided
+    2- check if relationship is found
+    3- check if relationship is already accepted
+    4- update relationship status
+    5- create notification
+    6- response
+*/
 const acceptFriendRequest = asyncHandler(async (req, res) => {
     const from = req.params.fromUserId
     if (!from) {
