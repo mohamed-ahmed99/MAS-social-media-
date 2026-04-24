@@ -80,8 +80,6 @@ export default function Post({ data, canEdit = false }) {
         `/profile` :
         `/user/${(authorUsername.replaceAll(' ', '_')).replaceAll('-', '_')}-${data?.author?._id}`
 
-    console.log('post', data )
-
     return (
         <>
 

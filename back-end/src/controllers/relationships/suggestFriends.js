@@ -35,7 +35,7 @@ const suggestFriends = asyncHandler(async (req, res) => {
 
     // get user that not my friends
     const suggestions = await Users
-        .find({ _id: { '$nin': friendsIDs } })
+        .find({ _id: { '$nin': friendsIDs }, "account.status": "Active" })
         .select("personalInfo.firstName personalInfo.lastName personalInfo.profilePicture _id")
         .sort({ createdAt: -1 })
         .skip(skip)

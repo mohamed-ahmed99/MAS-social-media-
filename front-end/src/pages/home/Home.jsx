@@ -42,8 +42,6 @@ export default memo( function Home () {
         }
     },[data_g])
     
-    console.log(allPosts)
-
 
     return(
         <div className='flex justify-center md:justify-end xl:justify-center w-full  '>

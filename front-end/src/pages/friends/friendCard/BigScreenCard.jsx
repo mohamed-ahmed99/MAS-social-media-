@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import CircularImage from '../../../components/CircularImage.jsx'
 
 
 export default function BigScreenCard({ 
@@ -14,11 +15,13 @@ export default function BigScreenCard({
       className='max-w-[250px] grow overflow-hidden flex flex-col gap-2 bg-white rounded-md' >
 
       {/* img */}
-      <div className='w-full h-[200px]'>
-        <img
-          src={`/user.jpg`}
-          alt="friend-img"
-          className='w-full h-[200px] object-cover'
+      <div className='w-full h-[200px] rounded-none'>
+        <CircularImage
+          src={userData?.profilePicture}
+          alt=""
+          className="rounded-none border-none"
+          fontSize={50}
+          firstName={userName}
         />
 
       </div>

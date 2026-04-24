@@ -23,7 +23,9 @@ export default function FriendCards({ userData, blueBtn, grayBtn }) {
   const [screenWidth, setScreenWidth] = React.useState(window.innerWidth); // screen width
 
   // user name
-  const userName = userData?.personalInfo ? `${userData.personalInfo.firstName} ${userData.personalInfo.lastName}` : "Unknown User"
+  const userName = userData.firstName && userData.lastName
+    ? `${userData.firstName} ${userData.lastName}`
+    : "Unknown User"
 
 
   // resize event

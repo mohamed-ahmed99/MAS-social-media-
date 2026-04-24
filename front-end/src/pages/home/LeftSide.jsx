@@ -5,25 +5,37 @@ import { MdAccessTimeFilled } from "react-icons/md";
 import {motion} from 'framer-motion'
 import { useEffect, useState } from 'react';
 import CircularImage from '../../components/CircularImage';
+import { useGlobalData } from '../../hooks/useStore';
+
+
 
 
 export default function LeftSide() {
   const [scroll, setScroll] = useState(false)
+  const [ user ] = useGlobalData("user")
+  console.log('useeeeeeeeeeeeeeeeer', user)
 
-useEffect(() => {
-  const handleScroll = () => {
-    if(window.scrollY > 10) setScroll(true)
-    else setScroll(false)
-  };
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 10) setScroll(true)
+      else setScroll(false)
+    };
 
   window.addEventListener("scroll", handleScroll);
   return () => window.removeEventListener("scroll", handleScroll);
 }, []);
 
-
+  const userImage = <CircularImage 
+    src={user?.profilePicture} 
+    alt="user" 
+    size={36} 
+    firstName={user?.personalInfo?.firstName} 
+    lastName={user?.personalInfo?.lastName} 
+    className="rounded-full"
+  />
 
   const linkComponents = [
-    {icon:<CircularImage src="./user.jpg" alt="user" size={36} firstName="M" lastName="A" />, text:"user name", href:"/profile"},
+    {icon: userImage, text:user?.userName, href:"/profile"},
     {icon:<FaUserFriends fontSize={25}/>, text:"best friends", href:"/friends"},
     {icon:<FaBookmark fontSize={25}/>, text:"saved", href:"/saved"},
     {icon:<MdAccessTimeFilled fontSize={25}/>, text:"memories", href:"/memories"},

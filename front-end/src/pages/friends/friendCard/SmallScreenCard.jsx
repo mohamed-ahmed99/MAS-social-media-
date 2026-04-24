@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
+import CircularImage from '../../../components/CircularImage.jsx'
 
 
 export default function SmallScreenCard({ 
@@ -11,12 +12,19 @@ export default function SmallScreenCard({
   status_d,
 }) {
   return (
-    <div className='col-span-3 shadow w-full flex items-center gap-4 bg-white rounded-md p-2 max-w-full overflow-hidden'
+    <Link className='col-span-3 shadow w-full flex items-center gap-4 bg-white rounded-md p-2 max-w-full overflow-hidden'
       to={`/user/${(userName.replaceAll(" ", "_")).replaceAll("-", "_")}-${userData?._id}`}>
 
       {/* img */}
-      <div className='w-[100px] h-[100px] rounded-full overflow-hidden bg-black shrink-0'>
-        <img src={`/user.jpg`} alt="friend-img" />
+      <div className='w-[100px] h-[100px] rounded-full overflow-hidden shrink-0'>
+        <CircularImage
+          src={userData?.profilePicture}
+          alt=""
+          size={100}
+          firstName={userData?.personalInfo?.firstName}
+          lastName={userData?.personalInfo?.lastName}
+          className="rounded-full border-none"
+        />
       </div>
 
       <div className='w-full'>
@@ -36,6 +44,6 @@ export default function SmallScreenCard({
         </div>
       </div>
 
-    </div>
+    </Link>
   )
 }

@@ -25,6 +25,7 @@ export default function ProfileCard({ setCreatePost, edit, userData }) {
                         firstName={userData?.personalInfo?.firstName}
                         lastName={userData?.personalInfo?.lastName}
                         fontSize={100}
+                        className="rounded-full"
                     />
                 </div>
 

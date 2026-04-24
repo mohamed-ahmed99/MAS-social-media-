@@ -2,7 +2,6 @@ import { Router } from "express";
 import {getMyProfile, 
     getUserKey, 
     getUsers, 
-    suggestFriends, 
     getUser, 
     updateMyProfile
 } from '../controllers/users.controller.js';
@@ -21,10 +20,6 @@ usersRouter.get('/user-key', verifyToken("MASproAuth"), getUserKey)
 
 // get all users
 usersRouter.get('/get-users', verifyToken("MASproAuth"), getUsers) 
-
-
-// suggest friends
-usersRouter.get('/get', verifyToken("MASproAuth"), suggestFriends) 
 
 
 // get one user

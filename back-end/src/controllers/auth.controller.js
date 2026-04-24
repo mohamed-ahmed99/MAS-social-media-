@@ -148,7 +148,7 @@ export const VerifyEmail = asyncHandler(async (req, res) => {
         status: user.account.status,
         email: user.contactInfo.email,
         userName: `${user.personalInfo.firstName} ${user.personalInfo.lastName}`,
-        profilePicture: user.profilePicture || null,
+        profilePicture: user?.personalInfo?.profilePicture || null,
     }
     return res.status(200).json({
         status: "success",
@@ -250,7 +250,7 @@ export const VerifyMe = asyncHandler(async (req, res) => {
         status: user.account.status,
         email: user.contactInfo.email,
         userName: `${user.personalInfo.firstName} ${user.personalInfo.lastName}`,
-        profilePicture: user.profilePicture || null,
+        profilePicture: user.personalInfo?.profilePicture || null,
     };
 
     return res.status(200).json({
