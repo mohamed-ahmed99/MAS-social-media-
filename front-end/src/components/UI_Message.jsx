@@ -1,4 +1,4 @@
-import React from 'react'
+
 
 export default function UI_Message({icon, text, iconColor}) {
   return (

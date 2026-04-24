@@ -1,5 +1,4 @@
 import Relationships from '../../models/relationships.model.js'
-import {deleteNotification } from '../notifications.controller.js'
 import { NOTIFICATION_TYPE } from '../../config/constants.js'
 import { asyncHandler } from '../../middlewares/asyncHandler.js'
 
@@ -39,18 +38,12 @@ const deleteRelationship = asyncHandler(async (req, res) => {
         return res.status(404).json({ status: "fail", message: "Relationship not found" })
     }
 
-    // delete notification if exists
-    if (relationship.type == NOTIFICATION_TYPE.FRIEND_REQUEST && relationship.status == "pending") {
-        // await deleteNotification({ from: userId, to: targetUserId })
-    }
-
     // send response
     res.status(200).json({ 
         status: "success", 
         message: "Relationship deleted successfully"
     })
 })
-
 
 
 export default deleteRelationship

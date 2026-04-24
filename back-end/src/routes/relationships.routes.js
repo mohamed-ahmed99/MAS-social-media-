@@ -5,6 +5,7 @@ import acceptFriendRequest from "../controllers/relationships/acceptFriendReques
 import getRelationsToMe from "../controllers/relationships/getRelationsToMe.js"
 import getRelationsFromMe from "../controllers/relationships/getRelationsFromMe.js"
 import deleteRealtionship from "../controllers/relationships/deleteRealtionship.js"
+import suggestFriends from "../controllers/relationships/suggestFriends.js"
 
 const relationshipsRouter = Router();
 
@@ -26,8 +27,12 @@ relationshipsRouter.get("/relationship/to-me", verifyToken("MASproAuth"), getRel
 // get all who i follow or sent a friend request to or blocked 
 relationshipsRouter.get("/relationship/from-me", verifyToken("MASproAuth"), getRelationsFromMe)
 
-
+// delete a relationship
 relationshipsRouter.delete("/relationship/delete/:targetUserId", verifyToken("MASproAuth"), deleteRealtionship)
+
+
+// suggest friends
+relationshipsRouter.get("/relationship/suggest-friends", verifyToken("MASproAuth"), suggestFriends)
 
 
 export default relationshipsRouter;

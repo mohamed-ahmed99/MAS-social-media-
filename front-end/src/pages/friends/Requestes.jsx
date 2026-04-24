@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import FriendCards from './FriendCard'
+import FriendCards from './friendCard/FriendCard.jsx'
 import {useGetFromServer} from '../../hooks/getFromServer.js'
 import SeeMoreBtn from '../../components/SeeMoreBtn.jsx'
 import FriendCardLoading from './FriendCardLoading.jsx'

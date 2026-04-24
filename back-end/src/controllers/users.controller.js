@@ -38,32 +38,6 @@ export const getUsers = asyncHandler(async (req, res) => {
 })
 
 
-export const suggestFriends = asyncHandler(async (req, res) => {
-    const { limit, page } = req.query
-    const skip = (page - 1) * limit
-
-    if (!limit || !page) {
-        return res.status(400).send({ status: "fail", message: "'limit' and 'page' are required.", data: null })
-    }
-
-    const myFriends = await Relationships.find({
-        $or: [
-            { from: req.user._id },
-            { to: req.user._id }
-        ]
-    }).select("from to -_id")
-
-    const friendsIDs = myFriends.map(f => (req.user._id === f.from.toString() ? f.to : f.from))
-    friendsIDs.push(req.user._id) // I don't wanna get the user
-
-    // get user that not my friends
-    const suggestions = await Users.find({ _id: { '$nin': friendsIDs } }).limit(limit).skip(skip).sort({ createdAt: -1 })
-
-    res.status(200).json({ status: "success", message: `${limit} users sent successfully`, data: { users: suggestions } })
-
-})
-
-
 export const getUser = asyncHandler(async (req, res) => {
     const { userId } = req.params // this is the id of the user I want to get
 

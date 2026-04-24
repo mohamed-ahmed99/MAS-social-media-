@@ -8,7 +8,6 @@ export default function TopBar() {
     const location = useLocation();
     const lastPathSegment = location.pathname.split('/').slice(-1)[0];
 
-    // Links components
     const links = [
         {text:"friends", to:"/friends"},
         {text:"requests", to:"friends_requests"},
@@ -21,8 +20,8 @@ export default function TopBar() {
   return (
     <div className='flex md:hidden items-stretch justify-between bg-white px-2 py-1 gap-3'>
         <div className='flex items-center gap-2 w-full overflow-x-auto whitespace-nowrap scrollbar-hide'>
-            {/* Top bar content goes here */}
-
+            
+            {/* navigation links */}
             {links.map((link, index) => (
                 <NavLink
                     key={index}
@@ -37,6 +36,7 @@ export default function TopBar() {
             ))}
         </div>
 
+        {/* search page link */}
         <Link 
             to={'search'}
             className='flex items-center justify-center p-2 rounded-full bg-gray-100 hover:bg-gray-200'>
