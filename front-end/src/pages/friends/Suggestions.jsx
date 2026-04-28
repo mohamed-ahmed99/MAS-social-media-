@@ -40,7 +40,7 @@ export default function Suggestions() {
       {/* users cards */}
       <div className='grid grid-cols-3 lmd:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-2 lmd:gap-4 px-3 lmd:pr-5 lmd:pl-1 '>
         {allFriends.map((user) => {
-          return <FriendCards key={user._id} userData={user} blueBtn="add friend" grayBtn='' />
+          return <FriendCards key={user._id} userData={user} blackBtn="ADD_FRIEND" grayBtn='' />
         })}
       </div>
 

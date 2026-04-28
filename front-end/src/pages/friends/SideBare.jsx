@@ -31,7 +31,7 @@ export default function SideBare() {
         <div className='flex items-center justify-between '>
             <h3 className='text-2xl font-semibold'>Friends</h3>
 
-            <Link className='p-2 rounded-full hover:bg-gray-200'>
+            <Link className='p-2 rounded-full hover:bg-gray-100 text-gray-600 hover:text-black transition-colors'>
                 <IoMdSettings fontSize={23}/>
             </Link>
         </div>
@@ -49,9 +49,9 @@ export default function SideBare() {
                     <NavLink
                         to={link.to}
                         className={({ isActive }) =>
-                            `block px-2 py-2 rounded-lg font-medium 
+                            `block px-2 py-2 rounded-lg font-medium transition-all duration-200
                             ${isActive && lastPathSegment == link.to.split('/').pop() ? 
-                                'bg-blue-100 text-blue-700' : 'hover:bg-gray-100 text-gray-700'}`
+                                'bg-black text-white' : 'hover:bg-gray-100 text-gray-600 hover:text-black'}`
                         }
                     >
                         <div className="flex items-center gap-2 ">

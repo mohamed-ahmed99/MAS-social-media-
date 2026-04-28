@@ -1,14 +1,13 @@
 import { Link } from 'react-router-dom';
 import CircularImage from '../../../components/CircularImage.jsx'
+import GeneralBtn from '../../../components/btns/GeneralBtn.jsx'
 
 
 export default function BigScreenCard({ 
   userName, 
   userData, 
-  grayBtn, 
-  HandleBlueBtn, 
-  HandleGrayBtn,
-  status_d,
+  blackBtn,
+  grayBtn,
 }) {
   return (
     <Link to={`/user/${(userName.replaceAll(" ", "_")).replaceAll("-", "_")}-${userData?._id}`}
@@ -35,10 +34,26 @@ export default function BigScreenCard({
 
       {/* buttons */}
       <div className='flex gap-2 flex-col py-2 px-1'>
-        {status_d !== "success" && <HandleBlueBtn />}
-        {grayBtn &&
-          <HandleGrayBtn />
-        }
+        {blackBtn?.isExist && (
+          <GeneralBtn
+            variant="black"
+            loading={blackBtn.loading}
+            disabled={blackBtn.disabled}
+            onClick={blackBtn.onClick}
+          >
+            {blackBtn.text}
+          </GeneralBtn>
+        )}
+        {grayBtn?.isExist && (
+          <GeneralBtn
+            variant="primary"
+            loading={grayBtn.loading}
+            disabled={grayBtn.disabled}
+            onClick={grayBtn.onClick}
+          >
+            {grayBtn.text}
+          </GeneralBtn>
+        )}
       </div>
 
 

@@ -33,7 +33,7 @@ export const usePostMethod = () => {
             const result = await response.json();
 
             if (!response.ok) {
-                if(result.status === "validation") {
+                if (result.status === "validation") {
                     setStatus("validation")
                     setData(result.data)
                     setAction(result.action || null)
@@ -63,12 +63,12 @@ export const usePostMethod = () => {
     }
 
 
-    return { 
-        postData, 
-        status_p: status, 
-        message_p: message, 
-        data_p: data, 
-        action_p: action, 
-        loading_p: loading 
+    return {
+        postData,
+        status_p: status,
+        message_p: message,
+        data_p: data,
+        action_p: action,
+        loading_p: loading
     };
 }

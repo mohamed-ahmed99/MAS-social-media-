@@ -5,9 +5,11 @@ import { useLocation } from 'react-router-dom';
 
 export default function TopBar() {
 
+    // pathname
     const location = useLocation();
     const lastPathSegment = location.pathname.split('/').slice(-1)[0];
 
+    // friends links
     const links = [
         {text:"friends", to:"/friends"},
         {text:"requests", to:"friends_requests"},
@@ -15,7 +17,7 @@ export default function TopBar() {
         {text:"pendings", to:"pendings"},
     ]
 
-
+    
 
   return (
     <div className='flex md:hidden items-stretch justify-between bg-white px-2 py-1 gap-3'>
@@ -26,10 +28,9 @@ export default function TopBar() {
                 <NavLink
                     key={index}
                     to={link.to}
-                    className={({ isActive }) => `inline-block px-4 py-2  text-sm font-medium rounded-lg 
+                    className={({ isActive }) => `inline-block px-4 py-2 text-sm font-medium rounded-lg transition-all
                         ${isActive && lastPathSegment === link.to.split('/').pop() ? 
-                            "bg-blue-600 text-white" : "text-gray-700 bg-gray-200 hover:bg-gray-300"}`}
-
+                            "bg-black text-white" : "text-gray-600 bg-gray-100 hover:bg-gray-200 hover:text-black"}`}
                 >
                     {link.text}
                 </NavLink>
@@ -39,7 +40,7 @@ export default function TopBar() {
         {/* search page link */}
         <Link 
             to={'search'}
-            className='flex items-center justify-center p-2 rounded-full bg-gray-100 hover:bg-gray-200'>
+            className='flex items-center justify-center p-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-black transition-colors'>
             <IoMdSearch fontSize={20} />
         </Link>
     </div>

@@ -1,15 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import CircularImage from '../../../components/CircularImage.jsx'
+import GeneralBtn from '../../../components/btns/GeneralBtn.jsx'
 
 
 export default function SmallScreenCard({ 
   userName, 
-  userData, 
-  grayBtn, 
-  HandleBlueBtn, 
-  HandleGrayBtn,
-  status_d,
+  userData,
+  blackBtn,
+  grayBtn,
 }) {
   return (
     <Link className='col-span-3 shadow w-full flex items-center gap-4 bg-white rounded-md p-2 max-w-full overflow-hidden'
@@ -36,11 +35,26 @@ export default function SmallScreenCard({
 
         {/* btns */}
         <div className="flex gap-2 mt-2 w-full">
-          {status_d !== "success" && <HandleBlueBtn />}
-
-          {grayBtn &&
-            <HandleGrayBtn />
-          }
+          {blackBtn?.isExist && (
+            <GeneralBtn
+              variant="black"
+              loading={blackBtn.loading}
+              disabled={blackBtn.disabled}
+              onClick={blackBtn.onClick}
+            >
+              {blackBtn.text}
+            </GeneralBtn>
+          )}
+          {grayBtn?.isExist && (
+            <GeneralBtn
+              variant="primary"
+              loading={grayBtn.loading}
+              disabled={grayBtn.disabled}
+              onClick={grayBtn.onClick}
+            >
+              {grayBtn.text}
+            </GeneralBtn>
+          )}
         </div>
       </div>
 

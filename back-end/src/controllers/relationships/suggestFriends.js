@@ -41,6 +41,7 @@ const suggestFriends = asyncHandler(async (req, res) => {
         .skip(skip)
         .limit(newLimit)
     
+    // format response data
     const formattedSuggestions = suggestions.map(user => ({
         firstName: user.personalInfo.firstName,
         lastName: user.personalInfo.lastName,
