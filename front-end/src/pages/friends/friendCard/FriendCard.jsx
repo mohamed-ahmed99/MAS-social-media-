@@ -17,12 +17,13 @@ import {addFriend} from './blackBtnFunctions.js'
 export default function FriendCards({ userData, blackBtn, grayBtn }) {
 
   // my hooks "server actions"
-  const { postData, status_p, message_p, data_p, loading_p } = usePostMethod()
+  const { postData, status_p, loading_p } = usePostMethod()
   const { editData, status_e, message_e, data_e, loading_e } = usePathMethod()
   const { deleteData, status_d, message_d, data_d, loading_d } = useDeleteMethod()
 
   // states
   const [screenWidth, setScreenWidth] = React.useState(window.innerWidth); // screen width
+  const [activeAction, setActiveAction] = useState(null); // track which button was clicked
   
 
 
@@ -50,8 +51,41 @@ export default function FriendCards({ userData, blackBtn, grayBtn }) {
       return {
         text: status_p === "success" ? "Request sent" : "Add Friend",
         loading: loading_p,
-        disabled: status_p === "success",
+        disabled: status_p === "success" || loading_p,
         onClick: handleAddFriend,
+        isExist: true
+      };
+    }
+    else if (blackBtn === "CANCEL_REQUEST") {
+      return {
+        text: status_d === "success" ? "Cancelled" : "Cancel Request",
+        loading: loading_d,
+        disabled: status_d === "success" || loading_d,
+        onClick: (e) => { 
+          e.preventDefault(); 
+          e.stopPropagation(); 
+          deleteData(`/api/relationship/delete/${userData?._id}?type=friend`,{})
+        },
+        isExist: true
+      };
+    }
+    else if (blackBtn === "CONFIRM") {
+      // Hide this button if the other action succeeded
+      if (activeAction === "reject" && status_e === "success") {
+        return { isExist: false };
+      }
+
+      return {
+        text: activeAction === "confirm" && status_e === "success" ? "Confirmed" : "Confirm",
+        loading: activeAction === "confirm" && loading_e,
+        disabled: (activeAction === "confirm" && status_e === "success") || loading_e,
+        onClick: (e) => { 
+          e.preventDefault(); 
+          e.stopPropagation(); 
+          setActiveAction("confirm");
+          // /api/relationship/accept-friend-request/69e192e70c037cbd79b4518d
+          editData(`/api/relationship/accept-friend-request/${userData?._id}`,{})
+        },
         isExist: true
       };
     }
@@ -59,18 +93,28 @@ export default function FriendCards({ userData, blackBtn, grayBtn }) {
   };
 
   const getGrayBtnProps = () => {
-    if (grayBtn === "REMOVE_FRIEND") {
+    
+    if (grayBtn === "REJECT") {
+      // Hide this button if the other action succeeded
+      if (activeAction === "confirm" && status_e === "success") {
+        return { isExist: false };
+      }
+
       return {
-        text: "Remove",
-        loading: false, // Handle dynamic loading later
-        disabled: false,
+        text: activeAction === "reject" && status_e === "success" ? "Rejected" : "Reject",
+        loading: activeAction === "reject" && loading_e,
+        disabled: (activeAction === "reject" && status_e === "success") || loading_e,
         onClick: (e) => { 
           e.preventDefault(); 
           e.stopPropagation(); 
-        }, // Handle click later
+          setActiveAction("reject");
+          // api/relationship/update-status/:targetUserId?new_status=rejected
+          editData(`/api/relationship/update-status/${userData?._id}?new_status=rejected`,{})
+        },
         isExist: true
       };
     }
+    
     return { isExist: false };
   };
 

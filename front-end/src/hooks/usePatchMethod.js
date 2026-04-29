@@ -11,14 +11,12 @@ export const usePathMethod = () => {
 
     
         const editData = async (endPoint, body) =>{
-            const token = localStorage.getItem("MASproAuth")
             setLoading(true);
             try{
                 const response = await fetch(`${API_URL}${endPoint}`, {
                     method:"PATCH",
                     headers:{
-                        "Content-Type":"application/json",
-                        authorization:`Bearer ${token}`
+                        "Content-Type":"application/json"
                     },
                     credentials:"include",
                     body: body ? JSON.stringify(body) : undefined

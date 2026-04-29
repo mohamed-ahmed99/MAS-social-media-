@@ -19,7 +19,7 @@ export default function BigScreenCard({
           src={userData?.profilePicture}
           alt=""
           className="rounded-none border-none"
-          fontSize={50}
+          fontSize={100}
           firstName={userName}
         />
 
@@ -40,6 +40,7 @@ export default function BigScreenCard({
             loading={blackBtn.loading}
             disabled={blackBtn.disabled}
             onClick={blackBtn.onClick}
+            className='py-2'
           >
             {blackBtn.text}
           </GeneralBtn>
@@ -50,6 +51,7 @@ export default function BigScreenCard({
             loading={grayBtn.loading}
             disabled={grayBtn.disabled}
             onClick={grayBtn.onClick}
+            className='py-2'
           >
             {grayBtn.text}
           </GeneralBtn>

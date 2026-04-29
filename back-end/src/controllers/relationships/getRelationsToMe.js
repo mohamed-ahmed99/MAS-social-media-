@@ -34,13 +34,15 @@ const getRelationsToMe = asyncHandler(async (req, res) => {
     // make date readable
     const usersInfo = users.map((user) => ({
         _id: user.from._id,
-        personalInfo: user.from.personalInfo
+        firstName: user.from.personalInfo.firstName,
+        lastName: user.from.personalInfo.lastName,
+        profilePicture: user.from.personalInfo.profilePicture
     }))
 
     // response
     return res.status(200).json({
         status: "success",
-        message: `${users.length} users sent successfully `,
+        message: `${usersInfo.length} users found`,
         data: { users: usersInfo }
     })
 

@@ -32,6 +32,7 @@ export default function Suggestions() {
   }, [data_g])
 
 
+  console.log('all', allFriends)
   // XML
   return (
 

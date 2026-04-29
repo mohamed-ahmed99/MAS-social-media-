@@ -20,6 +20,7 @@ export default function SmallScreenCard({
           src={userData?.profilePicture}
           alt=""
           size={100}
+          fontSize={35}
           firstName={userData?.personalInfo?.firstName}
           lastName={userData?.personalInfo?.lastName}
           className="rounded-full border-none"
@@ -41,6 +42,7 @@ export default function SmallScreenCard({
               loading={blackBtn.loading}
               disabled={blackBtn.disabled}
               onClick={blackBtn.onClick}
+              className='py-1.5'
             >
               {blackBtn.text}
             </GeneralBtn>
@@ -51,6 +53,7 @@ export default function SmallScreenCard({
               loading={grayBtn.loading}
               disabled={grayBtn.disabled}
               onClick={grayBtn.onClick}
+              className='py-1.5'
             >
               {grayBtn.text}
             </GeneralBtn>

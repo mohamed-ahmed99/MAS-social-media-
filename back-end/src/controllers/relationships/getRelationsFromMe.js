@@ -47,7 +47,9 @@ const getRelationsFromMe = asyncHandler(async (req, res) => {
         // return user with relationship
         return { 
             _id: targetUser._id, 
-            personalInfo: targetUser.personalInfo,
+            firstName: targetUser.personalInfo.firstName,
+            lastName: targetUser.personalInfo.lastName,
+            profilePicture: targetUser.personalInfo.profilePicture,
         }
     })
 

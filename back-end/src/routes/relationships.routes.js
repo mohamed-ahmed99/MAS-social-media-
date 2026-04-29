@@ -6,6 +6,7 @@ import getRelationsToMe from "../controllers/relationships/getRelationsToMe.js"
 import getRelationsFromMe from "../controllers/relationships/getRelationsFromMe.js"
 import deleteRealtionship from "../controllers/relationships/deleteRealtionship.js"
 import suggestFriends from "../controllers/relationships/suggestFriends.js"
+import updateRelationStatus from "../controllers/relationships/updateRelationStatus.js"
 
 const relationshipsRouter = Router();
 
@@ -33,6 +34,9 @@ relationshipsRouter.delete("/relationship/delete/:targetUserId", verifyToken("MA
 
 // suggest friends
 relationshipsRouter.get("/relationship/suggest-friends", verifyToken("MASproAuth"), suggestFriends)
+
+// update relationship status
+relationshipsRouter.patch("/relationship/update-status/:targetUserId", verifyToken("MASproAuth"), updateRelationStatus)
 
 
 export default relationshipsRouter;

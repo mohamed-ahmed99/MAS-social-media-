@@ -40,7 +40,7 @@ const buildRelationship = asyncHandler(async (req, res) => {
     })
 
     // if relationship is found
-    if(relationship){
+    if(relationship && ["pending", "accepted"].includes(relationship.status)){
         return res.status(409).json({status:"fail", message:"relationship already exists"})
     }
 
