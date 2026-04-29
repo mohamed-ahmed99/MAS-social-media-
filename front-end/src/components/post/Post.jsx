@@ -96,6 +96,7 @@ export default function Post({ data, canEdit = false }) {
                         route={route}
                         authorUsername={authorUsername}
                         createdAt={data?.createdAt}
+                        profilePicture={data?.author?.personalInfo?.profilePicture}
                     />
 
 

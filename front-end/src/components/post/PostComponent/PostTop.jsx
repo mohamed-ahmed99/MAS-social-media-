@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { FiMoreHorizontal } from "react-icons/fi";
+import CircularImage from '../../CircularImage';
 
 
 /*
@@ -9,16 +10,21 @@ import { FiMoreHorizontal } from "react-icons/fi";
     
 */ 
 
-export default function PostTop({route, authorUsername, createdAt}) {
+export default function PostTop({route, authorUsername, createdAt, profilePicture}) {
   return (
     
     <div className='flex items-center justify-between px-2 sm:px-3'>
 
         {/* Name, Profile Picture, Date */}
         <div className="flex items-center gap-3 sm:gap-4">
-            <Link to={route}
-                className="h-[40px] w-[40px] rounded-full overflow-hidden block">
-                <img className="h-full w-full object-cover" src="/user.jpg" alt="user" />
+            <Link 
+                to={route}
+                className="h-[40px] w-[40px] rounded-full overflow-hidden block"
+            >
+                <CircularImage 
+                    src={profilePicture}
+                    firstName={authorUsername}
+                />
             </Link>
 
             <div className="leading-tight">

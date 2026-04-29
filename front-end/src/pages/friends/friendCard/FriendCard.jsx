@@ -46,7 +46,9 @@ export default function FriendCards({ userData, blackBtn, grayBtn }) {
     await addFriend(e, userData._id, {type: "friend"}, postData);
   }
 
+  // get black button properties
   const getBlackBtnProps = () => {
+    // add friend ==> "suggestion page"
     if (blackBtn === "ADD_FRIEND") {
       return {
         text: status_p === "success" ? "Request sent" : "Add Friend",
@@ -56,6 +58,8 @@ export default function FriendCards({ userData, blackBtn, grayBtn }) {
         isExist: true
       };
     }
+
+    // cancel request ==> "pending page"
     else if (blackBtn === "CANCEL_REQUEST") {
       return {
         text: status_d === "success" ? "Cancelled" : "Cancel Request",
@@ -69,6 +73,8 @@ export default function FriendCards({ userData, blackBtn, grayBtn }) {
         isExist: true
       };
     }
+
+    // confirm ==> "requests page"
     else if (blackBtn === "CONFIRM") {
       // Hide this button if the other action succeeded
       if (activeAction === "reject" && status_e === "success") {
@@ -89,11 +95,33 @@ export default function FriendCards({ userData, blackBtn, grayBtn }) {
         isExist: true
       };
     }
+
+    // message ==> "friends page"
+    else if (blackBtn === "MESSAGE") {
+      // Hide this button if the other action succeeded
+      if (activeAction === "remove" && status_e === "success") {
+        return { isExist: false };
+      }
+      
+      return {
+        text: "Message",
+        loading: false,
+        disabled: false,
+        onClick: (e) => { 
+          e.preventDefault(); 
+          e.stopPropagation(); 
+          () => {} // navigate to chat page
+        },
+        isExist: true
+      };
+    }
+
+    // Not Exists in this page
     return { isExist: false };
   };
 
   const getGrayBtnProps = () => {
-    
+    // reject ==> "requests page"
     if (grayBtn === "REJECT") {
       // Hide this button if the other action succeeded
       if (activeAction === "confirm" && status_e === "success") {
@@ -110,6 +138,21 @@ export default function FriendCards({ userData, blackBtn, grayBtn }) {
           setActiveAction("reject");
           // api/relationship/update-status/:targetUserId?new_status=rejected
           editData(`/api/relationship/update-status/${userData?._id}?new_status=rejected`,{})
+        },
+        isExist: true
+      };
+    }
+
+    // remove ==> "friends page"
+    else if (grayBtn === "REMOVE") {
+      return {
+        text: status_e === "success"? "Removed" : "Remove",
+        loading: loading_e,
+        disabled: loading_e || status_e === "success",
+        onClick: (e) => { 
+          e.preventDefault(); 
+          e.stopPropagation(); 
+          editData(`/api/relationship/update-status/${userData?._id}?new_status=deleted`,{})
         },
         isExist: true
       };

@@ -19,8 +19,8 @@ const updateRelationStatus = asyncHandler(async (req, res) => {
         ]
     }).sort({createdAt: -1});
 
-    // if relation not found
-    if (!existRelation) {
+    // if relation not found or deleted
+    if (!existRelation || existRelation.status === 'deleted') {
         return res.status(404).json({ status: "fail", message: "Relation not found"});
     }
 

@@ -40,6 +40,7 @@ export default function FriendRequests() {
               {/* list of pending requests */}
               <div className='grid grid-cols-3 lmd:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-2 lmd:gap-4 px-3 lmd:pr-5 lmd:pl-1 '>
                   {allUsers.map((user, index) => {
+                    console.log('user', user)
                     return <FriendCards key={index} userData={user} blackBtn="CANCEL_REQUEST" grayBtn=""/>
                   })} 
               </div>
@@ -71,7 +72,7 @@ export default function FriendRequests() {
                 <UI_Message 
                     iconColor="text-gray-500" 
                     icon={<FaUserAltSlash size={window.innerWidth >= 480 ? 200 : 150}/>} 
-                    text={`You have no friend requests yet.`}  
+                    text={`You didn't send any requests yet.`}  
                 />
               </div>
             }

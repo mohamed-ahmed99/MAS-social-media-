@@ -24,3 +24,9 @@ input:-moz-autofill {
   box-shadow: 0 0 0px 1000px #f4f4f5 inset;
   -moz-text-fill-color: #000000;
 }
+
+
+*::selection{
+  background-color: #222; /* Blue-500 */
+  color: white;
+}
