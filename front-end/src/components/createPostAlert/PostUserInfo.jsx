@@ -6,10 +6,11 @@ export default function PostUserInfo({ user, setSelectionBtn }) {
     <div className='flex items-center gap-3 mb-4'>
 
       {/* profile picture */}
-      <div className='w-11 h-11 border border-gray-200 rounded-full p-[2px]'>
+      <div className='w-11 h-11 border border-gray-200 rounded-full overflow-hidden p-[2px]'>
         <CircularImage 
           src={user?.profilePicture || "/user.jpg"} 
           firstName={user?.userName || "User"} 
+          className={"rounded-full"}
         />
       </div>
 

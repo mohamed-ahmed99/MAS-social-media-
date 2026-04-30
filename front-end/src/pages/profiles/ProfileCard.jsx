@@ -3,8 +3,6 @@ import CircularImage from "../../components/CircularImage";
 
 
 export default function ProfileCard({ setCreatePost, edit, userData }) {
-    console.log(userData)
-
 
     const someData = {
         followers: 100,
@@ -53,11 +51,12 @@ export default function ProfileCard({ setCreatePost, edit, userData }) {
                         </div>
 
                         {/* buttons */}
-                        <div className="hidden lg:flex items-center gap-4">
+                        <div className="hidden lg:flex items-center justify-end gap-4 w-[300px]">
                             <UserCardBtns
                                 edit={edit}
                                 setCreatePost={setCreatePost}
-                                relationshipWithYou={"me"}
+                                relationshipWithYou={userData?.relationshipWithYou}
+                                userId={userData?._id}
                             />
                         </div>
                     </div>
@@ -70,11 +69,12 @@ export default function ProfileCard({ setCreatePost, edit, userData }) {
                 {userData?.personalInfo?.bio || "hello"}
             </div>
 
-            <div className="grid grid-cols-2 lg:hidden gap-2">
+            <div className="grid grid-cols-2 lg:hidden gap-2 ">
                 <UserCardBtns
                     edit={edit}
                     setCreatePost={setCreatePost}
-                    relationshipWithYou={"me"}
+                    relationshipWithYou={userData?.relationshipWithYou}
+                    userId={userData?._id}
                 />
             </div>
 

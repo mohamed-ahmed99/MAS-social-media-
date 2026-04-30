@@ -1,55 +1,113 @@
-
+// hooks and components
+import GeneralBtn from "../../components/btns/GeneralBtn";
+import {usePostMethod} from "../../hooks/usePostMethod"; 
+import {usePathMethod} from "../../hooks/usePatchMethod"; 
+import {useState} from "react";
 
 import { FaPen, FaPlus, FaUserCheck, FaFacebookMessenger, FaUserAltSlash } from "react-icons/fa";
 
-export default function UserCardBtns({ edit, setCreatePost, relationshipWithYou }) {
+export default function UserCardBtns({ edit, setCreatePost, relationshipWithYou, userId }) {
 
+    // methods and data states
+    const { postData, status_p, message_p, data_p, action_p, loading_p } = usePostMethod()
+    const { editData, status_e, message_e, data_e, action_e, loading_e } = usePathMethod()
+    
+    // state
+    const [activeBtn, setActiveBtn] = useState("")
+
+    // handle default action
     const handlePostClick = () => {
         window.scrollTo(0, 0);
         setCreatePost(true)
     }
 
+    console.log({relationshipWithYou});
+
     // if the profile is mine
     if (edit) {
         return (
             <>
-                <button
+            {/* create post button for self profile only */}
+                <GeneralBtn
+                    variant={"black"}
                     onClick={handlePostClick}
-                    className="flex flex-grow items-center justify-center gap-2 px-3 py-2 bg-gray-700 hover:bg-gray-800 text-white rounded-lg shadow transition"
+                    className={"col-span-1 py-2 "}
                 >
                     <FaPlus fontSize={14} />
                     <span>Post</span>
-                </button>
-                <button className="flex flex-grow items-center justify-center gap-2 px-3 py-2 bg-white hover:bg-gray-100 text-black rounded-lg shadow transition">
+                </GeneralBtn>
+
+                {/* edit profile button for self profile only */}
+                <GeneralBtn
+                    variant={"black"}
+                    onClick={() => {}}
+                    className={"col-span-1 py-2 "}
+                >
                     <FaPen fontSize={14} />
-                    <span>Edit Profile</span>
-                </button>
+                    <p>Edit Profile</p>
+                </GeneralBtn>
             </>
         )
     }
 
-    // if the user is a friend
-    if (relationshipWithYou === "friend") {
+
+    // if there is no relationship 
+    if(relationshipWithYou?.type === "NONE" && relationshipWithYou?.status === "NONE"){
         return (
-            <>
-                <button className="flex flex-grow items-center justify-center gap-2 px-3 py-2 bg-gray-700 hover:bg-gray-800 text-white rounded-lg shadow transition">
-                    <FaUserAltSlash fontSize={14} />
-                    <span>Unfriend</span>
-                </button>
-                <button className="flex flex-grow items-center justify-center gap-2 px-3 py-2 bg-gray-700 hover:bg-gray-800 text-white rounded-lg shadow transition">
-                    <FaFacebookMessenger fontSize={14} />
-                    <span>Message</span>    
-                </button>
-            </>
+            <GeneralBtn
+                variant={"black"}
+                className="col-span-2 lg:w-fit py-2 "
+                onClick={ async () => await postData(`/api/relationship/build/${userId}`, {}, {type: "friend"}) }
+                loading={loading_p}
+                disabled={loading_p || status_p === "success"}
+            >
+                <FaPlus fontSize={14} />
+                <span>{status_p === "success" ? "Request Sent" : "Add Friend"}</span>
+            </GeneralBtn>
         )
     }
 
-    // if the user is not a friend
-    return (
-        <button className="col-span-2 flex flex-grow items-center justify-center gap-2 px-3 py-2 bg-gray-700 hover:bg-gray-800 text-white rounded-lg shadow transition">
-            <FaPlus fontSize={14} />
-            <span>Add Friend</span>
-        </button>
-    )
+    // if the other person sent me a friend request 
+    if(relationshipWithYou?.type === "FRIEND" && relationshipWithYou?.status === "PENDING"){
+        return (
+            <GeneralBtn
+                variant={"black"}
+                className="col-span-2 py-2 lg:w-fit "
+                onClick={ async () => await editData(`/api/relationship/update-status/${userId}?new_status=deleted`, {}) }
+                loading={loading_e}
+                disabled={loading_e || status_e === "success"}
+            >
+                <FaUserAltSlash fontSize={14} />
+                <span>{status_e === "success" ? "Canceled" : "Cancel Request"}</span>
+            </GeneralBtn>
+        )
+    }
+
+    // if the other person sent me a friend request 
+    if(relationshipWithYou?.type === "FRIEND" && relationshipWithYou?.status === "ACCEPTED"){
+        return (
+            <>  
+            <GeneralBtn
+                variant={"black"}
+                className="col-span-1 py-2 "
+                onClick={() => {}} // navigate to chat page
+            >
+                <FaFacebookMessenger fontSize={14} />
+                <span>Message</span>
+            </GeneralBtn>
+
+            <GeneralBtn
+                variant={"black"}
+                className="col-span-1 py-2 "
+                onClick={ async () => await editData(`/api/relationship/update-status/${userId}?new_status=deleted`, {}) }
+                loading={loading_e}
+                disabled={loading_e || status_e === "success"}
+            >
+                <FaUserAltSlash fontSize={14} />
+                <span>{status_e === "success" ? "Unfriended" : "Unfriend"}</span>
+            </GeneralBtn>
+            </>
+        )
+    }
 }
 

@@ -54,10 +54,17 @@ export const getUser = asyncHandler(async (req, res) => {
 
     // check relationship between me and this user
     const relationship = await Relationships.findOne({ $or: [{ from: req.user._id, to: userId }, { from: userId, to: req.user._id }] })
-    if (relationship) {
-        user.relationshipWithYou = relationship.type
+    
+    if (relationship && ["pending", "accepted"].includes(relationship.status)) {
+        user.relationshipWithYou = {
+            type: relationship.type.toUpperCase().replace(" ", "_"),
+            status: relationship.status.toUpperCase().replace(" ", "_")
+        }
     } else {
-        user.relationshipWithYou = "add friend"
+        user.relationshipWithYou = {
+            type: "NONE",
+            status: "NONE"
+        }
     }
 
     res.status(200).json({ status: "success", message: `user data has sent successfully`, data: { user } })

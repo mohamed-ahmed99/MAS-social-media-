@@ -96,23 +96,25 @@ export default function PostVideo({ url }) {
   // Render video
   return (
     <div ref={containerRef} className="w-full aspect-video overflow-hidden border border-gray-100 bg-black">
-      {isNativeVideo ? (
-        <video
-          ref={videoRef}
-          src={embedUrl}
-          className="w-full h-full"
-          controls
-          controlsList="nodownload"
-        />
-      ) : (
-        <iframe
-          ref={iframeRef}
-          src={embedUrl}
-          title="post-video"
-          className="w-full h-full border-none"
-          allowFullScreen
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        />
+      {embedUrl && (
+        isNativeVideo ? (
+          <video
+            ref={videoRef}
+            src={embedUrl}
+            className="w-full h-full"
+            controls
+            controlsList="nodownload"
+          />
+        ) : (
+          <iframe
+            ref={iframeRef}
+            src={embedUrl}
+            title="post-video"
+            className="w-full h-full border-none"
+            allowFullScreen
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          />
+        )
       )}
     </div>
   );
