@@ -6,11 +6,13 @@ import mongoose from 'mongoose'
 
 
 // routes
-import authRoutes from './routes/auth.routes.js'
-import postRoute from './routes/post.routes.js'
-import usersRouter from './routes/users.routes.js'
-import relationshipsRouter from './routes/relationships.routes.js'
-import notificationRoutes from './routes/notification.routes.js'
+import authRoutes from './routes/auth.routes.js' // auth routes
+import postRoute from './routes/post.routes.js' // post routes
+import usersRouter from './routes/users.routes.js' // user routes
+import relationshipsRouter from './routes/relationships.routes.js' // relationship routes
+import notificationRoutes from './routes/notification.routes.js' // notification routes
+import reactionRoutes from './routes/reactions.routes.js' // reaction routes
+
 
 const app = express() 
 app.set('trust proxy', true); // for get real ip
@@ -54,12 +56,15 @@ app.get('/', (req, res) => {
     res.status(200).json({message:"hello user"})
 })
 
-// routes
+
+//////////// routes
 app.use('/api/auth', authRoutes) // auth routes
 app.use('/api/posts', postRoute) // post routes
 app.use('/api/users', usersRouter) // user routes
 app.use('/api', relationshipsRouter) // relationship routes
 app.use('/api/notifications', notificationRoutes) // notification routes
+app.use('/api/reactions', reactionRoutes) // reaction routes
+
 
 // not found routes
 app.use((req, res) => {

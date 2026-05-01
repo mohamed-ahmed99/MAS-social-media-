@@ -8,7 +8,13 @@ import { BsImages } from "react-icons/bs";
  * PostEditor Component
  * A Facebook-style post composer trigger.
  */
-export default function PostEditor({placeholder="What's on your mind?", edit=false, createPost}) {
+export default function PostEditor({
+  placeholder="What's on your mind?", 
+  edit=false, 
+  createPost,
+  profilePicture,
+  firstName,
+}) {
     
     const LinksComponents =[
       {icon:<BsImages />, href:"/profile", text:"photo"},
@@ -27,7 +33,12 @@ export default function PostEditor({placeholder="What's on your mind?", edit=fal
         <div className="flex items-center gap-3">
             {/* profile image */}
             <div className="w-10 h-10 rounded-full overflow-hidden">
-              <CircularImage src="/user.jpg" alt="Profile" size={40} />
+              <CircularImage 
+                src={profilePicture}
+                alt={firstName}
+                firstName={firstName}
+                fontSize={30}
+              />
             </div>
 
             {/* input */}

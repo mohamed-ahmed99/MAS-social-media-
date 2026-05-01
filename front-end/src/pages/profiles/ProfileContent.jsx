@@ -44,6 +44,8 @@ export default function ProfileContent({ userData, edit, setCreatePost, loading 
                 edit={edit} 
                 placeholder={`What's on your mind, ${userData?.personalInfo?.firstName}?`}
                 createPost={setCreatePost}
+                profilePicture={userData?.personalInfo?.profilePicture}
+                firstName={userData?.personalInfo?.firstName}
               />
             </div>
           )}

@@ -37,5 +37,5 @@ postSchema.index({author: 1, createdAt: -1})
 postSchema.index({author: 1, visibility: 1, createdAt: -1})
 postSchema.index({status: 1, visibility: 1, createdAt: -1})
 
-const Posts = mongoose.model("posts", postSchema);
+const Posts = mongoose.model("post", postSchema);
 export default Posts;
