@@ -17,7 +17,7 @@ const GeneralBtn = ({
   text,
   children,
   className = "",
-  variant = 'primary',
+  variant = 'black',
   type = "button",
   disabled = false,
   loading = false,
@@ -31,7 +31,7 @@ const GeneralBtn = ({
 
   // variants
   const variants = {
-    primary: "bg-white text-black border-zinc-200 hover:bg-zinc-50 hover:border-zinc-300 w-full shadow-sm",
+    secondary: "bg-white text-black border-zinc-200 hover:bg-zinc-50 hover:border-zinc-300 w-full shadow-sm",
     black: "bg-black text-white hover:bg-black/90 border-transparent w-full",
   };
 

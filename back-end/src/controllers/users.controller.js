@@ -53,7 +53,13 @@ export const getUser = asyncHandler(async (req, res) => {
     }
 
     // check relationship between me and this user
-    const relationship = await Relationships.findOne({ $or: [{ from: req.user._id, to: userId }, { from: userId, to: req.user._id }] })
+    const relationship = await Relationships.findOne({ 
+        $or: [
+            {from: req.user._id, to: userId},
+            {from: userId, to: req.user._id}
+        ]
+    }).sort({createdAt: -1})
+    console.log('relationship', relationship)
     
     if (relationship && ["pending", "accepted"].includes(relationship.status)) {
         user.relationshipWithYou = {

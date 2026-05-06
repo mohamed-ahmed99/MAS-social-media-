@@ -1,24 +1,28 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import {useGetFromServer} from '../../hooks/getFromServer'
-import { useEffect } from "react";
-import {useUserContext} from '../../hooks/useUserContext'
+import {useEffect, useState} from "react";
 import FriendCardLoading from "./FriendCardLoading";
+import { useGetMethod } from '../../hooks/useGetMethod'
+import CircularImage from "../../components/CircularImage";
+import GeneralBtn from "../../components/btns/GeneralBtn.jsx";
 
 export default function RightSide() {
-  const {userData, setUserData} = useUserContext()
+  const {getData, data_g, loading_g} = useGetMethod()
 
-  const token = localStorage.getItem("MASproAuth")
+  const [query, setQuery] = useState({limit:10, page:1})
+  const [allFriends, setAllFriends] = useState([])
 
-  // end point for get all users
-  const endPoint = `/api/users/get-users?limit=10&page=1`
+  // get friends
+  useEffect(() => {
+    getData(`/api/relationship/get-friends?limit=${query.limit}&page=${query.page}`)
+  },[query])
 
-  const {status, message, data, loading} = useGetFromServer(endPoint, {headers:{authorization:`Bearer ${token}`}})
-
-
-
-
-// {{dev}}/api/users/get-users?limit=10&page=1
+  // setting data
+  useEffect(() => {
+    if(data_g?.users){
+      setAllFriends(prev => query.page === 1 ? data_g.users : [...prev, ...data_g.users]);
+    }
+  },[data_g])
 
 
   return (
@@ -26,9 +30,8 @@ export default function RightSide() {
 
       <p className="font-semibold text-gray-600 text-lg px-1 mb-2">Friends</p>
 
-      {data?.users.map((friend, index) => {
-
-        const userName = `${friend.personalInfo.firstName} ${friend.personalInfo.lastName}`
+      {allFriends.map((friend, index) => {
+        const userName = `${friend?.firstName} ${friend?.lastName}`
       
         return (
           <motion.div
@@ -38,13 +41,15 @@ export default function RightSide() {
           >
             <Link 
               to={`/user/${(userName.replaceAll(' ', '_')).replaceAll('-','_')}-${friend._id}`}
-              className='flex items-center gap-3 px-2 py-2 rounded-xl hover:bg-blue-100 transition-all duration-200 group cursor-pointer'
+              className='flex items-center gap-3 px-2 py-2 rounded-xl hover:bg-black/80 hover:text-white transition-all duration-200 group cursor-pointer'
             >
           
-              <div className='relative'>
-                <img 
-                  src={`./user.jpg`} 
-                  className='h-[45px] w-[45px] rounded-full object-cover'
+              {/* Profile image */}
+              <div className='relative h-[45px] w-[45px]'>
+                <CircularImage 
+                  src={friend.profilePicture}
+                  firstName={friend.firstName}
+                  className="rounded-full"
                 />
 
                 {/* online dot */}
@@ -54,8 +59,10 @@ export default function RightSide() {
               </div>
 
               <div className="flex flex-col  justify-center leading-tight">
-                <p className='font-semibold text-[15px] group-hover:text-blue-600'>{userName}</p>
-                <p className='text-xs text-gray-500 group-hover:text-blue-400'>
+                <p className='font-semibold text-[15px] group-hover:text-white transition-all duration-200'>
+                  {userName}
+                </p>
+                <p className='text-xs text-gray-500 group-hover:text-white transition-all duration-200'>
                   last seen:  
                 </p>
               </div>
@@ -65,9 +72,38 @@ export default function RightSide() {
         )}
       )}
       
-      {loading && (
+
+      {/* loading */}
+      {loading_g && (
         <div className="space-y-2">
-          {Array(9).fill(0).map((_, index) => (<FriendCardLoading key={index}/>))}
+          {Array(5).fill(0).map((_, index) => (<FriendCardLoading key={index}/>))}
+        </div>
+      )}
+
+      <div className="w-full mt-4">
+        {!loading_g && data_g && data_g?.users?.length == query.limit  && (
+            // <SeeMoreBtn setQuery={setQuery} loading={loading_g} />
+            <GeneralBtn
+              variant="secondary"
+              text="See More"
+              onClick={() => setQuery(prev => ({...prev, page: prev.page + 1}))}
+              loading={loading_g}
+              className="w-full py-2 shadow-none "
+            />
+        )}
+      </div>
+
+
+      {/* if user has no frineds */}
+      {allFriends.length === 0 && !loading_g && (
+        <div className="flex items-center justify-center h-[calc(100vh-30vh)] ">
+            <p className="text-gray-600">No friends found</p>
+        </div>
+      )}
+
+      {data_g?.users?.length < query.limit && query.page >= 1 && !loading_g && (
+        <div className="flex items-center justify-center  ">
+            <p className="text-gray-600">There are no more friends to show.</p>
         </div>
       )}
 

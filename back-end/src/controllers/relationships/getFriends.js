@@ -10,12 +10,13 @@ const getFriends = asyncHandler(async (req, res) => {
         $or:[
             {from: req.user._id, type: 'friend', status: 'accepted'},
             {to: req.user._id, type: 'friend', status: 'accepted'}
-        ]
+        ],
     })
     .sort({createdAt: -1})
     .skip((page - 1) * limit)
     .limit(limit)
     .populate("from to", "_id personalInfo")
+    console.log(getFriends)
 
 
     // get the other user "not me"
