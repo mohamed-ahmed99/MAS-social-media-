@@ -1,6 +1,12 @@
 import {Router} from 'express'
 import { verifyToken } from '../middlewares/verifyToken.js'
-import { addPost, deletePost, editPost, getPosts, getUserPosts} from '../controllers/posts.controller.js'
+
+// functions
+import addPost from '../controllers/posts/addPost.js'
+import deletePost from '../controllers/posts/deletePost.js'
+import editPost from '../controllers/posts/editPost.js'
+import getPosts from '../controllers/posts/getPosts.js'
+import getUserPosts from '../controllers/posts/getUserPosts.js'
 
 const postRoute = Router()
 

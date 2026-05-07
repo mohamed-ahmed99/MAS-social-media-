@@ -1,10 +1,9 @@
 import { Router } from "express";
-import {getMyProfile, 
-    getUserKey, 
-    getUsers, 
-    getUser, 
-    updateMyProfile
-} from '../controllers/users.controller.js';
+import getMyProfile from '../controllers/users/getMyProfile.js';
+import getUserKey from '../controllers/users/getUserKey.js';
+import getUsers from '../controllers/users/getUsers.js';
+import getUser from '../controllers/users/getUser.js';
+import updateMyProfile from '../controllers/users/updateMyProfile.js';
 import { verifyToken } from "../middlewares/verifyToken.js";
 
 const usersRouter = Router();
