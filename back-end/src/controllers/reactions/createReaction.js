@@ -8,6 +8,7 @@ export const createReaction = asyncHandler(async (req, res) => {
     const createdBy = req.user._id;
 
 
+
     // chech if post is exists 
     const isPostExists = await Posts.findById(postId);
     if(!isPostExists || isPostExists.status === "deleted"){
@@ -18,21 +19,22 @@ export const createReaction = asyncHandler(async (req, res) => {
     const existingReaction = await Reaction
         .findOne({ postId, createdBy, status: "active"}).sort({createdAt: -1});
 
-    if (existingReaction) {
-        // if the reaction is the same as the existing reaction, remove it
-        if ((existingReaction.status === "active" && reaction == "None") || reaction == existingReaction.reaction) {
-            existingReaction.status="inactive";
-            await existingReaction.save();
-            return res.status(200).json({ success: "success", message: "Reaction removed successfully" });
-        }
-        // update reaction
-        else if (existingReaction.status === "active" && reaction != existingReaction.reaction){
-            existingReaction.reaction = reaction;
-            await existingReaction.save();
-            return res.status(200).json({ success: "success", message: "Reaction updated successfully" });
+    // if the user has already reacted to the post
+    if(existingReaction){
+        existingReaction.status="inactive";
+        await existingReaction.save();
+
+        // if the user wants to remove the reaction or change the reaction type
+        if(reaction === "None" || reaction === existingReaction.reaction){
+            return res.status(200).json({success: true, message: "Reaction removed successfully"});
         }
     }
+
+    
     // create the reaction
+    if (reaction === "None"){
+        return res.status(200).json({success: true, message: "Notification already inactive or doesn't exist."});
+    }
     const newReaction = new Reaction({ postId, createdBy, reaction });
     await newReaction.save();
 
