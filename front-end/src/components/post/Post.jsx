@@ -28,19 +28,7 @@ export default function Post({ data, canEdit = false }) {
     const [openComments, setOpenComments] = useState(false) // to open comments
     const [fullScreen, setFullScreen] = useState(false) // to handle full screen
 
-    // useEffect to handle body overflow
-    // useEffect(() => {
-    //     if (showPostImage) {
-    //         document.body.style.overflow = "hidden";
-    //     } else {
-    //         document.body.style.overflow = "auto";
-    //     }
 
-    //     return () => {
-    //         document.body.style.overflow = "auto";
-    //     };
-    //     }, [showPostImage]
-    // );
 
     // data about the reactions
     const reactionsData = {
@@ -67,11 +55,6 @@ export default function Post({ data, canEdit = false }) {
         angry: <img src="https://twemoji.maxcdn.com/v/latest/72x72/1f621.png" width="18" />,
     }
 
-
-    const handleLikeBTN = (e) => {
-        e.preventDefault()
-        setLiked(!liked)
-    }
 
     const authorUsername = `${data?.author?.personalInfo?.firstName} ${data?.author?.personalInfo?.lastName}`
 

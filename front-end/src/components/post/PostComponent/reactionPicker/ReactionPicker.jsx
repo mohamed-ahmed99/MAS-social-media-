@@ -57,6 +57,8 @@ const reactions = [
 const ReactionPicker = ({ className = "" }) => {
   const [selectedReaction, setSelectedReaction] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
+  const longPressTimer = React.useRef(null);
+  const isLongPress = React.useRef(false);
 
   // Toggle selection or select new one
   const handleSelect = (reaction) => {
@@ -70,6 +72,11 @@ const ReactionPicker = ({ className = "" }) => {
 
   // Main button click (default to like or toggle off)
   const handleMainClick = (e) => {
+    if (isLongPress.current) {
+      isLongPress.current = false;
+      return;
+    }
+    
     e.stopPropagation();
     if (selectedReaction) {
       setSelectedReaction(null);
@@ -78,11 +85,39 @@ const ReactionPicker = ({ className = "" }) => {
     }
   };
 
+  // Mobile Long Press Handlers
+  const handleTouchStart = () => {
+    isLongPress.current = false;
+    longPressTimer.current = setTimeout(() => {
+      setIsHovered(true);
+      isLongPress.current = true;
+    }, 500); // 500ms long press
+  };
+
+  // stop the long press timer
+  const handleTouchEnd = () => {
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+    }
+  };
+
+
+  // stop the long press timer when the touch moves
+  const handleTouchMove = () => {
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+    }
+  };
+
   return (
     <div 
       className={`relative inline-block ${className}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onTouchMove={handleTouchMove}
+      onContextMenu={(e) => e.preventDefault()}
     >
       {/* Floating Reactions Bar */}
       <AnimatePresence>
@@ -103,6 +138,7 @@ const ReactionPicker = ({ className = "" }) => {
     </div>
   );
 };
+
 
 
 export default ReactionPicker;
