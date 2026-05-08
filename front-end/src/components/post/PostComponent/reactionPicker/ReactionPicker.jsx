@@ -109,11 +109,25 @@ const ReactionPicker = ({ className = "" }) => {
     }
   };
 
+  // Desktop Hover Handler
+  const handlePointerEnter = (e) => {
+    if (e.pointerType === 'mouse') {
+      setIsHovered(true);
+    }
+  };
+
+  // Desktop Leave Handler
+  const handlePointerLeave = (e) => {
+    if (e.pointerType === 'mouse') {
+      setIsHovered(false);
+    }
+  };
+
   return (
     <div 
       className={`relative inline-block ${className}`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onPointerEnter={handlePointerEnter}
+      onPointerLeave={handlePointerLeave}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       onTouchMove={handleTouchMove}
