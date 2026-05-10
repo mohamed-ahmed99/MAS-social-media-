@@ -8,7 +8,7 @@ import { PiShareFat } from "react-icons/pi";
 import ReactionPicker from "./reactionPicker/ReactionPicker";
 
 
-export default function Reactions({ reactionCounts, setOpenComments, TextToIcon, reactionsData }) {
+export default function Reactions({postId, reactionCounts, setOpenComments, TextToIcon, reactionsData }) {
 
 
     return (
@@ -17,7 +17,7 @@ export default function Reactions({ reactionCounts, setOpenComments, TextToIcon,
 
                 {/* like */}
                 <div className="flex items-center">
-                    <ReactionPicker />
+                    <ReactionPicker postId={postId}/>
                     <p>{reactionCounts?.reactions || 0}</p>
                 </div>
 

@@ -4,6 +4,9 @@ import { AiOutlineLike, AiFillLike } from 'react-icons/ai';
 import { FaHeart } from 'react-icons/fa';
 import FloatingReactionBar from './FloatingReactionBar';
 import Button from "./Button.jsx"
+import {usePostMethod} from "../../../../hooks/usePostMethod.js"
+import {usePathMethod} from "../../../../hooks/usePatchMethod.js"
+import {useDeleteMethod} from "../../../../hooks/useDeleteMethod.js"
 
 
 // reaction data
@@ -54,33 +57,53 @@ const reactions = [
 
 
 
-const ReactionPicker = ({ className = "" }) => {
+const ReactionPicker = ({ className = "", postId}) => {
+
+  // my hooks
+  const {postData, loading_p, status_p} = usePostMethod()
+  const {deleteData, status_d, loading_d} = useDeleteMethod()
+  const {editData, data_e, loading_e, status_e} = usePathMethod()
+
+  // 
   const [selectedReaction, setSelectedReaction] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
   const longPressTimer = React.useRef(null);
   const isLongPress = React.useRef(false);
 
   // Toggle selection or select new one
-  const handleSelect = (reaction) => {
+  const handleSelect = async (reaction) => {
+      // close ReactionPicker
+      setIsHovered(false);
+
     if (selectedReaction?.id === reaction.id) {
+      // remove reaction
+      await deleteData(`/api/reactions/${postId}/inactivate`)
       setSelectedReaction(null);
     } else {
+      // create reaction
+      await postData(`/api/reactions/create/${postId}`, {}, {reaction:reaction.id})
+      // update selectedReaction
       setSelectedReaction(reaction);
     }
-    setIsHovered(false);
   };
 
   // Main button click (default to like or toggle off)
-  const handleMainClick = (e) => {
+  const handleMainClick = async (e) => {
     if (isLongPress.current) {
       isLongPress.current = false;
       return;
     }
     
     e.stopPropagation();
+    setIsHovered(false); // Close picker on click
+    
     if (selectedReaction) {
+      // remove reaction
+      await deleteData(`/api/reactions/${postId}/inactivate`)
       setSelectedReaction(null);
     } else {
+      
+      await postData(`/api/reactions/create/${postId}`, {}, {reaction:reactions[0].id})
       setSelectedReaction(reactions[0]); // Default to Like
     }
   };
@@ -147,6 +170,7 @@ const ReactionPicker = ({ className = "" }) => {
       <Button
         handleMainClick={handleMainClick}
         selectedReaction={selectedReaction}
+        loading={loading_p}
       />
       
     </div>

@@ -113,6 +113,7 @@ export default function Post({ data, canEdit = false }) {
                     {/* /////////////// reactions buttons (xl) */}
                     <ReactionButtons_XL
                         setOpenComments={setOpenComments}
+                        postId={data?._id}
                     />
 
 
@@ -120,6 +121,7 @@ export default function Post({ data, canEdit = false }) {
                     <Reactions
                         setOpenComments={setOpenComments}
                         TextToIcon={TextToIcon}
+                        postId={data?._id}
                         reactionsData={reactionsData}
                         reactionCounts={{
                             reactions: data?.reactions?.length,

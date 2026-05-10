@@ -1,7 +1,8 @@
 import { motion } from "framer-motion"
 import { AiOutlineLike } from "react-icons/ai"
+import { PuffLoader } from 'react-spinners'
 
-export default function Button({ handleMainClick, selectedReaction }) {
+export default function Button({ handleMainClick, selectedReaction, loading }) {
     return (
         <button
             onClick={handleMainClick}
@@ -24,7 +25,13 @@ export default function Button({ handleMainClick, selectedReaction }) {
             </motion.div>
 
             <span className="font-bold text-[15px] select-none">
-                {selectedReaction ? selectedReaction.label : 'Like'}
+                {selectedReaction ? 
+                    (loading ? 
+                        <PuffLoader size={30}/>
+                         : selectedReaction.label
+                    ) 
+                    : 'Like'
+                }
             </span>
         </button>
     )

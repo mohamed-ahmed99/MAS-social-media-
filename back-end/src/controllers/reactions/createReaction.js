@@ -2,7 +2,7 @@ import { asyncHandler } from "../../middlewares/asyncHandler.js"
 import Reaction from "../../models/reaction.model.js"
 import Posts from "../../models/post.model.js"
 
-export const createReaction = asyncHandler(async (req, res) => {
+const createReaction = asyncHandler(async (req, res) => {
     const { postId } = req.params;
     const { reaction } = req.body;
     const createdBy = req.user._id;
@@ -41,3 +41,5 @@ export const createReaction = asyncHandler(async (req, res) => {
     // responce
     return res.status(201).json({ success: "success", message: "Reaction created successfully", data: newReaction });
 })
+
+export default createReaction;

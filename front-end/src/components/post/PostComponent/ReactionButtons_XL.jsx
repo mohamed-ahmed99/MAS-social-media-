@@ -5,12 +5,11 @@ import { PiShareFat } from "react-icons/pi";
 import ReactionPicker from './reactionPicker/ReactionPicker';
 
 
-export default function ReactionButtons_XL({ setOpenComments }) {
-
+export default function ReactionButtons_XL({ setOpenComments, postId}) {
 
   return (
     <div className="hidden xl:flex items-center justify-between px-10 ">
-      <ReactionPicker />
+      <ReactionPicker postId={postId}/>
 
 
       <button
