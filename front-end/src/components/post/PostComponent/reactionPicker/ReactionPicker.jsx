@@ -102,7 +102,7 @@ const ReactionPicker = ({ className = "", postId}) => {
       await deleteData(`/api/reactions/${postId}/inactivate`)
       setSelectedReaction(null);
     } else {
-      
+
       await postData(`/api/reactions/create/${postId}`, {}, {reaction:reactions[0].id})
       setSelectedReaction(reactions[0]); // Default to Like
     }
@@ -170,7 +170,7 @@ const ReactionPicker = ({ className = "", postId}) => {
       <Button
         handleMainClick={handleMainClick}
         selectedReaction={selectedReaction}
-        loading={loading_p}
+        loading={loading_p || loading_d}
       />
       
     </div>

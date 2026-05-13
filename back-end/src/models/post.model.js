@@ -26,7 +26,7 @@ const postSchema = new mongoose.Schema(
     // visibility
     visibility: {
       type: String,
-      enum: ["public", "friends", "private"],
+      enum: ["public", "friends", "only me"],
       default: "public",
     },
 
@@ -35,7 +35,10 @@ const postSchema = new mongoose.Schema(
 
 postSchema.index({author: 1, createdAt: -1})
 postSchema.index({author: 1, visibility: 1, createdAt: -1})
-postSchema.index({status: 1, visibility: 1, createdAt: -1})
+
+// 
+postSchema.index({status: 1, visibility:1, createdAt: -1})
+postSchema.index({status: 1, visibility: 1, author: 1, createdAt: -1})
 
 const Posts = mongoose.model("post", postSchema);
 export default Posts;

@@ -24,8 +24,9 @@ const reactionSchema = new mongoose.Schema({
 }, {timestamps: true})
 
 // compound index
+reactionSchema.index({postId:1, status:1})
 reactionSchema.index({postId:1, reaction:1, status:1, createdAt:-1})
-reactionSchema.index({createdBy:1, reaction:1, status:1, createdAt:-1})
+reactionSchema.index({postId:1, createdBy:1, status:1, createdAt:-1})
 
 
 const Reaction = mongoose.model("reaction", reactionSchema)
