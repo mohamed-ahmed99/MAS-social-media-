@@ -17,6 +17,7 @@ import ReactionData_XL from "./PostComponent/ReactionData_XL.jsx"
 import ReactionButtons_XL from "./PostComponent/ReactionButtons_XL.jsx"
 import Reactions from "./PostComponent/Reactions.jsx"
 import Comments from "./PostComponent/commentComponents/Comments.jsx";
+import { useEffect } from "react";
 
 
 
@@ -26,25 +27,13 @@ export default function Post({ data, canEdit = false }) {
     const [ user, setUser ] = useGlobalData()
     // states
     const [openComments, setOpenComments] = useState(false) // to open comments
-    const [fullScreen, setFullScreen] = useState(false) // to handle full screen
+    const [postReactions, setPostReactions] = useState({}) // {totalCount: 2, topReactions: Array(2), myReaction: 'haha'}
 
-
-
-    // data about the reactions
-    const reactionsData = {
-        reactions: 92,
-        comments: 20,
-        shares: 10,
-        reactionsTypes: {
-            like: 50,
-            love: 30,
-            haha: 10,
-            wow: 5,
-            sad: 2,
-            angry: 2
-        },
-        mostUsedReactions: ["like", "love", "wow"]
-    }
+    useEffect(() => {
+        if(data?.reactionData){
+            setPostReactions(data?.reactionData)
+        }
+    }, [data])
 
     const TextToIcon = {
         like: <AiFillLike color="blue" fontSize={20} />,
@@ -93,27 +82,23 @@ export default function Post({ data, canEdit = false }) {
                         <File
                             fileUrl={data?.content?.fileUrl}
                             fileType={data?.content?.fileType}
-                            setFullScreen={setFullScreen}
                         />
                     )}
 
                     {/* /////////////// reactions data (xl) */}
                     <ReactionData_XL
-                        reactionsData={reactionsData}
                         TextToIcon={TextToIcon}
                         setOpenComments={setOpenComments}
-
-                        reactionCounts={{
-                            reactions: data?.reactions?.length,
-                            comments: data?.comments?.length,
-                            shares: data?.shares?.length
-                        }}
+                        postReactions={postReactions}
                     />
 
                     {/* /////////////// reactions buttons (xl) */}
                     <ReactionButtons_XL
                         setOpenComments={setOpenComments}
                         postId={data?._id}
+                        setPostReactions={setPostReactions}
+                        postReactions={postReactions}
+                        TextToIcon={TextToIcon}
                     />
 
 
@@ -122,12 +107,9 @@ export default function Post({ data, canEdit = false }) {
                         setOpenComments={setOpenComments}
                         TextToIcon={TextToIcon}
                         postId={data?._id}
-                        reactionsData={reactionsData}
-                        reactionCounts={{
-                            reactions: data?.reactions?.length,
-                            comments: data?.comments?.length,
-                            shares: data?.shares?.length
-                        }}
+                        postReactions={postReactions}
+                        setPostReactions={setPostReactions}
+
                     />
 
                     {/* comments section */}

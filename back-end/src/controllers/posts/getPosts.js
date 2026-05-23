@@ -60,7 +60,7 @@ const getPosts = asyncHandler(async (req, res) => {
                 _id:"$_id.postId",
                 totalCount: {$sum: "$count"},
                 topReactions:{
-                    $push:"$_id.reaction"
+                    $push:{ reaction:"$_id.reaction", count:"$count"}
                 }
             }
         },
@@ -68,7 +68,7 @@ const getPosts = asyncHandler(async (req, res) => {
             $project:{
                 totalCount: 1,
                 topReactions: {
-                    $slice: ["$topReactions", 3]
+                    $slice: ["$topReactions", 4]
                 }
             }
         }

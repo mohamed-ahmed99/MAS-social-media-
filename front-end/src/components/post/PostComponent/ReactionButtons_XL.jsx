@@ -1,15 +1,25 @@
-import { useState } from 'react'
-import { AiFillLike, AiOutlineLike } from "react-icons/ai";
+
 import { FaRegComment } from "react-icons/fa";
 import { PiShareFat } from "react-icons/pi";
 import ReactionPicker from './reactionPicker/ReactionPicker';
 
 
-export default function ReactionButtons_XL({ setOpenComments, postId}) {
+export default function ReactionButtons_XL({ 
+  setOpenComments, 
+  postId, 
+  setPostReactions, 
+  postReactions, 
+  TextToIcon
+}) {
 
   return (
     <div className="hidden xl:flex items-center justify-between px-10 ">
-      <ReactionPicker postId={postId}/>
+      <ReactionPicker 
+        postId={postId}
+        setPostReactions={setPostReactions}
+        postReactions={postReactions}
+        TextToIcon={TextToIcon}
+      />
 
 
       <button

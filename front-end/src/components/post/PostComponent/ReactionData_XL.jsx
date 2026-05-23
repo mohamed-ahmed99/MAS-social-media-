@@ -3,9 +3,16 @@ import { FaComment } from "react-icons/fa";
 import { PiShareFatFill } from "react-icons/pi";
 import GeneralBtn from "../../btns/GeneralBtn"
 
-export default function ReactionData_XL({reactionsData, TextToIcon, setOpenComments, reactionCounts}) {
+export default function ReactionData_XL({TextToIcon, setOpenComments, postReactions}) {
   
-  
+    // {totalCount: 2, topReactions: Array(2), myReaction: 'haha'}
+    // topReactions
+    // {reaction: 'like', count: 3}
+    // {reaction: 'haha', count: 1}
+
+    // filter reactions 
+    const reactionTypes = postReactions?.topReactions?.map(reaction => reaction.reaction)
+
     return (
     <div className="hidden xl:flex items-center justify-between px-3"> 
 
@@ -13,18 +20,17 @@ export default function ReactionData_XL({reactionsData, TextToIcon, setOpenComme
         <div className="flex items-center justify-between gap-2 cursor-pointer hover:bg-gray-200 px-3 py-2">
            
             {/* most used reactions*/}
-            {reactionsData?.mostUsedReactions?.length > 0 && 
-
+            {reactionTypes?.length > 0 && 
                 // map on most used reactions
                 <div className="flex items-center justify-between">
-                    {reactionsData?.mostUsedReactions?.map((icon, index) => {
-                        return <div key={index}>{TextToIcon[icon]}</div>
+                    {reactionTypes?.map((reaction, index) => {
+                        return <div key={index}>{TextToIcon[reaction]}</div>
                     })}
                 </div> 
             }
 
             {/* count of reactions */}
-            <p className="text-gray-600 font-semibold ">{reactionCounts?.reactions || 0}</p>
+            <p className="text-gray-600 font-semibold ">{postReactions?.totalCount || 0}</p>
         </div>
 
 
@@ -36,7 +42,7 @@ export default function ReactionData_XL({reactionsData, TextToIcon, setOpenComme
                 onClick={() => setOpenComments(prev => !prev)}
                 className="flex items-center justify-between gap-1 cursor-pointer px-3 py-2"
             >
-                <div>{reactionCounts?.comments || 0}</div>
+                <div>{ 0}</div>
                 <div className=""><FaComment/></div>
             </button>
 
@@ -44,7 +50,7 @@ export default function ReactionData_XL({reactionsData, TextToIcon, setOpenComme
             <button 
                 className="flex items-center justify-between gap-1 cursor-pointer"
             >
-                <div>{reactionCounts?.shares || 0}</div>
+                <div>{ 0}</div>
                 <div><PiShareFatFill/></div>
             </button>
         </div>

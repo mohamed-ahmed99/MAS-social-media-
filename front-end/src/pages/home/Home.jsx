@@ -23,7 +23,7 @@ export default memo( function Home () {
     const {getData, status_g, message_g, data_g, loading_g, action_g} = useGetMethod()
 
     // states
-    const [query, setQuery] = useState({limit:10, page:1}) // limit and page for pagination
+    const [query, setQuery] = useState({limit:2, page:1}) // limit and page for pagination
     const [createPost, setCreatePost] = useState(false) // to open create post modal
     const [allPosts, setAllPosts] = useState([]) // all posts
     

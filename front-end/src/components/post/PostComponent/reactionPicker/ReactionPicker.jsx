@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { AiOutlineLike, AiFillLike } from 'react-icons/ai';
+import { AnimatePresence } from 'framer-motion';
+import { AiFillLike } from 'react-icons/ai';
 import { FaHeart } from 'react-icons/fa';
 import FloatingReactionBar from './FloatingReactionBar';
 import Button from "./Button.jsx"
 import {usePostMethod} from "../../../../hooks/usePostMethod.js"
-import {usePathMethod} from "../../../../hooks/usePatchMethod.js"
 import {useDeleteMethod} from "../../../../hooks/useDeleteMethod.js"
 
 
@@ -57,15 +56,24 @@ const reactions = [
 
 
 
-const ReactionPicker = ({ className = "", postId}) => {
+const ReactionPicker = ({
+  className = "",
+  postId,
+  setPostReactions,
+  postReactions,
+  TextToIcon
+}) => {
 
   // my hooks
-  const {postData, loading_p, status_p} = usePostMethod()
-  const {deleteData, status_d, loading_d} = useDeleteMethod()
-  const {editData, data_e, loading_e, status_e} = usePathMethod()
+  const { postData, loading_p, status_p } = usePostMethod()
+  const { deleteData, status_d, loading_d } = useDeleteMethod()
 
   // 
-  const [selectedReaction, setSelectedReaction] = useState(null);
+  const [selectedReaction, setSelectedReaction] = useState(() => {
+    return postReactions?.myReaction ? reactions.find(r => r.id === postReactions.myReaction) : null
+  });
+
+  // 
   const [isHovered, setIsHovered] = useState(false);
   const longPressTimer = React.useRef(null);
   const isLongPress = React.useRef(false);
@@ -171,6 +179,8 @@ const ReactionPicker = ({ className = "", postId}) => {
         handleMainClick={handleMainClick}
         selectedReaction={selectedReaction}
         loading={loading_p || loading_d}
+        myReaction={postReactions?.myReaction}
+        TextToIcon={TextToIcon}
       />
       
     </div>
