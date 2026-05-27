@@ -35,19 +35,10 @@ export default function Post({ data, canEdit = false }) {
         }
     }, [data])
 
-    const TextToIcon = {
-        like: <AiFillLike color="blue" fontSize={20} />,
-        love: <FaHeart color="red" fontSize={18} />,
-        haha: <img src="https://twemoji.maxcdn.com/v/latest/72x72/1f602.png" width="18" />,
-        wow: <img src="https://twemoji.maxcdn.com/v/latest/72x72/1f62e.png" width="18" />,
-        sad: <img src="https://twemoji.maxcdn.com/v/latest/72x72/1f622.png" width="18" />,
-        angry: <img src="https://twemoji.maxcdn.com/v/latest/72x72/1f621.png" width="18" />,
-    }
-
-
+    // author username
     const authorUsername = `${data?.author?.personalInfo?.firstName} ${data?.author?.personalInfo?.lastName}`
 
-
+    // route to user profile
     const route = data?.author?._id === user?.user?._id ?
         `/profile` :
         `/user/${(authorUsername.replaceAll(' ', '_')).replaceAll('-', '_')}-${data?.author?._id}`
@@ -87,7 +78,6 @@ export default function Post({ data, canEdit = false }) {
 
                     {/* /////////////// reactions data (xl) */}
                     <ReactionData_XL
-                        TextToIcon={TextToIcon}
                         setOpenComments={setOpenComments}
                         postReactions={postReactions}
                     />
@@ -98,14 +88,12 @@ export default function Post({ data, canEdit = false }) {
                         postId={data?._id}
                         setPostReactions={setPostReactions}
                         postReactions={postReactions}
-                        TextToIcon={TextToIcon}
                     />
 
 
                     {/* ////////// Reactions (sm md lg) */}
                     <Reactions
                         setOpenComments={setOpenComments}
-                        TextToIcon={TextToIcon}
                         postId={data?._id}
                         postReactions={postReactions}
                         setPostReactions={setPostReactions}

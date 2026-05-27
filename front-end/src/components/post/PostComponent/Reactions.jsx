@@ -1,10 +1,10 @@
-
+import { reactionsData } from "./reactionsData.jsx";
 import { FaRegComment } from "react-icons/fa";
 import { PiShareFat } from "react-icons/pi";
 import ReactionPicker from "./reactionPicker/ReactionPicker";
 
 
-export default function Reactions({postId, setOpenComments, TextToIcon, postReactions, setPostReactions }) {
+export default function Reactions({postId, setOpenComments, postReactions, setPostReactions }) {
 
     // filter reactions
     const reactionTypes = postReactions?.topReactions?.map(reaction => reaction.reaction)
@@ -18,6 +18,7 @@ export default function Reactions({postId, setOpenComments, TextToIcon, postReac
                     <ReactionPicker 
                         postId={postId}
                         setPostReactions={setPostReactions}
+                        postReactions={postReactions}
                     />
                     {/* total count */}
                     <p>{postReactions?.totalCount}</p>  
@@ -44,7 +45,7 @@ export default function Reactions({postId, setOpenComments, TextToIcon, postReac
                     <div className="flex items-center justify-between">
                         {reactionTypes.map((reaction, index) => {
                             return (
-                                <div key={index}>{TextToIcon[reaction]}</div>
+                                <div key={index}>{reactionsData.find((r) => r.id === reaction)?.icon}</div>
                             )
                         })}
                     </div>}

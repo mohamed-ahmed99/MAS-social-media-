@@ -1,4 +1,3 @@
-
 import { FaRegComment } from "react-icons/fa";
 import { PiShareFat } from "react-icons/pi";
 import ReactionPicker from './reactionPicker/ReactionPicker';
@@ -8,8 +7,7 @@ export default function ReactionButtons_XL({
   setOpenComments, 
   postId, 
   setPostReactions, 
-  postReactions, 
-  TextToIcon
+  postReactions
 }) {
 
   return (
@@ -18,7 +16,6 @@ export default function ReactionButtons_XL({
         postId={postId}
         setPostReactions={setPostReactions}
         postReactions={postReactions}
-        TextToIcon={TextToIcon}
       />
 
 

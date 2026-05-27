@@ -34,6 +34,13 @@ export const useDeleteMethod = () => {
                     setData(result.data);
                     setMessage(result.message || "Data fetched successfully.");
                 }
+
+                // return
+                return {
+                    success: response.ok ? "success" : "fail",
+                    data: result.data,
+                    message: result.message
+                };
         
             }
             catch(error){
@@ -41,6 +48,13 @@ export const useDeleteMethod = () => {
                 setStatus("fail");
                 setData(null);
                 setMessage(error.message);
+
+                // 
+                return {
+                    success: "fail",
+                    data: null,
+                    message: error.message
+                };
             }finally{
                 setLoading(false);
             }

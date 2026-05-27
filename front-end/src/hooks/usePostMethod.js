@@ -50,13 +50,26 @@ export const usePostMethod = () => {
                 setData(result.data);
                 setMessage(result.message || "Data fetched successfully.");
             }
-
+            
+            // Return success status, data, and message
+            return {
+                success: response.ok ? "success" : "fail",
+                data: result.data,
+                message: result.message
+            };
         }
         catch (error) {
             console.error("Error fetching from server:", error);
             setStatus("fail");
             setData(null);
             setMessage(error.message);
+            
+            // Return failure status, null data, and error message
+            return {
+                success: "fail",
+                data: null,
+                message: error.message
+            };
         } finally {
             setLoading(false);
         }

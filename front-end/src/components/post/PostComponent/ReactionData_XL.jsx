@@ -1,14 +1,9 @@
 import React from 'react'
 import { FaComment } from "react-icons/fa";
 import { PiShareFatFill } from "react-icons/pi";
-import GeneralBtn from "../../btns/GeneralBtn"
+import { reactionsData } from './reactionsData.jsx'
 
-export default function ReactionData_XL({TextToIcon, setOpenComments, postReactions}) {
-  
-    // {totalCount: 2, topReactions: Array(2), myReaction: 'haha'}
-    // topReactions
-    // {reaction: 'like', count: 3}
-    // {reaction: 'haha', count: 1}
+export default function ReactionData_XL({setOpenComments, postReactions}) {
 
     // filter reactions 
     const reactionTypes = postReactions?.topReactions?.map(reaction => reaction.reaction)
@@ -24,7 +19,7 @@ export default function ReactionData_XL({TextToIcon, setOpenComments, postReacti
                 // map on most used reactions
                 <div className="flex items-center justify-between">
                     {reactionTypes?.map((reaction, index) => {
-                        return <div key={index}>{TextToIcon[reaction]}</div>
+                        return <div key={index}>{reactionsData.find((r) => r.id === reaction)?.icon}</div>
                     })}
                 </div> 
             }

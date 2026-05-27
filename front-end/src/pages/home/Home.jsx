@@ -1,16 +1,10 @@
-import { Link } from 'react-router-dom';
-import { useMyStore } from '../../hooks/useMyStore';
-import { useUserContext } from '../../hooks/useUserContext';
 import { memo } from 'react';
 import CreatePostBox from './CreatePostBox';
 import Post from '../../components/post/Post.jsx';
 import CreatePostAlert from '../../components/createPostAlert/CreatePostAlert.jsx';
 import { useState } from 'react';
-import {useGetFromServer} from '../../hooks/getFromServer.js'
 import SeeMoreBtn from '../../components/SeeMoreBtn.jsx';
-import {PuffLoader } from 'react-spinners'
 import { useEffect } from 'react';
-import EndOfPosts from '../../components/post/EndOfPosts.jsx';
 import { End_Of_Posts_Message } from '../../messages'
 import PostLoading from '../../components/post/PostLoading.jsx';
 import { useGetMethod } from '../../hooks/useGetMethod.js';
@@ -20,10 +14,10 @@ import {FaRegFaceSadTear} from 'react-icons/fa6'
 export default memo( function Home () {
 
     // hook to get data from server
-    const {getData, status_g, message_g, data_g, loading_g, action_g} = useGetMethod()
+    const {getData, data_g, loading_g} = useGetMethod()
 
     // states
-    const [query, setQuery] = useState({limit:2, page:1}) // limit and page for pagination
+    const [query, setQuery] = useState({limit:15, page:1}) // limit and page for pagination
     const [createPost, setCreatePost] = useState(false) // to open create post modal
     const [allPosts, setAllPosts] = useState([]) // all posts
     

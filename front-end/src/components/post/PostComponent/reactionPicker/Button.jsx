@@ -6,8 +6,7 @@ export default function Button({
   handleMainClick,
   selectedReaction,
   loading, 
-  myReaction,
-  TextToIcon
+  reactionsData
 }) {
     return (
         <button
@@ -20,9 +19,9 @@ export default function Button({
                 transition={{ type: 'spring', stiffness: 500, damping: 15 }}
                 className="flex items-center justify-center"
             >
-                {myReaction ? (
+                {selectedReaction ? (
                     <div className="w-6 h-6 flex items-center justify-center drop-shadow-sm">
-                        {TextToIcon[myReaction]}
+                        {reactionsData.find((r) => r.id === selectedReaction.id)?.icon}
                     </div>
                 ) : (
                     <AiOutlineLike className="w-6 h-6 transition-transform group-hover:scale-110" />
@@ -30,10 +29,10 @@ export default function Button({
             </motion.div>
 
             <span className="font-bold text-[15px] select-none">
-                {myReaction ? 
+                {selectedReaction ? 
                     (loading ? 
                         <PuffLoader size={30}/>
-                         : myReaction
+                         : selectedReaction.label
                     ) 
                     : 'Like'
                 }

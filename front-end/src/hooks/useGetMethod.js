@@ -48,13 +48,25 @@ export const useGetMethod = () => {
                     setData(result.data);
                     setMessage(result.message || "Data fetched successfully.");
                 }
+
+                return {
+                    success: response.ok ? "success" : "fail",
+                    data: result.data,
+                    message: result.message
+                };
         
             }
             catch(error){
                 console.error("Error fetching from server:", error);
                 setStatus("fail");
                 setData(null);
-                setMessage(error.message);
+                setMessage(error.message);  
+                
+                return {
+                    success: "fail",
+                    data: null,
+                    message: error.message
+                };
             }finally{
                 setLoading(false);
             }

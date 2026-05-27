@@ -1,67 +1,20 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import { AiFillLike } from 'react-icons/ai';
-import { FaHeart } from 'react-icons/fa';
 import FloatingReactionBar from './FloatingReactionBar';
 import Button from "./Button.jsx"
-import {usePostMethod} from "../../../../hooks/usePostMethod.js"
-import {useDeleteMethod} from "../../../../hooks/useDeleteMethod.js"
-
-
-// reaction data
-const reactions = [
-  { 
-    id: 'like', 
-    icon: <AiFillLike color="#3b82f6" fontSize={22} />, 
-    label: 'Like', 
-    color: 'text-blue-500',
-    emoji: "👍"
-  },
-  { 
-    id: 'love', 
-    icon: <FaHeart color="#ef4444" fontSize={20} />, 
-    label: 'Love', 
-    color: 'text-red-500',
-    emoji: "❤️"
-  },
-  { 
-    id: 'haha', 
-    icon: <img src="https://twemoji.maxcdn.com/v/latest/72x72/1f602.png" alt="haha" className="w-6 h-6 object-contain" />, 
-    label: 'Haha', 
-    color: 'text-yellow-500',
-    emoji: "😂"
-  },
-  { 
-    id: 'wow', 
-    icon: <img src="https://twemoji.maxcdn.com/v/latest/72x72/1f62e.png" alt="wow" className="w-6 h-6 object-contain" />, 
-    label: 'Wow', 
-    color: 'text-yellow-500',
-    emoji: "😮"
-  },
-  { 
-    id: 'sad', 
-    icon: <img src="https://twemoji.maxcdn.com/v/latest/72x72/1f622.png" alt="sad" className="w-6 h-6 object-contain" />, 
-    label: 'Sad', 
-    color: 'text-yellow-500',
-    emoji: "😢"
-  },
-  { 
-    id: 'angry', 
-    icon: <img src="https://twemoji.maxcdn.com/v/latest/72x72/1f621.png" alt="angry" className="w-6 h-6 object-contain" />, 
-    label: 'Angry', 
-    color: 'text-orange-600',
-    emoji: "😡"
-  },
-];
+import { usePostMethod } from "../../../../hooks/usePostMethod.js"
+import { useDeleteMethod } from "../../../../hooks/useDeleteMethod.js"
+import { updateReactionState } from "./updateReactionState.js"
+import { useReactionPickerEvents } from "./useReactionPickerEvents.js"
+import { reactionsData } from "../reactionsData.jsx";
 
 
 
 const ReactionPicker = ({
   className = "",
   postId,
-  setPostReactions,
   postReactions,
-  TextToIcon
+  setPostReactions,
 }) => {
 
   // my hooks
@@ -70,28 +23,41 @@ const ReactionPicker = ({
 
   // 
   const [selectedReaction, setSelectedReaction] = useState(() => {
-    return postReactions?.myReaction ? reactions.find(r => r.id === postReactions.myReaction) : null
+    return (postReactions?.myReaction && postReactions.myReaction !== "None")
+      ? reactionsData.find(r => r.id === postReactions.myReaction)
+      : null;
   });
+
+  useEffect(() => {
+    if (postReactions?.myReaction && postReactions.myReaction !== "None") {
+      setSelectedReaction(reactionsData.find(r => r.id === postReactions.myReaction) || null);
+    } else {
+      setSelectedReaction(null);
+    }
+  }, [postReactions?.myReaction]);
 
   // 
   const [isHovered, setIsHovered] = useState(false);
-  const longPressTimer = React.useRef(null);
-  const isLongPress = React.useRef(false);
+  const { isLongPress, handlers } = useReactionPickerEvents(setIsHovered);
 
   // Toggle selection or select new one
   const handleSelect = async (reaction) => {
-      // close ReactionPicker
-      setIsHovered(false);
+    // close ReactionPicker
+    setIsHovered(false);
 
-    if (selectedReaction?.id === reaction.id) {
+    const oldReactionId = selectedReaction?.id;
+
+    if (oldReactionId === reaction.id) {
       // remove reaction
       await deleteData(`/api/reactions/${postId}/inactivate`)
       setSelectedReaction(null);
+      updateReactionState(setPostReactions, oldReactionId, null);
     } else {
       // create reaction
-      await postData(`/api/reactions/create/${postId}`, {}, {reaction:reaction.id})
+      await postData(`/api/reactions/create/${postId}`, {}, { reaction: reaction.id })
       // update selectedReaction
       setSelectedReaction(reaction);
+      updateReactionState(setPostReactions, oldReactionId, reaction.id);
     }
   };
 
@@ -101,74 +67,38 @@ const ReactionPicker = ({
       isLongPress.current = false;
       return;
     }
-    
+
     e.stopPropagation();
     setIsHovered(false); // Close picker on click
-    
+
     if (selectedReaction) {
       // remove reaction
-      await deleteData(`/api/reactions/${postId}/inactivate`)
-      setSelectedReaction(null);
+      const oldReactionId = selectedReaction.id;
+      const response = await deleteData(`/api/reactions/${postId}/inactivate`)
+      console.log(response)
+      if (response.success === "success") {
+        setSelectedReaction(null);
+        updateReactionState(setPostReactions, oldReactionId, null);
+      }
     } else {
-
-      await postData(`/api/reactions/create/${postId}`, {}, {reaction:reactions[0].id})
-      setSelectedReaction(reactions[0]); // Default to Like
+      await postData(`/api/reactions/create/${postId}`, {}, { reaction: reactionsData[0].id })
+      setSelectedReaction(reactionsData[0]); // Default to Like
+      updateReactionState(setPostReactions, null, reactionsData[0].id);
     }
   };
 
-  // Mobile Long Press Handlers
-  const handleTouchStart = () => {
-    isLongPress.current = false;
-    longPressTimer.current = setTimeout(() => {
-      setIsHovered(true);
-      isLongPress.current = true;
-    }, 500); // 500ms long press
-  };
-
-  // stop the long press timer
-  const handleTouchEnd = () => {
-    if (longPressTimer.current) {
-      clearTimeout(longPressTimer.current);
-    }
-  };
-
-
-  // stop the long press timer when the touch moves
-  const handleTouchMove = () => {
-    if (longPressTimer.current) {
-      clearTimeout(longPressTimer.current);
-    }
-  };
-
-  // Desktop Hover Handler
-  const handlePointerEnter = (e) => {
-    if (e.pointerType === 'mouse') {
-      setIsHovered(true);
-    }
-  };
-
-  // Desktop Leave Handler
-  const handlePointerLeave = (e) => {
-    if (e.pointerType === 'mouse') {
-      setIsHovered(false);
-    }
-  };
 
   return (
-    <div 
+    <div
       className={`relative inline-block ${className}`}
-      onPointerEnter={handlePointerEnter}
-      onPointerLeave={handlePointerLeave}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-      onTouchMove={handleTouchMove}
+      {...handlers}
       onContextMenu={(e) => e.preventDefault()}
     >
       {/* Floating Reactions Bar */}
       <AnimatePresence>
         {isHovered && (
-          <FloatingReactionBar 
-            reactions={reactions}
+          <FloatingReactionBar
+            reactions={reactionsData}
             handleSelect={handleSelect}
           />
         )}
@@ -179,10 +109,9 @@ const ReactionPicker = ({
         handleMainClick={handleMainClick}
         selectedReaction={selectedReaction}
         loading={loading_p || loading_d}
-        myReaction={postReactions?.myReaction}
-        TextToIcon={TextToIcon}
+        reactionsData={reactionsData}
       />
-      
+
     </div>
   );
 };
