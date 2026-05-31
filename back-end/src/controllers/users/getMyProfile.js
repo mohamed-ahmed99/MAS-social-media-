@@ -1,6 +1,7 @@
 import Users from '../../models/user.model.js';
 import { asyncHandler } from '../../middlewares/asyncHandler.js';
 import { ACCOUNT_STATUS } from '../../config/constants.js';
+import { getProfileDetails } from './helpers/getProfileDetails.js';
 
 const getMyProfile = asyncHandler(async (req, res) => {
 
@@ -14,11 +15,16 @@ const getMyProfile = asyncHandler(async (req, res) => {
     if (user.account.status !== ACCOUNT_STATUS.ACTIVE) {
         return res.status(400).send({ status: "fail", message: "user is not active", data: null })
     }
+
+
+    // get user profile details
+    const profileDetails = await getProfileDetails(user._id) // { postsCount, friendsCount }
+
     // send user data
     res.status(200).json({
         status: "success",
         message: `user data has sent successfully`,
-        data: { user }
+        data: { user, profileDetails }
     })
 })
 

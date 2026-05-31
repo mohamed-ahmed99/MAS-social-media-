@@ -31,8 +31,6 @@ export default function Page() {
     getData("/api/users/me/profile")
   }, [])
 
-  console.log('my profile', { status_g, message_g, data_g, loading_g, action_g })
-
 
 
 
@@ -67,6 +65,7 @@ export default function Page() {
                 setCreatePost={setCreatePost}
                 edit={true}
                 userData={data_g?.user}
+                profileDetails={data_g?.profileDetails}
               />
             )}
           </div>

@@ -2,13 +2,11 @@ import UserCardBtns from "./UserCardBtns";
 import CircularImage from "../../components/CircularImage";
 
 
-export default function ProfileCard({ setCreatePost, edit, userData }) {
+export default function ProfileCard({ setCreatePost, edit, userData, profileDetails }) {
 
     const someData = {
-        followers: 100,
-        friends: 100,
-        following: 200,
-        posts: 300,
+        posts: profileDetails?.postsCount || 0,
+        friends: profileDetails?.friendsCount || 0
     }
 
     return (
@@ -28,7 +26,7 @@ export default function ProfileCard({ setCreatePost, edit, userData }) {
                 </div>
 
 
-                <div className="w-full h-[90px]  space-y-2 ">
+                <div className="w-full lg:h-[90px] space-y-2">
                     {/* user name */}
                     <h2
                         className="text-2xl font-bold"
@@ -36,8 +34,8 @@ export default function ProfileCard({ setCreatePost, edit, userData }) {
                         {userData?.personalInfo?.firstName} {userData?.personalInfo?.lastName}
                     </h2>
 
-                    {/* connections */}
-                    <div className="flex items-center justify-between">
+                    <div className="hidden lg:flex items-center justify-between">
+                        {/* profile count and friend count */}
                         <div className="flex items-center gap-6 justify-between w-full lg:w-fit">
                             {Object.keys(someData).map((key, index) => (
                                 <div
@@ -67,6 +65,20 @@ export default function ProfileCard({ setCreatePost, edit, userData }) {
             {/* bio */}
             <div className="w-full">
                 {userData?.personalInfo?.bio || "hello"}
+            </div>
+
+            {/* profile count and friend count */}
+            <div className="flex lg:hidden items-center justify-end w-full py-0">
+                {Object.keys(someData).map((key, index) => (
+                    <div
+                        key={index}
+                        className="flex items-center gap-2"
+                    >
+                        <p className="capitalize">{key}:</p>
+                        <p>{someData[key]}</p>
+                        {index < Object.keys(someData).length - 1 && <span className=" ml-1 mr-3"> || </span>}
+                    </div>
+                ))}
             </div>
 
             <div className="grid grid-cols-2 lg:hidden gap-2 ">

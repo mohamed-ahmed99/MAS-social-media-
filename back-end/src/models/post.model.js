@@ -34,6 +34,7 @@ const postSchema = new mongoose.Schema(
 );
 
 postSchema.index({author: 1, createdAt: -1})
+postSchema.index({author: 1, status: 1})
 postSchema.index({author: 1, visibility: 1, createdAt: -1})
 
 // 
