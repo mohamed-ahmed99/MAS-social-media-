@@ -1,6 +1,8 @@
 import Users from '../../models/user.model.js';
 import Relationships from '../../models/relationships.model.js';
 import { asyncHandler } from '../../middlewares/asyncHandler.js';
+import { getProfileDetails } from './helpers/getProfileDetails.js';
+
 
 const getUser = asyncHandler(async (req, res) => {
     const { userId } = req.params // this is the id of the user I want to get
@@ -25,6 +27,7 @@ const getUser = asyncHandler(async (req, res) => {
     }).sort({createdAt: -1})
     console.log('relationship', relationship)
     
+    // check relationship status and set relationshipWithYou
     if (relationship && ["pending", "accepted"].includes(relationship.status)) {
         user.relationshipWithYou = {
             type: relationship.type.toUpperCase().replace(" ", "_"),
@@ -37,7 +40,15 @@ const getUser = asyncHandler(async (req, res) => {
         }
     }
 
-    res.status(200).json({ status: "success", message: `user data has sent successfully`, data: { user } })
+    // get user profile details
+    const profileDetails = await getProfileDetails(user._id)
+
+    // send user data
+    res.status(200).json({ 
+        status: "success", 
+        message: `user data has sent successfully`, 
+        data: { user, profileDetails } 
+    })
 })
 
 export default getUser

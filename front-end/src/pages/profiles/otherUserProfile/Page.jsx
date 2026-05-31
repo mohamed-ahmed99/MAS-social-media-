@@ -56,6 +56,7 @@ function OtherProfile() {
                     setCreatePost={null}
                     edit={false}
                     userData={data_g?.user}
+                    profileDetails={data_g?.profileDetails}
                   />
                 )}
               </div>
