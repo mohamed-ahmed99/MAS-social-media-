@@ -8,7 +8,7 @@ import Posts from './Posts';
   - 
 */ 
 
-export default function ProfileContent({ userData, edit, setCreatePost, loading }) {
+export default function ProfileContent({ userData, edit, setCreatePost, loading, profileDetails }) {
 
 
 
@@ -30,8 +30,12 @@ export default function ProfileContent({ userData, edit, setCreatePost, loading 
             />
           </div>
           
+          {/* friends section */}
           <div className="bg-white lg:rounded-xl shadow-sm overflow-hidden border border-gray-100/50">
-            <Friends />
+            <Friends 
+              friends={profileDetails?.friends} 
+              friendsCount={profileDetails?.friendsCount}
+            />
           </div>
         </div>
 

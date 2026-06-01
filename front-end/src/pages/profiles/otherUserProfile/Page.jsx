@@ -30,7 +30,9 @@ function OtherProfile() {
     useEffect(() => {
         window.scrollTo(0, 0);
         document.title = `MAS-${username}`
-    }, [])
+    }, [username])
+
+    console.log({data_g});
     
 
   return (
@@ -67,6 +69,7 @@ function OtherProfile() {
         <div className="">
             <ProfileContent 
                 userData={data_g?.user} 
+                profileDetails={data_g?.profileDetails}
                 edit={false} 
                 setCreatePost={null}
             />

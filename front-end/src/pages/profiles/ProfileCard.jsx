@@ -64,7 +64,7 @@ export default function ProfileCard({ setCreatePost, edit, userData, profileDeta
 
             {/* bio */}
             <div className="w-full">
-                {userData?.personalInfo?.bio || "hello"}
+                {userData?.personalInfo?.bio}
             </div>
 
             {/* profile count and friend count */}

@@ -18,7 +18,7 @@ const getMyProfile = asyncHandler(async (req, res) => {
 
 
     // get user profile details
-    const profileDetails = await getProfileDetails(user._id) // { postsCount, friendsCount }
+    const profileDetails = await getProfileDetails(user._id) // { postsCount, friendsCount, friends }
 
     // send user data
     res.status(200).json({
