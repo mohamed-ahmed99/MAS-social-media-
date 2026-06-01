@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom"
+import CircularImage from "../../components/CircularImage.jsx"
+
 export default function Friends({ friends, friendsCount }) {
     
     // array of friends data
@@ -36,10 +38,12 @@ export default function Friends({ friends, friendsCount }) {
                         
                         {/* profile picture */}
                         <div className="aspect-square overflow-hidden rounded-lg mb-1">
-                            <img 
-                                src={friend?.personalInfo?.profilePicture || '/user.jpg'} 
+                            <CircularImage 
+                                src={friend?.personalInfo?.profilePicture} 
                                 alt={`${friend?.personalInfo?.firstName} ${friend?.personalInfo?.lastName}`}
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                firstName={friend?.personalInfo?.firstName}
+                                className="group-hover:scale-105 transition-transform duration-300 border-none"
+                                fontSize={35}
                             />
                         </div>
 
