@@ -1,9 +1,14 @@
 import { Link } from "react-router-dom"
 import CircularImage from "../../components/CircularImage.jsx"
+import { useGlobalData } from '../../hooks/useStore.jsx'
+
 
 export default function Friends({ friends, friendsCount }) {
-    
-    // array of friends data
+
+    // get logged in user id from store
+    const [user] = useGlobalData("user")
+
+    // prepare friends list
     const friendsList = friends || []
     const count = friendsCount || 0
 
@@ -30,9 +35,16 @@ export default function Friends({ friends, friendsCount }) {
         {/* friends container */}
         {friendsList.length > 0 ? (
             <div className="grid grid-cols-3 gap-3">
-                {friendsList.map((friend, index) => (
+                {friendsList.map((friend, index) => {
+                    
+                    // check if this friend is me or not
+                    const route = user?._id == friend?._id 
+                        ? "/profile" 
+                        : `/user/${friend?.personalInfo?.firstName}_${friend?.personalInfo?.lastName}-${friend?._id}`
+
+                    return (
                     <Link 
-                        to={`/user/${friend?.personalInfo?.firstName}_${friend?.personalInfo?.lastName}-${friend?._id}`}
+                        to={route}
                         key={friend._id || index} className="flex flex-col group"
                     >   
                         
@@ -52,7 +64,7 @@ export default function Friends({ friends, friendsCount }) {
                             {`${friend?.personalInfo?.firstName} ${friend?.personalInfo?.lastName}`}
                         </p>
                     </Link>
-                ))}
+                )})}
             </div>
         ) : (
             <div className="text-center text-sm text-gray-500 py-4 bg-gray-50 rounded-lg">
